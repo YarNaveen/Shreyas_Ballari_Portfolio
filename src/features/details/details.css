@@ -770,3 +770,49 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Very narrow screens (the Studio phone on small mobiles): everything wraps inside the sheet. */
+.dt.is-contained {
+  overflow-x: hidden;
+}
+.dt-body > * {
+  min-width: 0;
+}
+@container (max-width: 360px) {
+  .ct-head {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .ct-head .dt-title {
+    font-size: 28px;
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+  .ct-row {
+    grid-template-columns: 1fr;
+  }
+  .dt-title {
+    overflow-wrap: anywhere;
+  }
+}
+/* A fieldset will not shrink below its widest child by default; here it may, so the form fits. */
+.ct-topics {
+  min-width: 0;
+  min-inline-size: 0;
+}
+.ct-form {
+  min-width: 0;
+}
+.ct-form {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ct-row > *,
+.ct-form input,
+.ct-form textarea {
+  min-width: 0;
+}
+@container (max-width: 360px) {
+  .ct-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

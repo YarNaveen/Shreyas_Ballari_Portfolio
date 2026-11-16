@@ -1352,3 +1352,40 @@ button.fo-more:active {
   margin-top: 6px;
   font-size: 9px;
 }
+
+/* --- Phones: the open screen like a real phone ------------------------------------------------
+   A solid status bar (the site starts below it, so text never runs under the time), and a
+   compact tab bar where all five tabs fit. */
+.fo.is-phone .fo-open .fo-status {
+  height: 24px;
+  padding: 0 16px;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  mix-blend-mode: normal;
+  filter: none;
+  font-size: 10px;
+  transform: none;
+}
+.fo.is-phone .fo-open .fo-screen-clip {
+  top: 24px;
+}
+.fo.is-phone .fo-nav {
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  justify-content: space-between;
+  gap: 0;
+  padding: 3px;
+  translate: 0 0;
+}
+.fo.is-phone .fo-nav button {
+  flex: 1 1 auto;
+  padding: 6px 2px;
+  font-size: 11px;
+  line-height: 14px;
+}
+/* Room after the last card so the contact button scrolls clear of the tab bar. */
+.fo.is-phone .fo-site > section:last-child {
+  padding-bottom: 72px;
+}
