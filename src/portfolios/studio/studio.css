@@ -1224,3 +1224,131 @@ button.fo-more:active {
 .fo.is-phone .fo-spine {
   display: none;
 }
+
+/* =============================================================================================
+   Phones: the fold runs top to bottom (like the reference). Closed, the cover is the lower half
+   (a near-square screen) with his first name above and his last name below; open, it is a tall
+   phone showing the site in one column. No tilt.
+   ============================================================================================= */
+.fo.is-phone .fo-device {
+  transform: translate(-50%, -50%) translateY(calc(var(--H) * (1 - var(--u)) * -0.25 - 24px)) rotateX(calc(sin(var(--u) * 3.1416) * 8deg));
+}
+.fo.is-phone .fo-device::after {
+  left: 0;
+}
+.fo.is-phone .fo-half {
+  left: 0;
+  width: 100%;
+  height: 50%;
+}
+.fo.is-phone .fo-half.is-r {
+  top: 50%;
+  padding: 0 var(--bezel) var(--bezel);
+  border-radius: calc(var(--R) * (1 - var(--u))) calc(var(--R) * (1 - var(--u))) var(--R) var(--R);
+}
+.fo.is-phone .fo-half.is-r .fo-glass {
+  border-radius: calc((var(--R) - var(--bezel)) * (1 - var(--u))) calc((var(--R) - var(--bezel)) * (1 - var(--u))) calc(var(--R) - var(--bezel)) calc(var(--R) - var(--bezel));
+}
+.fo.is-phone .fo-half.is-r::before {
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, calc((1 - var(--u)) * 0.35)), transparent);
+}
+.fo.is-phone .fo-half.is-r::after {
+  border-radius: calc(var(--R) * (1 - var(--u)) + 4px) calc(var(--R) * (1 - var(--u)) + 4px) calc(var(--R) + 4px) calc(var(--R) + 4px);
+}
+.fo.is-phone .fo-half.is-l {
+  top: 0;
+  transform-origin: 50% 100%;
+  transform: rotateX(calc((1 - var(--u)) * -180deg));
+}
+.fo.is-phone .fo-face.is-front {
+  padding: var(--bezel) var(--bezel) 0;
+  border-radius: var(--R) var(--R) 0 0;
+}
+.fo.is-phone .fo-face.is-front .fo-glass {
+  border-radius: calc(var(--R) - var(--bezel)) calc(var(--R) - var(--bezel)) 0 0;
+}
+.fo.is-phone .fo-face.is-front::after {
+  border-radius: calc(var(--R) + 4px) calc(var(--R) + 4px) 0 0;
+}
+.fo.is-phone .fo-face.is-back {
+  transform: rotateX(180deg);
+}
+/* The lower half shows the lower part of the same site. */
+.fo.is-phone .fo-screen-clip.is-r .fo-screen-move {
+  left: 0;
+  top: calc(var(--bezel) - var(--H) / 2);
+}
+
+/* His name: first name above the closed phone, last name below, as large as the screen allows. */
+.fo.is-phone .fo-name {
+  font-size: min(27vw, 120px);
+}
+.fo.is-phone .fo-name span {
+  left: 50%;
+  right: auto;
+  margin: 0;
+  translate: -50% 0;
+  opacity: 1;
+}
+.fo.is-phone .fo-name .is-l,
+.fo.is-phone .fo-name .is-r {
+  left: 50%;
+  right: auto;
+  margin: 0;
+  translate: -50% 0;
+  transform: none;
+  /* Wider than the open phone, so it fades behind it while the phone is open. */
+  opacity: calc(1 - var(--u));
+}
+.fo.is-phone .fo-name .is-l {
+  top: auto;
+  bottom: calc(50% + var(--H) / 4 + 22px);
+}
+.fo.is-phone .fo-name .is-r {
+  top: calc(50% + var(--H) / 4 + 2px);
+}
+
+/* The cover is shorter now: one notification, like the reference. */
+.fo.is-phone .fo-note + .fo-note {
+  display: none;
+}
+.fo.is-phone .fo-time {
+  font-size: calc(var(--W) * 0.21);
+}
+.fo.is-phone .fo-lock {
+  padding: 14px 12px 12px;
+}
+/* The incoming call on the shorter phone cover: everything fits without overlapping. */
+.fo.is-phone .fo-call {
+  padding: 14px 12px 10px;
+  justify-content: space-between;
+}
+.fo.is-phone .fo-call > b {
+  font-size: 20px;
+}
+.fo.is-phone .fo-call > span {
+  margin-top: 2px;
+  font-size: 11px;
+}
+.fo.is-phone .fo-call-photo {
+  width: auto;
+  height: 32%;
+  margin: 6px 0;
+}
+.fo.is-phone .fo-slide {
+  height: 38px;
+}
+.fo.is-phone .fo-slide-knob {
+  top: 3px;
+  left: 3px;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+.fo.is-phone .fo-call small {
+  margin-top: 6px;
+  font-size: 9px;
+}

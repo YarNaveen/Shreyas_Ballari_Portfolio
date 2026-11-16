@@ -316,8 +316,10 @@ export function StudioPortfolio() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const phone = vw < 760;
-      const W = phone ? Math.min(vw * 0.92, 440) : Math.min(860, vw * 0.58, (vh - 200) / 0.68);
-      const H = phone ? Math.min(vh * 0.66, W * 1.45) : W * 0.68;
+      // On phones it folds top to bottom like the reference: closed it is a near-square cover,
+      // open a tall phone; on larger screens it opens side to side into a wide tablet.
+      const W = phone ? Math.min(vw * 0.68, 300) : Math.min(860, vw * 0.58, (vh - 200) / 0.68);
+      const H = phone ? Math.min(vh * 0.64, W * 1.95) : W * 0.68;
       setSize({ W: Math.round(W), H: Math.round(H), phone });
     };
     fit();
