@@ -329,7 +329,7 @@ export function Education() {
         {list.map((s, i) => (
           <div key={s.name} className={`vz-school ${i === 0 ? 'is-now' : ''}`} data-vz style={at(i)}>
             {i === 0 ? <img src={`${BASE}assets/photos/classroom.jpg`} alt="" loading="lazy" /> : null}
-            <span className="vz-tag">{i === 0 ? 'Now' : s.level}</span>
+            <span className="vz-tag">{i === 0 ? 'Present' : s.level}</span>
             <b>{s.name}</b>
             <small>{i === 0 ? `${profile.grade} · ${profile.schoolTown} · all Honors and AP` : s.level}</small>
           </div>

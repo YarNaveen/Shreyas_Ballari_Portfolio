@@ -301,7 +301,6 @@ export function StudioPortfolio() {
   /** Oncure or the trading app, opened inside the phone screen. */
   const [detail, setDetail] = useState<{ id: DetailId; from: DOMRect } | null>(null);
   /** The contact form opened from the incoming call (on the closed phone's screen). */
-  const [callForm, setCallForm] = useState<DOMRect | null>(null);
 
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -388,6 +387,16 @@ export function StudioPortfolio() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  /** Slide to talk: the phone unfolds to the contact part of the site, and the contact form opens
+      on its big screen. */
+  const talk = () => {
+    go('contact');
+    window.setTimeout(() => {
+      const screen = live.current?.parentElement;
+      if (screen) setDetail({ id: 'contact', from: screen.getBoundingClientRect() });
+    }, 1600);
+  };
+
   /** Jump to a part of the inner site by scrolling the page to the matching point. */
   const go = (id: string) => {
     const sec = section.current;
@@ -453,8 +462,7 @@ export function StudioPortfolio() {
               </div>
               <div className="fo-face is-back">
                 <div className="fo-glass">
-                  {call ? <CallScreen onTalk={(el) => setCallForm(el.getBoundingClientRect())} /> : <LockScreen time={time} />}
-                  <DetailSheet id={callForm ? 'contact' : null} origin={callForm} onClose={() => setCallForm(null)} contained theme="studio" />
+                  {call ? <CallScreen onTalk={talk} /> : <LockScreen time={time} />}
                 </div>
               </div>
             </div>
