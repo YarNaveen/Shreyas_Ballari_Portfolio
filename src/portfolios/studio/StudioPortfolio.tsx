@@ -308,6 +308,7 @@ export function StudioPortfolio() {
   const [callForm, setCallForm] = useState<DOMRect | null>(null);
   /** The 3D phone is loaded and prepared (until then the drawn phone shows). */
   const [ready3d, setReady3d] = useState(false);
+  const [lost3d, setLost3d] = useState(false);
 
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -448,7 +449,7 @@ export function StudioPortfolio() {
           </h2>
 
           <Suspense fallback={null}>
-            <Phone3D height={size.H} width={size.W} cover={PORTRAIT} inside={PORTRAIT} onReady={() => setReady3d(true)} />
+            {!lost3d && <Phone3D height={size.H} width={size.W} cover={PORTRAIT} inside={PORTRAIT} rim={rim.c} onReady={() => setReady3d(true)} onLost={() => (setReady3d(false), setLost3d(true))} />}
           </Suspense>
           <div className="fo-device">
             {/* The hinge, seen from the side while the phone is closed. */}

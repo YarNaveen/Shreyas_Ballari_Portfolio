@@ -29,7 +29,7 @@ function Studio() {
   return null;
 }
 
-function Phone({ height, width, cover, inside, onReady }: { height: number; width: number; cover: string; inside: string; onReady: () => void }) {
+function Phone({ height, width, cover, inside, rim, onReady }: { height: number; width: number; cover: string; inside: string; rim: string; onReady: () => void }) {
   const gltf = useGLTF(PHONE_URL);
   const { invalidate, camera, gl } = useThree();
   const group = useRef<Group>(null);
@@ -84,9 +84,27 @@ function Phone({ height, width, cover, inside, onReady }: { height: number; widt
     });
   }, [root, cover, inside, invalidate]);
 
+  // The frame takes the colour picked under the phone.
+  useEffect(() => {
+    root.traverse((o) => {
+      const m = o as Mesh;
+      if (!m.isMesh) return;
+      const mat = m.material as MeshStandardMaterial;
+      if (/^C_StarWhite_Side|^C_SW_Side_Matte|^C_StarWhite_Backpanel$|^C_SW_ButtonCap/.test(mat.name)) {
+        mat.color.set(rim);
+        mat.needsUpdate = true;
+      }
+    });
+    invalidate();
+  }, [root, rim, invalidate]);
+
   // Prepare its shaders off the main thread first, then show it.
   useEffect(() => {
-    gl.compileAsync(root, camera).then(onReady, onReady);
+    // Ready only once it has really been drawn (a failed load or preparation keeps the drawn phone).
+    gl.compileAsync(root, camera).then(() => {
+      invalidate();
+      requestAnimationFrame(() => requestAnimationFrame(onReady));
+    }, () => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -121,7 +139,7 @@ function Phone({ height, width, cover, inside, onReady }: { height: number; widt
   );
 }
 
-export function Phone3D({ height, width, cover, inside, onReady }: { height: number; width: number; cover: string; inside: string; onReady: () => void }) {
+export function Phone3D({ height, width, cover, inside, rim, onReady, onLost }: { height: number; width: number; cover: string; inside: string; rim: string; onReady: () => void; onLost: () => void }) {
   // Camera far enough that 1 unit at the phone is 1 pixel on screen (so it matches the page layout).
   const fov = 22;
   const dist = useMemo(() => (typeof window === 'undefined' ? 1000 : window.innerHeight / 2 / Math.tan((fov * Math.PI) / 360)), []);
@@ -131,12 +149,15 @@ export function Phone3D({ height, width, cover, inside, onReady }: { height: num
       frameloop="demand"
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      // If the browser drops this 3D view (too many open at once, or the graphics chip resets), the
+      // drawn phone comes back instead of a blank space.
+      onCreated={({ gl }) => gl.domElement.addEventListener('webglcontextlost', onLost)}
       camera={{ fov, position: [0, 0, dist], near: dist / 10, far: dist * 4 }}
     >
       <Studio />
       <directionalLight position={[300, 500, 800]} intensity={1.2} />
       <Suspense fallback={null}>
-        <Phone height={height} width={width} cover={cover} inside={inside} onReady={onReady} />
+        <Phone height={height} width={width} cover={cover} inside={inside} rim={rim} onReady={onReady} />
       </Suspense>
     </Canvas>
   );
