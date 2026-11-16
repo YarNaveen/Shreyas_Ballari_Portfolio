@@ -1,4 +1,4 @@
-import { lazy, Suspense, useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 import { ArrowUpRight, EnvelopeSimple, Flask, Phone } from '@phosphor-icons/react';
 import '@fontsource-variable/geist';
@@ -7,11 +7,7 @@ import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
 import { achievements, languages, profile } from '@/content/portfolio';
 import { Activities, Certificates, Courses, Education, Goals, Languages, Scores, Tutoring } from '@/features/visuals/Visuals';
 import { DetailSheet, type DetailId } from '@/features/details/Details';
-import { phoneState } from './phoneState';
 import './studio.css';
-
-/** The real 3D phone downloads only when Studio opens (separate file). */
-const Phone3D = lazy(() => import('./Phone3D').then((m) => ({ default: m.Phone3D })));
 
 /**
  * Studio tab: a folding phone.
@@ -66,7 +62,7 @@ const seg = (p: number, a: number, b: number) => clamp((p - a) / (b - a));
 const ease = (x: number) => x * x * (3 - 2 * x);
 
 /** Scroll progress (0 to 1) where things happen. */
-const T = { unfold: [0.03, 0.15], scroll: [0.17, 0.86], fold: [0.88, 0.97], call: 0.968 } as const;
+const T = { unfold: [0.03, 0.15], scroll: [0.17, 0.86], fold: [0.88, 0.97], call: 0.92 } as const;
 
 function useClock() {
   const [now, setNow] = useState('');
@@ -306,9 +302,6 @@ export function StudioPortfolio() {
   const [detail, setDetail] = useState<{ id: DetailId; from: DOMRect } | null>(null);
   /** The contact form opened from the incoming call (on the closed phone's screen). */
   const [callForm, setCallForm] = useState<DOMRect | null>(null);
-  /** The 3D phone is loaded and prepared (until then the drawn phone shows). */
-  const [ready3d, setReady3d] = useState(false);
-  const [lost3d, setLost3d] = useState(false);
 
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -376,10 +369,6 @@ export function StudioPortfolio() {
       const u = ease(seg(p, T.unfold[0], T.unfold[1])) * (1 - ease(seg(p, T.fold[0], T.fold[1])));
       const k = seg(p, T.scroll[0], T.scroll[1]);
       st.style.setProperty('--u', u.toFixed(4));
-      if (Math.abs(phoneState.u - u) > 1e-4) {
-        phoneState.u = u;
-        phoneState.redraw();
-      }
       // The site inside scrolls with the page (same offset on every copy).
       const inner = live.current;
       if (inner) {
@@ -419,7 +408,7 @@ export function StudioPortfolio() {
   );
 
   return (
-    <div className={`fo is-${mode.toLowerCase()} ${size.phone ? 'is-phone' : ''} ${ready3d && !call ? 'use-3d' : ''}`} style={vars}>
+    <div className={`fo is-${mode.toLowerCase()} ${size.phone ? 'is-phone' : ''}`} style={vars}>
       <header className="fo-top">
         <span className="fo-logo fo-display">{profile.name}</span>
         <div className="fo-modes" role="radiogroup" aria-label="Background">
@@ -448,9 +437,6 @@ export function StudioPortfolio() {
             </span>
           </h2>
 
-          <Suspense fallback={null}>
-            {!lost3d && <Phone3D height={size.H} width={size.W} cover={PORTRAIT} inside={PORTRAIT} rim={rim.c} onReady={() => setReady3d(true)} onLost={() => (setReady3d(false), setLost3d(true))} />}
-          </Suspense>
           <div className="fo-device">
             {/* The hinge, seen from the side while the phone is closed. */}
             <div className="fo-spine" aria-hidden="true" />

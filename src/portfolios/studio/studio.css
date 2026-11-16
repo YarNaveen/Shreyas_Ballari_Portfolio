@@ -1224,31 +1224,3 @@ button.fo-more:active {
 .fo.is-phone .fo-spine {
   display: none;
 }
-
-/* --- The real 3D phone ---------------------------------------------------------------------- */
-.fo-3d {
-  position: absolute !important;
-  inset: 0;
-  transform: translateY(-28px);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 600ms var(--ease);
-}
-.fo.use-3d .fo-3d {
-  opacity: calc(1 - clamp(0, (var(--u) - 0.97) * 100, 1));
-}
-/* While the 3D phone shows, the drawn phone steps aside (the open screen still appears on top
-   once it is fully open, and the drawn cover returns for the incoming call at the end). */
-.fo.use-3d .fo-half,
-.fo.use-3d .fo-spine,
-.fo.use-3d .fo-device::after {
-  visibility: hidden;
-}
-/* Hand-over: the live open screen fades in over the 3D phone as it finishes opening. */
-.fo.use-3d .fo-3d {
-  opacity: calc(1 - clamp(0, (var(--u) - 0.985) * 66, 1));
-}
-.fo.use-3d .fo-open {
-  visibility: visible;
-  opacity: clamp(0, (var(--u) - 0.95) * 25, 1);
-}

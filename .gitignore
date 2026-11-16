@@ -13,3 +13,6 @@ public/assets/Shreyas_Ballari_Resume.pdf
 # Local Claude Code permissions.
 .claude/settings.local.json
 .claude/settings.json
+
+# Licensed 3D phone model (not for public sharing)
+public/models/apple_iphone_duo_fold_star_white_2026_animated.glb

@@ -1,5 +1,5 @@
 import { Seo } from '@/components/seo/Seo';
-import { HEADSET_CREDIT, PHONE_CREDIT } from '@/content/credits';
+import { HEADSET_CREDIT } from '@/content/credits';
 import '@/features/details/style';
 
 /** /privacy: what this site does and does not do with visitors' data, and the credits. */
@@ -38,11 +38,7 @@ export function Component() {
               <a className="dt-go" href={HEADSET_CREDIT.url} target="_blank" rel="noreferrer">
                 {HEADSET_CREDIT.author}
               </a>
-              , licensed {HEADSET_CREDIT.license}. “{PHONE_CREDIT.title}” 3D model by{' '}
-              <a className="dt-go" href={PHONE_CREDIT.url} target="_blank" rel="noreferrer">
-                {PHONE_CREDIT.author}
-              </a>
-              , {PHONE_CREDIT.license} licence. House furniture, textures and sky from Poly Haven (CC0). Topic photos are public domain or CC0 (sources in public/assets/photos/CREDITS.md).
+              , licensed {HEADSET_CREDIT.license}. House furniture, textures and sky from Poly Haven (CC0). Illustrations are marked as illustrations.
             </p>
           </section>
         </div>
