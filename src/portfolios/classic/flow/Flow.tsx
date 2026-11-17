@@ -282,8 +282,12 @@ export function Flow() {
   }, []);
 
   return (
-    <section ref={section} id="story" className="fl" aria-label={`${profile.name}: portfolio`}>
-      <Dock go={go} active={active} />
+    <>
+      {/* Outside the film section, so the menu bar stays above every section after it. */}
+      <div className="fl-dockhost">
+        <Dock go={go} active={active} />
+      </div>
+      <section ref={section} id="story" className="fl" aria-label={`${profile.name}: portfolio`}>
       <div className="fl-stage">
         <div ref={bg} className="fl-bg" />
         <Ring reg={reg} />
@@ -297,6 +301,7 @@ export function Flow() {
           </Optional3D>
         )}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

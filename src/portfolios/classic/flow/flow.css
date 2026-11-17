@@ -1912,3 +1912,15 @@
   line-height: 16px;
   opacity: 0.8;
 }
+
+/* The menu bar sits outside the film section (its stacking order is below the later sections). */
+.fl-dockhost {
+  --fl-font: 'Geist Variable', 'Geist', system-ui, sans-serif;
+  --violet: #7b4dff;
+  --violet-2: #b896ff;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  z-index: 90;
+  color: #fff;
+  font-family: var(--fl-font);
+}
