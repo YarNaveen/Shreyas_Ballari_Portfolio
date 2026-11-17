@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { ArrowUpRight, Atom, Brain, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle, X } from '@phosphor-icons/react';
-import { achievements, activities, courses, goals, intro, languages, profile, researchInterests, resume, schools, subjects, volunteering } from '@/content/portfolio';
+import { ArrowUpRight, Atom, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
+import { achievements, activities, courses, languages, profile, researchInterests, schools, stockApp, subjects } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
-import { DetailSheet, type DetailId } from '@/features/details/Details';
-import { Activities, Certificates, Scores } from '@/features/visuals/Visuals';
+import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
 import { useSeen } from './ui';
 
 /**
@@ -16,8 +15,8 @@ import { useSeen } from './ui';
 
 const BASE = import.meta.env.BASE_URL;
 const photo = (n: string) => `${BASE}assets/photos/${n}.jpg`;
-/** Opens Oncure or the trading app in the detail sheet (see Sheet below). */
-const openSheet = (id: DetailId) => void window.dispatchEvent(new CustomEvent('sd-sheet', { detail: id }));
+/** Opens one of the inner pages (see PageHost below); the Oncure film uses it too. */
+const openPage = (id: PageId) => void window.dispatchEvent(new CustomEvent('sd-page', { detail: id }));
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 /** Words that come into focus one after another (blur to sharp). `dimFrom` greys the rest. */
@@ -135,44 +134,55 @@ function Burst() {
   return <canvas ref={ref} className="sd-burst" aria-hidden="true" />;
 }
 
-function Hero() {
+/** The stock trading application, on the particle burst: what it is, three key points, the mockup. */
+function Trading() {
   const ref = useSeen<HTMLElement>();
-  const stats = [
-    { v: '99%', k: 'PSAT, top nationwide' },
-    { v: '1280', k: 'PSAT 8/9, out of 1440' },
-    { v: String(achievements.length), k: 'Awards and honors' },
+  const points = [
+    { icon: Sparkle, t: 'AI advice', s: 'Right beside the chart' },
+    { icon: ChartLineUp, t: 'Buy and sell', s: 'A time frame for each' },
+    { icon: Calculator, t: 'Smart calculators', s: 'The best amount to buy' },
   ];
   return (
-    <section ref={ref} id="cx-intro" className="sd-hero" aria-labelledby="sd-hero-h">
+    <section ref={ref} id="cx-finance" className="sd-hero" aria-labelledby="sd-hero-h">
       <Burst />
       <div className="sd-hero-in">
-        <h2 id="sd-hero-h" className="sd-hero-h">
-          <span>Curiosity has</span>
-          <span className="is-soft">no limits.</span>
-        </h2>
-        <div className="sd-hero-foot">
-          <ul className="sd-stats">
-            {stats.map((s, i) => (
-              <li key={s.k} style={{ '--i': i } as CSSProperties}>
-                <b>{s.v}</b>
-                <small>{s.k}</small>
-              </li>
-            ))}
-          </ul>
-          <div className="sd-hero-copy">
-            <p className="sd-hero-sub">
-              Student researcher and peer tutor in {profile.schoolTown}.
+        <div className="sd-hero-top">
+          <div className="sd-hero-left">
+            <p className="sd-label is-light">
+              <i aria-hidden="true" /> Personal project · {stockApp.status.toLowerCase()}
             </p>
-            <p className="sd-hero-body">{intro.lead.text}</p>
+            <h2 id="sd-hero-h" className="sd-hero-h">
+              <span>Stock trading,</span>
+              <span className="is-soft">made simple.</span>
+            </h2>
+          </div>
+          <div className="sd-hero-copy">
+            <p className="sd-hero-sub">A stock trading application that is friendly to beginners and welcoming to veterans.</p>
+            <p className="sd-hero-body">
+              Instead of candlesticks and equations, an AI model uses real-world data and algorithms to suggest how much of a stock to buy, when to buy it and an estimated time to sell, shown right next to the stock graph you are looking at.
+            </p>
             <div className="sd-hero-cta">
-              <button type="button" className="sd-pill is-white" onClick={() => scrollTo('sd-work')}>
-                See his work
+              <button type="button" className="sd-pill is-white" onClick={() => openPage('trading')}>
+                View more <ArrowUpRight weight="bold" aria-hidden="true" />
               </button>
               <button type="button" className="sd-link" onClick={() => scrollTo('cx-contact')}>
-                Get in touch
+                Ask about it
               </button>
             </div>
           </div>
+        </div>
+        <ul className="sd-stats">
+          {points.map((s, i) => (
+            <li key={s.t} style={{ '--i': i } as CSSProperties}>
+              <s.icon weight="duotone" aria-hidden="true" />
+              <b>{s.t}</b>
+              <small>{s.s}</small>
+            </li>
+          ))}
+        </ul>
+        <div className="sd-hero-mock">
+          <AppMockup />
+          <p className="sd-hero-note">Concept design · names and figures are made up · hypothetical, not financial advice.</p>
         </div>
       </div>
     </section>
@@ -298,10 +308,10 @@ function Bento() {
 
 function Craft() {
   const cols = [
-    { icon: GraduationCap, t: 'His school', d: `${profile.school}, a ${profile.grade.toLowerCase()} taking all Honors and AP courses.` },
-    { icon: Brain, t: 'His research', d: researchInterests.map((r) => r.title).join(' and ') + ', with Oncure as his first proposal.' },
-    { icon: ChalkboardTeacher, t: 'His tutoring', d: 'Math and Science for 7th and 8th graders, one on one and in small groups.' },
-    { icon: Code, t: 'His tools', d: `${languages.join(', ')}, and the AI courses he takes at school.` },
+    { icon: GraduationCap, n: 'AP', t: 'His school', d: `${profile.school}, all Honors and AP courses, including AP Computer Science A and AP Biology.` },
+    { icon: Brain, n: String(researchInterests.length), t: 'His research', d: `${researchInterests.map((r) => r.title).join(' and ')}, with Oncure as his first proposal.` },
+    { icon: ChalkboardTeacher, n: '7–8', t: 'His tutoring', d: 'Math and Science for 7th and 8th graders, one on one and in small groups.' },
+    { icon: Code, n: String(languages.length), t: 'His tools', d: `${languages.join(', ')}, and the AI course he takes at school.` },
   ];
   return (
     <section className="sd-craft" aria-labelledby="sd-craft-h">
@@ -310,16 +320,36 @@ function Craft() {
           <i key={i} />
         ))}
       </span>
-      <div className="sd-craft-head">
-        <Blur id="sd-craft-h" text="Careful study behind every idea he builds." dimFrom={3} />
-        <button type="button" className="sd-pill is-outline" onClick={() => openSheet('oncure')}>
-          Read the Oncure proposal
-        </button>
+      <div className="sd-craft-top">
+        <Rise className="sd-craft-pic">
+          <figure style={{ '--i': 0 } as CSSProperties}>
+            <img src={photo('microscope')} alt="" loading="lazy" />
+            <figcaption>
+              <span>
+                <Dna weight="fill" aria-hidden="true" /> Oncure
+              </span>
+              <b>His first research proposal</b>
+            </figcaption>
+          </figure>
+        </Rise>
+        <div className="sd-craft-head">
+          <p className="sd-label">
+            <i aria-hidden="true" /> How he works
+          </p>
+          <Blur id="sd-craft-h" text="Careful study behind every idea he builds." dimFrom={3} />
+          <p className="sd-craft-lede">He learns the subject first, at school and on his own, then turns it into something real: a research proposal, an app, or a lesson for younger students.</p>
+          <button type="button" className="sd-pill is-black" onClick={() => openPage('oncure')}>
+            Read the Oncure proposal <ArrowUpRight weight="bold" aria-hidden="true" />
+          </button>
+        </div>
       </div>
       <Rise className="sd-cols">
-        {cols.map(({ icon: I, t, d }, i) => (
+        {cols.map(({ icon: I, n, t, d }, i) => (
           <article key={t} style={{ '--i': i } as CSSProperties}>
-            <I weight="duotone" aria-hidden="true" />
+            <span className="sd-col-top">
+              <I weight="duotone" aria-hidden="true" />
+              <b>{n}</b>
+            </span>
             <h3>{t}</h3>
             <p>{d}</p>
           </article>
@@ -331,22 +361,19 @@ function Craft() {
 
 /* ---------------------------------------------------------------- work gallery */
 
-type Modal = 'awards' | 'life' | 'tutoring' | null;
-
-const WORK: { id: string; title: string; line: string; img: string; tint: string; open: () => void | Modal; anchor?: string }[] = [
-  { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030', open: () => openSheet('oncure') },
-  { id: 'trading', title: 'AI trading app', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a', open: () => openSheet('finance') },
-  { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606', open: () => 'awards' },
-  { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', open: () => 'life', anchor: 'cx-life' },
-  { id: 'tutoring', title: 'Peer tutoring', line: 'Math and Science, at lunch and after school.', img: 'chalkboard-math', tint: '#0d1a10', open: () => 'tutoring', anchor: 'cx-tutoring' },
-  { id: 'goals', title: 'Goals', line: 'From university to an AI-enabled oncology lab.', img: 'stethoscope', tint: '#0a1226', open: () => scrollTo('cx-goals') },
+const WORK: { id: PageId; title: string; line: string; img: string; tint: string; anchor?: string }[] = [
+  { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030' },
+  { id: 'trading', title: 'Stock trading application', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a' },
+  { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606' },
+  { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', anchor: 'cx-life' },
+  { id: 'tutoring', title: 'Peer tutoring', line: 'Math and Science, at lunch and after school.', img: 'chalkboard-math', tint: '#0d1a10', anchor: 'cx-tutoring' },
+  { id: 'goals', title: 'Goals', line: 'From university to an AI-enabled oncology lab.', img: 'stethoscope', tint: '#0a1226' },
 ];
 
 function Work() {
   const sec = useRef<HTMLElement>(null);
   const cards = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState(0);
-  const [modal, setModal] = useState<Modal>(null);
 
   useEffect(() => {
     const s = sec.current;
@@ -388,16 +415,9 @@ function Work() {
     };
   }, []);
 
-  useEffect(() => {
-    // Menu links for awards, activities and tutoring open their card's details.
-    const open = (e: Event) => setModal((e as CustomEvent<Modal>).detail);
-    window.addEventListener('sd-open', open);
-    return () => window.removeEventListener('sd-open', open);
-  }, []);
-
   const act = (i: number) => {
-    const r = WORK[i]?.open();
-    if (r) setModal(r);
+    const w = WORK[i];
+    if (w) openPage(w.id);
   };
 
   return (
@@ -435,60 +455,7 @@ function Work() {
           </li>
         ))}
       </ol>
-      {modal && <WorkModal id={modal} onClose={() => setModal(null)} />}
     </section>
-  );
-}
-
-function WorkModal({ id, onClose }: { id: Exclude<Modal, null>; onClose: () => void }) {
-  const box = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const prev = document.activeElement as HTMLElement | null;
-    box.current?.focus();
-    const key = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', key);
-    document.documentElement.classList.add('sd-locked');
-    return () => {
-      window.removeEventListener('keydown', key);
-      document.documentElement.classList.remove('sd-locked');
-      prev?.focus?.();
-    };
-  }, [onClose]);
-  const title = id === 'awards' ? 'Awards and honors' : id === 'life' ? 'Activities and volunteering' : 'Peer tutoring';
-  return (
-    <div className="sd-modal" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div ref={box} className="sd-modal-box" tabIndex={-1} data-lenis-prevent>
-        <header>
-          <h3>{title}</h3>
-          <button type="button" className="sd-x" onClick={onClose} aria-label="Close">
-            <X weight="bold" />
-          </button>
-        </header>
-        <div className="vz-on-dark">
-          {id === 'awards' && (
-            <>
-              <Certificates />
-              <div className="sd-gap" />
-              <Scores />
-            </>
-          )}
-          {id === 'life' && <Activities />}
-          {id === 'tutoring' && (
-            <>
-              <p className="sd-modal-lede">One on one and in groups, at lunch and after school. {volunteering[2]?.role}.</p>
-              <ol className="sd-tlist">
-                {resume.tutoring.map((t, i) => (
-                  <li key={t}>
-                    <span>{String(i + 1).padStart(2, '0')}</span>
-                    <p>{t}</p>
-                  </li>
-                ))}
-              </ol>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -567,28 +534,17 @@ function Momentum() {
 }
 
 function Goals() {
-  const cards = [
-    { k: 'Next', t: 'A top university', d: goals.education, blue: true },
-    { k: 'Career', t: 'Lead AI engineering', d: goals.career[0] ?? '' },
-    { k: 'Career', t: 'An oncology lab', d: goals.career[1] ?? '' },
-    { k: 'Career', t: 'A trading platform', d: goals.career[2] ?? '' },
-  ];
   return (
     <section id="cx-goals" className="sd-goals" aria-labelledby="sd-goals-h">
+      <p className="sd-label">
+        <i aria-hidden="true" /> Goals
+      </p>
       <Blur id="sd-goals-h" text="Where is he heading?" className="sd-goals-h" />
+      <p className="sd-goals-lede">Four goals, in order: first university, then three things he wants to build.</p>
+      <GoalPath />
       <button type="button" className="sd-pill is-black" onClick={() => scrollTo('cx-contact')}>
         Ask him about it
       </button>
-      <Rise className="sd-gcards">
-        {cards.map((c, i) => (
-          <article key={c.t} className={`sd-g ${c.blue ? 'is-blue' : ''}`} style={{ '--i': i } as CSSProperties}>
-            {c.blue && <img src={photo('writing')} alt="" loading="lazy" />}
-            <small>{c.k}</small>
-            <h3>{c.t}</h3>
-            <p>{c.d}</p>
-          </article>
-        ))}
-      </Rise>
     </section>
   );
 }
@@ -606,42 +562,11 @@ function Contact() {
   );
 }
 
-/** A polished chrome heart, drawn in SVG. */
-function ChromeHeart() {
-  const d = 'M150 262 C 92 214, 22 168, 22 98 C 22 56, 54 26, 92 26 C 118 26, 138 40, 150 62 C 162 40, 182 26, 208 26 C 246 26, 278 56, 278 98 C 278 168, 208 214, 150 262 Z';
-  return (
-    <svg className="sd-heart" viewBox="0 0 300 280" aria-hidden="true">
-      <defs>
-        <radialGradient id="sd-h1" cx="0.38" cy="0.3" r="0.8">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="0.18" stopColor="#d9dcec" />
-          <stop offset="0.42" stopColor="#7e8399" />
-          <stop offset="0.62" stopColor="#c7cbe0" />
-          <stop offset="0.82" stopColor="#5b6077" />
-          <stop offset="1" stopColor="#9aa0bb" />
-        </radialGradient>
-        <linearGradient id="sd-h2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="rgba(255,255,255,0.0)" />
-          <stop offset="0.7" stopColor="rgba(40,80,255,0.0)" />
-          <stop offset="1" stopColor="rgba(60,100,255,0.55)" />
-        </linearGradient>
-        <filter id="sd-hb">
-          <feGaussianBlur stdDeviation="6" />
-        </filter>
-      </defs>
-      <path d={d} fill="url(#sd-h1)" />
-      <path d={d} fill="url(#sd-h2)" />
-      <ellipse cx="96" cy="78" rx="34" ry="16" fill="#fff" opacity="0.75" filter="url(#sd-hb)" transform="rotate(-30 96 78)" />
-      <ellipse cx="160" cy="190" rx="40" ry="10" fill="#fff" opacity="0.45" filter="url(#sd-hb)" transform="rotate(-38 160 190)" />
-      <path d={d} fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
 function Finale() {
   const top = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const site = [
     { l: 'About', id: 'cx-about' },
+    { l: 'Trading app', id: 'cx-finance' },
     { l: 'His work', id: 'sd-work' },
     { l: 'Goals', id: 'cx-goals' },
   ];
@@ -653,7 +578,6 @@ function Finale() {
           Fill in the form
         </button>
       </div>
-      <ChromeHeart />
       <footer className="sd-foot">
         <div>
           <h4>Links</h4>
@@ -689,21 +613,21 @@ function Finale() {
   );
 }
 
-/** The Oncure and trading app detail sheet, opened from anywhere with the 'sd-sheet' event. */
-function Sheet() {
-  const [id, setId] = useState<DetailId | null>(null);
+/** Hosts the inner pages: anything can open one with the 'sd-page' event. */
+function PageHost() {
+  const [id, setId] = useState<PageId | null>(null);
   useEffect(() => {
-    const open = (e: Event) => setId((e as CustomEvent<DetailId>).detail);
-    window.addEventListener('sd-sheet', open);
-    return () => window.removeEventListener('sd-sheet', open);
+    const open = (e: Event) => setId((e as CustomEvent<PageId>).detail);
+    window.addEventListener('sd-page', open);
+    return () => window.removeEventListener('sd-page', open);
   }, []);
-  return <DetailSheet id={id} origin={null} onClose={() => setId(null)} theme="classic" />;
+  return id ? <InnerPage id={id} onClose={() => setId(null)} /> : null;
 }
 
 export const StrideTop = () => (
   <>
-    <Sheet />
-    <Hero />
+    <PageHost />
+    <Trading />
     <Marquee />
     <About />
     <Craft />

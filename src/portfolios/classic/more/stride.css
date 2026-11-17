@@ -131,7 +131,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -612,7 +612,7 @@
   pointer-events: auto;
 }
 .sd-count {
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.08em;
 }
@@ -770,7 +770,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 .sd-tlist span {
-  font: 500 12px/24px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/24px 'Geist Variable', 'Geist', system-ui, sans-serif;
   color: #8fb0ff;
 }
 .sd-tlist p {
@@ -884,7 +884,7 @@ html.sd-locked body {
   border-radius: 24px;
 }
 .sd-g small {
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #7a7f90;
@@ -969,7 +969,7 @@ html.sd-locked body {
 }
 .sd-form .ct-topics legend {
   text-align: center;
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #7a7f90;
@@ -985,7 +985,7 @@ html.sd-locked body {
 }
 .sd-form label {
   gap: 4px;
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8a8fa0;
@@ -1094,7 +1094,7 @@ html.sd-locked body {
 }
 .sd-foot h4 {
   margin-bottom: 8px;
-  font: 500 12px/16px 'Geist Mono Variable', 'Geist Mono', monospace;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.6);

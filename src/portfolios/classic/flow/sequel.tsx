@@ -1,8 +1,8 @@
-import { useRef, useState, type CSSProperties } from 'react';
-import { ArrowsOut, ArrowClockwise, ArrowCounterClockwise, Info, Pause, Play, SpeakerHigh, SpeakerSlash, Sparkle } from '@phosphor-icons/react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { ArrowsOut, ArrowClockwise, ArrowCounterClockwise, Info, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react';
 import { oncure } from '@/content/portfolio';
 import { show, useFx, type Reg } from './fx';
-import { F, out, seg, smooth, within } from './timeline';
+import { F, seg, smooth } from './timeline';
 import './sequel.css';
 
 /**
@@ -49,6 +49,18 @@ export function Film({ reg }: { reg: Reg }) {
     if (inView.current && !wasIn && !userPaused.current) void v.play().catch(() => undefined);
     if (!inView.current && wasIn) v.pause();
   });
+
+  // The film is the last chapter, so it scrolls away with the page: pause it once it is off screen.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e?.isIntersecting) video.current?.pause();
+      else if (inView.current && !userPaused.current) void video.current?.play().catch(() => undefined);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const toggle = () => {
     const v = video.current;
@@ -119,117 +131,12 @@ export function Film({ reg }: { reg: Reg }) {
           onClick={() => {
             video.current?.pause();
             // The full proposal opens in the detail sheet.
-            window.dispatchEvent(new CustomEvent('sd-sheet', { detail: 'oncure' }));
+            window.dispatchEvent(new CustomEvent('sd-page', { detail: 'oncure' }));
           }}
         >
           <Info weight="bold" aria-hidden="true" /> Read the full proposal
         </button>
       </div>
-    </div>
-  );
-}
-
-// --- The trading app ---------------------------------------------------------------------------
-
-const ROWS = [
-  { t: 'NOVA', n: 'Nova Labs', stage: 'Holding', v: '+4.2%', up: true },
-  { t: 'ORBT', n: 'Orbit Foods', stage: 'Buying · 2 of 3', v: '+1.8%', up: true },
-  { t: 'LUMA', n: 'Luma Energy', stage: 'Sell window soon', v: '−0.9%', up: false },
-  { t: 'KITE', n: 'Kite Mobility', stage: 'Watching', v: '+0.6%', up: true },
-];
-
-export function Finance({ reg }: { reg: Reg }) {
-  const root = useRef<HTMLDivElement>(null);
-  useFx(reg, (t) => {
-    const el = root.current;
-    if (!el) return;
-    const o = smooth(seg(t, F.open[0], F.open[1]));
-    const k = within(t, 'finance');
-    const close = smooth(seg(t, F.mara[0], F.mara[0] + 0.035));
-    const on = o > 0 && close < 1;
-    show(el, on);
-    if (!on) return;
-    if (close > 0) {
-      // Closing down into the front card of the awards stack (same size and place).
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const w = Math.min(440, vw < 760 ? vw * 0.62 : vw * 0.3);
-      const h = (w * 11) / 16;
-      el.style.clipPath = `inset(${close * (vh * 0.46 - h / 2)}px ${(close * (vw - w)) / 2}px ${close * (vh * 0.54 - h / 2)}px round ${close * 8}px)`;
-      el.style.opacity = String(1 - seg(close, 0.7, 1));
-    } else {
-      // A small blue card at the centre opens to the whole screen.
-      el.style.clipPath = `inset(${(1 - o) * 38}% ${(1 - o) * 41}% round ${24 + (1 - o) * 10}px)`;
-      el.style.opacity = '1';
-    }
-    const c = out(seg(k, 0.05, 0.3));
-    el.style.setProperty('--c', c.toFixed(3));
-    const ph = out(seg(k, 0.15, 0.55));
-    el.style.setProperty('--ph', ph.toFixed(3));
-    const wd = out(seg(k, 0.4, 0.7));
-    el.style.setProperty('--wd', wd.toFixed(3));
-  });
-  return (
-    <div ref={root} className="ff">
-      <div className="ff-copy">
-        <span className="ff-badge">
-          <Sparkle weight="fill" aria-hidden="true" /> Personal project · in progress
-        </span>
-        <h2>
-          Trading advice,
-          <br />
-          right beside the chart
-        </h2>
-        <p>An AI model reads real-world data and suggests how much to buy, when to buy and an estimated time to sell, in plain words, for beginners and veterans alike.</p>
-        <div className="ff-btns">
-          <span className="ff-btn">Hypothetical · not financial advice</span>
-        </div>
-      </div>
-      <div className="ff-phone" aria-label="The app, with sample data">
-        <div className="ff-notch" />
-        <p className="ff-status">
-          <span>9:41</span>
-          <span>TradeMind</span>
-        </p>
-        <h3>Today</h3>
-        <p className="ff-sub">Sample portfolio · $12,480.36</p>
-        <ul>
-          {ROWS.map((r) => (
-            <li key={r.t}>
-              <span className="ff-ico">{r.t.slice(0, 1)}</span>
-              <span>
-                <b>{r.t}</b>
-                <small>{r.n} (sample)</small>
-              </span>
-              <span className="ff-right">
-                <small>{r.stage}</small>
-                <em className={r.up ? 'is-up' : 'is-down'}>{r.v}</em>
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p className="ff-ai">
-          <Sparkle weight="fill" aria-hidden="true" /> AI: hold NOVA, review LUMA this week
-        </p>
-      </div>
-      <div className="ff-widget is-left" aria-hidden="true">
-        <b>3</b>
-        <small>AI suggestions today</small>
-        <span className="ff-gauge">
-          {Array.from({ length: 24 }, (_, i) => (
-            <i key={i} style={{ '--i': i } as CSSProperties} />
-          ))}
-        </span>
-      </div>
-      <div className="ff-widget is-right" aria-hidden="true">
-        <p>
-          <b>NOVA</b> <small>Holding</small> <em>+4.2%</em>
-        </p>
-        <p>
-          <b>Pending orders</b> <small>2 waiting</small>
-        </p>
-      </div>
-      <p className="ff-note">Concept design · sample data · names and figures are made up</p>
     </div>
   );
 }

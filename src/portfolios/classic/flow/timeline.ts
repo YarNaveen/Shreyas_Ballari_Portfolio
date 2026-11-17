@@ -1,5 +1,5 @@
-/** The film now ends after the trading app: its scroll progress runs 0..END. */
-export const END = 0.7;
+/** The film now ends on the Oncure video (the trading app is a page section after it): its scroll progress runs 0..END. */
+export const END = 0.445;
 
 /** Where each chapter of the scroll film sits along its 0..1 progress. */
 export const F = {

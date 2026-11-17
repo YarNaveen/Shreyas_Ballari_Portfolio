@@ -2,6 +2,7 @@ import { StrideBottom, StrideTop } from './Stride';
 import '@/features/details/style';
 import './more.css';
 import './stride.css';
+import './pages.css';
 
 /**
  * After the scroll film: a hero, marquee, about and bento cards, a white grid section and the work
