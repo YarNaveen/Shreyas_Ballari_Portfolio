@@ -462,34 +462,6 @@ function Work() {
 
 /* ---------------------------------------------------------------- momentum + goals */
 
-/** A polished chrome chain link, drawn in SVG. */
-function ChromeLinks() {
-  return (
-    <svg className="sd-chrome" viewBox="0 0 200 320" aria-hidden="true">
-      <defs>
-        <linearGradient id="sd-cr" x1="0" y1="0" x2="1" y2="0.25">
-          <stop offset="0" stopColor="#5d6170" />
-          <stop offset="0.22" stopColor="#f4f6ff" />
-          <stop offset="0.4" stopColor="#8a8fa3" />
-          <stop offset="0.62" stopColor="#e9ecf7" />
-          <stop offset="0.8" stopColor="#6b7086" />
-          <stop offset="1" stopColor="#c9cde0" />
-        </linearGradient>
-        <linearGradient id="sd-cr2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#4c5062" />
-          <stop offset="0.35" stopColor="#dfe3f2" />
-          <stop offset="0.55" stopColor="#7d8296" />
-          <stop offset="0.8" stopColor="#f6f7ff" />
-          <stop offset="1" stopColor="#5c6175" />
-        </linearGradient>
-      </defs>
-      <rect x="52" y="10" width="96" height="170" rx="48" fill="none" stroke="url(#sd-cr2)" strokeWidth="26" transform="rotate(-18 100 95)" />
-      <rect x="52" y="140" width="96" height="170" rx="48" fill="none" stroke="url(#sd-cr)" strokeWidth="26" transform="rotate(10 100 225)" />
-      <rect x="58" y="146" width="84" height="158" rx="42" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="2" transform="rotate(10 100 225)" />
-    </svg>
-  );
-}
-
 /** His path so far: a glowing line with milestones that slides sideways as you scroll. */
 function Momentum() {
   const sec = useRef<HTMLElement>(null);
@@ -543,7 +515,6 @@ function Momentum() {
             </h2>
             <p className="sd-mo-lede">From the 2nd grade to Oncure and his trading app: every step so far, in order.</p>
           </div>
-          <ChromeLinks />
         </div>
         <div ref={seen} className="sd-jr">
           <span className="sd-jr-line" aria-hidden="true">
@@ -686,8 +657,8 @@ function PageHost() {
 export const StrideTop = () => (
   <>
     <PageHost />
-    <Marquee />
     <About />
+    <Marquee />
     <Craft />
     <Work />
   </>

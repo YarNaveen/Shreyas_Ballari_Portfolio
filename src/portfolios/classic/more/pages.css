@@ -1308,3 +1308,65 @@
     left: 23px;
   }
 }
+
+/* --- tighter rhythm between sections -------------------------------------------------------- */
+.sd-about {
+  padding-top: clamp(64px, 7vw, 96px);
+  padding-bottom: clamp(48px, 5vw, 64px);
+  gap: 32px;
+}
+.sd-marquee {
+  padding: 32px 0;
+}
+.sd-craft {
+  gap: 48px;
+  padding-top: clamp(56px, 6vw, 80px);
+  padding-bottom: clamp(56px, 6vw, 80px);
+}
+.sd-work {
+  padding-bottom: 8vh;
+}
+.sd-cards {
+  padding-top: 32svh;
+  gap: 8vh;
+}
+.sd-momentum {
+  height: 220svh;
+}
+.sd-mo-in {
+  justify-content: center;
+  gap: 48px;
+  padding: 10vh 0 8vh;
+}
+.sd-film {
+  gap: 32px;
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+.sd-hero-in {
+  padding-top: clamp(72px, 9vh, 104px);
+  padding-bottom: 64px;
+}
+.sd-goals {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+.sd-contact {
+  gap: 40px;
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+.sd-finale {
+  padding-top: clamp(64px, 7vw, 96px);
+}
+.sd-foot {
+  padding-top: 64px;
+}
+@media (max-width: 900px) {
+  .sd-momentum {
+    height: auto;
+  }
+  .sd-mo-in {
+    padding: 64px 0;
+  }
+}

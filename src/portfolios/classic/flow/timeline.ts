@@ -1,5 +1,5 @@
-/** The film ends as the sparkle fills the screen (Oncure and the trading app are page sections after it): its scroll progress runs 0..END. */
-export const END = 0.34;
+/** The film ends on the carousel, before the star (no star or sparkle animation) (Oncure and the trading app are page sections after it): its scroll progress runs 0..END. */
+export const END = 0.185;
 
 /** Where each chapter of the scroll film sits along its 0..1 progress. */
 export const F = {
