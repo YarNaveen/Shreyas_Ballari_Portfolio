@@ -165,6 +165,9 @@ function CameraRig() {
     const doc = gl.domElement.ownerDocument;
     const down = (e: PointerEvent) => {
       if (!spatial.get().tour) return;
+      // On touch screens a swipe walks from room to room (see SpatialPortfolio); turning is on
+      // the arrow pad. Dragging to look round is for the mouse (and hand mode).
+      if (e.pointerType === 'touch' && e.isTrusted) return;
       if (e.target instanceof Element && e.target.closest('button, a, input, [role="toolbar"], nav, .tour-card, .tour-mini, .cb, .sp-voiceask')) return;
       turn.current.drag = { x: e.clientX, y: e.clientY };
     };
@@ -178,6 +181,12 @@ function CameraRig() {
       turn.current.drag = { x: e.clientX, y: e.clientY };
     };
     const up = () => (turn.current.drag = null);
+    // The arrow pad's left / right: a smooth turn of about a third of a circle's quarter.
+    const look = (e: Event) => {
+      const by = (e as CustomEvent<number>).detail ?? 0;
+      turn.current.vyaw += by * 0.05;
+    };
+    window.addEventListener('sp-look', look);
     doc.addEventListener('pointerdown', down);
     doc.addEventListener('pointermove', move);
     doc.addEventListener('pointerup', up);
@@ -187,6 +196,7 @@ function CameraRig() {
       doc.removeEventListener('pointermove', move);
       doc.removeEventListener('pointerup', up);
       doc.removeEventListener('pointercancel', up);
+      window.removeEventListener('sp-look', look);
     };
   }, [gl]);
 

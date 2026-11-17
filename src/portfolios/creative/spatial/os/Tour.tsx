@@ -253,12 +253,28 @@ export function Tour() {
         </article>
       )}
 
+      {/* Move through the house: forward and back between rooms, turn left and right. */}
+      <div className="tour-pad" role="group" aria-label="Move through the house">
+        <button type="button" className="tour-pad-btn is-up" aria-label="Next room" data-voice="next room" disabled={last} onClick={() => spatial.tourStep(1, TOUR.length)}>
+          <ArrowUp weight="bold" />
+        </button>
+        <button type="button" className="tour-pad-btn is-left" aria-label="Turn left" data-voice="turn left" onClick={() => window.dispatchEvent(new CustomEvent('sp-look', { detail: 0.6 }))}>
+          <ArrowLeft weight="bold" />
+        </button>
+        <button type="button" className="tour-pad-btn is-right" aria-label="Turn right" data-voice="turn right" onClick={() => window.dispatchEvent(new CustomEvent('sp-look', { detail: -0.6 }))}>
+          <ArrowRight weight="bold" />
+        </button>
+        <button type="button" className="tour-pad-btn is-down" aria-label="Previous room" data-voice="previous room" disabled={at === 0} onClick={() => spatial.tourStep(-1, TOUR.length)}>
+          <ArrowDown weight="bold" />
+        </button>
+      </div>
+
       <div className="tour-progress" aria-hidden="true">
         <i style={{ transform: `scaleX(${Math.min(1, target / (TOUR.length - 1))})` }} />
       </div>
       {at === 0 && (
         <p className="tour-hint">
-          <span className="tour-mouse" aria-hidden="true" /> Scroll to walk room to room · drag to look around
+          <span className="tour-mouse" aria-hidden="true" /> Swipe or use the arrows to walk room to room
         </p>
       )}
     </div>

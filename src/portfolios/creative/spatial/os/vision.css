@@ -2381,3 +2381,120 @@ button.sp-capsule-room {
     display: none;
   }
 }
+
+
+/* =============================================================================================
+   Phones: everything scrolls with a finger, cards open with a tap anywhere, the dashboard reads
+   in a clear order, the chat fits the screen, and the house tour has an arrow pad.
+   ============================================================================================= */
+/* iPhone Safari only sends a tap on a plain area to the page when it looks clickable. */
+@media (pointer: coarse) {
+  .os-w,
+  .os-story,
+  [data-drag] {
+    cursor: pointer;
+  }
+}
+/* The arrow pad for the house tour. */
+.tour-pad {
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(3, 44px);
+  gap: 4px;
+  pointer-events: auto;
+}
+.tour-pad-btn {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  background: rgba(20, 22, 30, 0.72);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), background-color 200ms;
+}
+.tour-pad-btn:active {
+  transform: scale(0.94);
+}
+.tour-pad-btn:disabled {
+  opacity: 0.35;
+}
+.tour-pad-btn.is-up {
+  grid-area: 1 / 2;
+}
+.tour-pad-btn.is-left {
+  grid-area: 2 / 1;
+}
+.tour-pad-btn.is-right {
+  grid-area: 2 / 3;
+}
+.tour-pad-btn.is-down {
+  grid-area: 3 / 2;
+}
+@media (max-width: 760px) {
+  /* The scrolling app areas take the finger (they let taps pass to the room on large screens). */
+  .os-free,
+  .os-board {
+    pointer-events: auto;
+  }
+  /* Dashboard order: his profile, Oncure, the trading app, awards, activities, then the rest. */
+  .os-board .w-profile {
+    order: 1;
+  }
+  .os-board .w-oncure {
+    order: 2;
+  }
+  .os-board .w-finance {
+    order: 3;
+  }
+  .os-board .w-awards {
+    order: 4;
+  }
+  .os-board .w-music {
+    order: 5;
+  }
+  .os-board .w-chat {
+    order: 6;
+    min-height: 0;
+  }
+  .os-board .w-games {
+    order: 7;
+  }
+  /* The chat fits the screen: its column may shrink, the picture cards scroll sideways inside. */
+  .ch {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .ch-main,
+  .ch-list,
+  .ch-msg,
+  .ch-fan,
+  .ch-tools,
+  .ch-chips {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .ch-bubble {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  /* House tour: the room dots fit across the screen; the pad does the moving. */
+  .tour-rooms .tour-arrow {
+    display: none;
+  }
+  .tour-rooms ol {
+    flex: 1;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .tour-pad {
+    right: 12px;
+    bottom: 236px;
+    grid-template-columns: repeat(3, 42px);
+    grid-template-rows: repeat(3, 42px);
+  }
+}
