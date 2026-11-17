@@ -124,9 +124,11 @@
 }
 
 @media (max-width: 760px) {
+  /* Lifted so his face sits above the introduction card, never behind it. */
   .sh-person {
-    width: 135vw;
-    margin-left: -67.5vw;
+    width: 120vw;
+    margin-left: -60vw;
+    bottom: max(150px, 26svh);
   }
   .sh-card {
     top: auto;
