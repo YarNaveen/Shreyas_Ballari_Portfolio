@@ -1,6 +1,5 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { ArrowRight, ArrowsOut, ArrowClockwise, ArrowCounterClockwise, BookOpen, ChalkboardTeacher, ChartLineUp, ChatCircleText, Cpu, Info, Lightning, Pause, Play, SpeakerHigh, SpeakerSlash, Sparkle } from '@phosphor-icons/react';
-import { DetailSheet } from '@/features/details/Details';
+import { ArrowRight, ArrowsOut, ArrowClockwise, ArrowCounterClockwise, BookOpen, ChalkboardTeacher, ChatCircleText, Cpu, Info, Lightning, Pause, Play, SpeakerHigh, SpeakerSlash, Sparkle } from '@phosphor-icons/react';
 import { achievements, languages, oncure, profile, resumeExtra } from '@/content/portfolio';
 import { show, useFx, type Reg } from './fx';
 import { F, out, seg, smooth, within } from './timeline';
@@ -28,8 +27,6 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
 export function Film({ reg }: { reg: Reg }) {
   const root = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  /** The full Oncure details, opened out of the video frame. */
-  const [more, setMore] = useState<DOMRect | null>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [time, setTime] = useState(0);
@@ -123,13 +120,13 @@ export function Film({ reg }: { reg: Reg }) {
           data-voice="view more oncure"
           onClick={() => {
             video.current?.pause();
-            setMore(video.current?.getBoundingClientRect() ?? null);
+            // The full proposal is a section further down the page.
+            document.getElementById('cx-oncure')?.scrollIntoView({ behavior: 'smooth' });
           }}
         >
-          <Info weight="bold" aria-hidden="true" /> View more
+          <Info weight="bold" aria-hidden="true" /> Read the full proposal
         </button>
       </div>
-      <DetailSheet id={more ? 'oncure' : null} origin={more} onClose={() => setMore(null)} theme="classic" />
     </div>
   );
 }
@@ -145,8 +142,6 @@ const ROWS = [
 
 export function Finance({ reg }: { reg: Reg }) {
   const root = useRef<HTMLDivElement>(null);
-  /** The full trading app details, opened out of the phone. */
-  const [more, setMore] = useState<DOMRect | null>(null);
   useFx(reg, (t) => {
     const el = root.current;
     if (!el) return;
@@ -189,14 +184,6 @@ export function Finance({ reg }: { reg: Reg }) {
         </h2>
         <p>An AI model reads real-world data and suggests how much to buy, when to buy and an estimated time to sell, in plain words, for beginners and veterans alike.</p>
         <div className="ff-btns">
-          <button
-            type="button"
-            className="ff-btn is-blue"
-            data-voice="view more trading app"
-            onClick={(e) => setMore((e.currentTarget.closest('.ff')?.querySelector('.ff-phone') ?? e.currentTarget).getBoundingClientRect())}
-          >
-            <ChartLineUp weight="bold" aria-hidden="true" /> View more
-          </button>
           <span className="ff-btn">Hypothetical · not financial advice</span>
         </div>
       </div>
@@ -245,7 +232,6 @@ export function Finance({ reg }: { reg: Reg }) {
         </p>
       </div>
       <p className="ff-note">Concept design · sample data · names and figures are made up</p>
-      <DetailSheet id={more ? 'finance' : null} origin={more} onClose={() => setMore(null)} theme="classic" />
     </div>
   );
 }

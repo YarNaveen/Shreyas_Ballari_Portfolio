@@ -1,13 +1,16 @@
-import { Fragment, useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import { ArrowUpRight, ChalkboardTeacher, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
 import { achievements, goals, profile, researchInterests, resume, schools, subjects } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
 import '@/features/details/style';
 import { Activities, Certificates, Scores } from '@/features/visuals/Visuals';
+import { OncureFull, TradingFull } from './Projects';
+import { Sec, useSeen, Words } from './ui';
 import './more.css';
+import './projects.css';
 
 /**
- * After the scroll film, the rest of his story in one cinematic, dark style (black with violet and
+ * After the scroll film: Oncure and the trading app in full (see Projects.tsx), then the rest of his story in one cinematic, dark style (black with violet and
  * blue light): two-tone headlines that light up word by word, a large school card, number cards
  * for his scores, an editorial list for tutoring, step cards for his goals and a blue finale with
  * the contact form. Every fact comes from content/portfolio.ts. The menu bar's links reach the
@@ -15,65 +18,6 @@ import './more.css';
  */
 
 const BASE = import.meta.env.BASE_URL;
-
-/** Marks an element `is-in` the first time it is seen (the CSS plays its entrance). */
-function useSeen<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      el.classList.add('is-in');
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e?.isIntersecting) {
-          el.classList.add('is-in');
-          io.disconnect();
-        }
-      },
-      { threshold: 0.12 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return ref;
-}
-
-/** A two-tone headline whose words light up one after another. */
-function Words({ lead, rest, id }: { lead: string; rest: string; id: string }) {
-  const ref = useSeen<HTMLHeadingElement>();
-  const words = [...lead.split(' ').map((w) => ({ w, dim: false })), ...rest.split(' ').map((w) => ({ w, dim: true }))];
-  return (
-    <h2 ref={ref} id={id} className="cx-h">
-      {words.map((x, i) => (
-        <Fragment key={i}>
-          <span className={`cx-w ${x.dim ? 'is-dim' : ''}`} style={{ '--i': i } as CSSProperties}>
-            {x.w}
-          </span>{' '}
-        </Fragment>
-      ))}
-    </h2>
-  );
-}
-
-function Sec({ id, kicker, lead, rest, lede, tone = 'night', children }: { id: string; kicker: string; lead: string; rest: string; lede?: string; tone?: string; children: ReactNode }) {
-  const ref = useSeen<HTMLElement>();
-  return (
-    <section ref={ref} id={`cx-${id}`} className={`cx is-${tone}`} aria-labelledby={`cx-${id}-h`}>
-      <span className="cx-glow" aria-hidden="true" />
-      <div className="cx-in">
-        <header className="cx-head">
-          <p className="cx-kicker">{kicker}</p>
-          <Words lead={lead} rest={rest} id={`cx-${id}-h`} />
-          {lede && <p className="cx-lede">{lede}</p>}
-        </header>
-        {children}
-      </div>
-    </section>
-  );
-}
 
 /** Big words that drift sideways across the section. */
 function Drift({ items }: { items: string[] }) {
@@ -209,6 +153,9 @@ function Finale() {
 export function ClassicMore() {
   return (
     <div className="cx-wrap">
+      <OncureFull />
+      <TradingFull />
+
       <Sec id="about" kicker="Education" lead={`Where ${profile.firstName}`} rest="learns." lede={`A ${profile.grade.toLowerCase()} at ${profile.school}, taking all Honors and AP courses.`}>
         <Learn />
       </Sec>

@@ -76,6 +76,13 @@ export const stockApp = {
     { title: 'Everything a trading site needs', line: 'Current stocks, holdings, buying and selling, and a progress graph for each stock.' },
   ],
   forWhom: 'Beginners who want guidance without jargon, and veterans who want a faster way to decide.',
+  /** Why it is different, in plain words. */
+  approach: [
+    'No candlesticks or equations to learn: an AI model does that work for you.',
+    'Algorithms and real-world data suggest the best hypothetical choice for each stock.',
+    'A time frame for when to buy and an estimate of when to sell, based on real-world factors.',
+    'Useful advice along the way, for anyone who wants to learn.',
+  ],
 };
 
 export interface Achievement {
@@ -404,6 +411,26 @@ export const oncure = {
     { title: 'Preclinical testing', line: 'Safety and effectiveness in the lab.' },
     { title: 'Clinical development', line: 'Regulatory review and trials, if the evidence supports it.' },
   ],
+  /** What each nanobot would carry, as first proposed (see the considerations below). */
+  parts: ['A power system', 'A scanner', 'A light', 'Synthetic antibodies', 'A tiny Wi-Fi microcontroller (ESP8266 was proposed)'],
+  /** The story behind Oncure, in his words (statistics as the considerations below put them). */
+  story: [
+    'Cancer is a ravenous disease. There are many treatment options today, but they all come with a catch. Around the world about 20 million people are diagnosed with cancer every year and nearly 10 million die from it (WHO, IARC / GLOBOCAN). Treatment can take years and is very expensive: a standard chemotherapy regimen for late-stage lung cancer can span six to eight months and cost over $100,000 out of pocket, even with health insurance (American Cancer Society). Along the way patients suffer serious side effects, such as immunosuppression and heavy organ strain (National Cancer Institute).',
+    'The impact reaches beyond the body. About 15–25% of people with cancer develop clinical depression, and families and caregivers often show similar or even greater distress (NIH / PubMed). Many of the families affected are low or middle income (World Bank), so a $100,000 bill is a huge blow to their financial security (KFF). The mortality, the cost and the psychological toll are too much for families to carry.',
+    'This is where Oncure comes in: a treatment designed to take as little time and money as possible. It works in two parts, the nanobots and the AI agent. Many nanobots are sent through the bloodstream in a drug-like injection. They scan the body and relay what they find to the AI, whose detection system identifies cancer, early or late stage. A human verifies the cancer, so that no unnecessary cell death takes place. Each nanobot then attaches to the nearest cancer cell and releases its synthetic antibodies, which bind to death receptors such as Fas (CD95) or DR5 (UC Davis Health) and trigger a chain reaction of apoptosis in the cancer cells (Journal of Cellular and Molecular Medicine).',
+    'Oncure is an ambitious and optimistic outlook on what could be, and it comes with many limitations. The technology does not exist yet, though it has grounds to. Robots keep getting smaller, and that progress suggests that, with extensive research, something like Oncure could one day be built. Many steps lie ahead: a power source the nanobots can use, an AI agent trained never to miss cancer cells, and a simpler way to scan. All of it needs funding, time, effort and a dedicated team.',
+  ],
+  /** Points the proposal must refine before it goes to researchers or investors. */
+  considerations: [
+    { title: 'Universal cancer cure', line: 'Different cancers have distinct biology. A single treatment effective against every cancer type has not been demonstrated.' },
+    { title: 'Treatment within hours', line: 'There is no evidence yet that nanobots could eliminate cancer within hours.' },
+    { title: 'ESP8266 microcontroller', line: 'The ESP8266 is not a nanoscale part and could not fit inside bloodstream nanobots.' },
+    { title: 'Reaching every tumour', line: 'Injected nanobots would not automatically travel through the nervous system or reach all tumours.' },
+    { title: 'Apoptosis mechanism', line: 'Fas and DR5 are real cell-death targets, but triggering them safely and selectively remains hard.' },
+    { title: 'Reading the statistics', line: 'About 20 million cases and 10 million deaths a year are population estimates, not proof that half of treated patients die. Costs and income figures need stronger sources.' },
+  ],
+  assessment:
+    'Oncure presents an ambitious long-term research vision combining AI, nanotechnology and targeted cancer therapy. Its strongest opportunity is precision oncology, but major scientific breakthroughs and clinical validation would be needed before it could become a practical treatment. It is best positioned first as an AI-assisted targeted drug-delivery research platform, not as a universal cure.',
   values: [
     { title: 'Precision', line: 'Target cancer cells, spare healthy tissue.' },
     { title: 'Speed', line: 'Research ways to shorten treatment.' },
