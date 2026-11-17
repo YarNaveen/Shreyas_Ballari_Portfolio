@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { Reach } from '@/features/details/Reach';
 import { Books, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, House, Rocket, SpeakerHigh, Sparkle, Trophy } from '@phosphor-icons/react';
 import { achievements, courses, goals, languages, profile, researchInterests, resume, subjects } from '@/content/portfolio';
 import { speak } from '../story/narrator';
@@ -52,6 +53,7 @@ export function ProfileWindow() {
               <span>
                 {profile.grade} · {profile.school}
               </span>
+              <Reach tone="dark" compact className="os-reach" />
             </figcaption>
             <span className="os-hero-sheen" aria-hidden="true" />
           </figure>

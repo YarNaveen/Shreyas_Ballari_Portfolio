@@ -1,0 +1,157 @@
+/* Resume and contact pills, shared by the three portfolios. */
+.rc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.rc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 8px 14px;
+  border: 1px solid var(--rc-line);
+  border-radius: 999px;
+  background: var(--rc-bg);
+  color: var(--rc-ink);
+  font: 500 14px/20px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 300ms cubic-bezier(0.22, 1, 0.36, 1), color 300ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rc-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rc-btn svg {
+  flex: none;
+  font-size: 16px;
+}
+.rc-btn:hover {
+  transform: translateY(-2px);
+  background: var(--rc-hover);
+}
+.rc-btn:active {
+  transform: scale(0.98);
+}
+.rc-btn:focus-visible {
+  outline: 2px solid #8fb0ff;
+  outline-offset: 2px;
+}
+.rc-btn.is-main {
+  border-color: transparent;
+  background: var(--rc-main);
+  color: var(--rc-main-ink);
+}
+.rc.is-dark {
+  --rc-line: rgba(255, 255, 255, 0.22);
+  --rc-bg: rgba(255, 255, 255, 0.06);
+  --rc-ink: #fff;
+  --rc-hover: rgba(255, 255, 255, 0.16);
+  --rc-main: #fff;
+  --rc-main-ink: #0b0b10;
+}
+.rc.is-light {
+  --rc-line: rgba(11, 11, 16, 0.16);
+  --rc-bg: rgba(255, 255, 255, 0.7);
+  --rc-ink: #0b0b10;
+  --rc-hover: rgba(11, 11, 16, 0.08);
+  --rc-main: #0b0b10;
+  --rc-main-ink: #fff;
+}
+.rc.is-compact .rc-btn {
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 16px;
+  gap: 6px;
+}
+.rc.is-compact .rc-btn svg {
+  font-size: 14px;
+}
+/* Takes its colours from the text around it (glass cards in light or dark mode). */
+.rc.is-auto {
+  --rc-line: color-mix(in srgb, currentColor 28%, transparent);
+  --rc-bg: color-mix(in srgb, currentColor 8%, transparent);
+  --rc-ink: currentColor;
+  --rc-hover: color-mix(in srgb, currentColor 16%, transparent);
+  --rc-main: #1f4dff;
+  --rc-main-ink: #fff;
+}
+
+/* Inside the contact panel. */
+.ct-reach {
+  display: grid;
+  gap: 12px;
+}
+.sd-form .ct-reach {
+  justify-items: center;
+}
+.sd-form .ct-reach .dt-kicker {
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a7f90;
+}
+.sd-form .ct-reach .rc {
+  justify-content: center;
+}
+
+/* Placement in each portfolio. */
+.fo-reach {
+  margin-top: 12px;
+}
+.fo-cta .fo-reach {
+  justify-content: center;
+}
+.w-reach {
+  margin-top: 8px;
+}
+.os-reach {
+  margin-top: 10px;
+  pointer-events: auto;
+}
+.dk-reach {
+  padding: 12px 8px 4px;
+}
+.fo-top {
+  gap: 12px;
+}
+.fo-top-reach {
+  margin-left: auto;
+  flex-wrap: nowrap;
+}
+.fo-top-reach .rc-btn {
+  backdrop-filter: blur(10px);
+}
+@media (max-width: 900px) {
+  .fo-top-reach .rc-btn:not(.is-main) span {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .fo-top {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .fo-top-reach {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+  .fo-top-reach .rc-btn:not(.is-main) {
+    padding: 8px;
+  }
+}
+/* Hosts style their own spans (captions, labels); the pill text always follows the pill. */
+.rc .rc-btn span {
+  margin: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  opacity: 1 !important;
+}

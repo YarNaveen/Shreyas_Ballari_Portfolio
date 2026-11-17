@@ -1,4 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Reach } from '@/features/details/Reach';
 
 import { ArrowUpRight, EnvelopeSimple, Flask, Phone } from '@phosphor-icons/react';
 import '@fontsource-variable/geist';
@@ -107,6 +108,7 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
               Say hello
             </button>
           </div>
+          <Reach tone="light" compact className="fo-reach" tabIndex={tab} />
         </div>
         <img className="fo-hero-img" src={PORTRAIT} alt={live ? `${profile.name}, in a dark suit and blue tie` : ''} draggable={false} />
       </section>
@@ -199,6 +201,7 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
           <button type="button" className="fo-btn is-dark" tabIndex={tab} data-voice="contact form" onClick={(e) => onMore?.('contact', e.currentTarget.closest('.fo-cta') as HTMLElement)}>
             Contact form <ArrowUpRight weight="bold" aria-hidden="true" />
           </button>
+          <Reach tone="dark" compact className="fo-reach" tabIndex={tab} />
         </div>
       </section>
     </div>
@@ -422,6 +425,7 @@ export function StudioPortfolio() {
     <div className={`fo is-${mode.toLowerCase()} ${size.phone ? 'is-phone' : ''}`} style={vars}>
       <header className="fo-top">
         <span className="fo-logo fo-display">{profile.name}</span>
+        <Reach tone="light" compact className="fo-top-reach" />
         <div className="fo-modes" role="radiogroup" aria-label="Background">
           {MODES.map((m) => (
             <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? 'is-on' : ''} onClick={() => setMode(m)}>

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { ArrowUpRight, Atom, EnvelopeSimple, Phone, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
+import { ArrowUpRight, Atom, DownloadSimple, EnvelopeSimple, FileText, Phone, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
 import { achievements, activities, contact, courses, journey, languages, profile, researchInterests, schools, stockApp, subjects } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
 import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
@@ -648,6 +648,12 @@ function Finale() {
           </a>
           <a href={`tel:${contact.phone.replace(/[^0-9+]/g, '')}`}>
             <Phone weight="bold" aria-hidden="true" /> {contact.phone}
+          </a>
+          <a href={contact.resume} target="_blank" rel="noopener">
+            <FileText weight="bold" aria-hidden="true" /> View resume
+          </a>
+          <a href={contact.resume} download="Shreyas_Ballari_Resume.pdf">
+            <DownloadSimple weight="bold" aria-hidden="true" /> Download resume
           </a>
           <button type="button" onClick={() => scrollTo('cx-contact')}>
             Or use the contact form

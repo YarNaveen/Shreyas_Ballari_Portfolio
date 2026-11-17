@@ -36,10 +36,12 @@ export const profile = {
   socials: [] as { label: string; url: string }[],
 };
 
-/** Public contact details, shown in the Classic footer (approved by the family on 2026-11-17). */
+/** Public contact details, shown in the Classic footer (approved by the family on 2026-11-17), shown in every portfolio. */
 export const contact = {
   email: 'shreyasballari2010@gmail.com',
   phone: '415-581-5887',
+  /** The public copy of his resume (without the home-address line). */
+  resume: `${import.meta.env.BASE_URL}assets/Shreyas_Ballari_Resume_public.pdf`,
 };
 
 /** Subjects he is most drawn to. */

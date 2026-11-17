@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { ChalkboardTeacher, ChartLineUp, CheckCircle, Dna, PaperPlaneTilt, Sparkle } from '@phosphor-icons/react';
 import { profile } from '@/content/portfolio';
 import { env } from '@/lib/env';
+import { Reach } from './Reach';
 
 /**
  * The contact panel: his photo, what to write about (tap a topic) and a short form. Used inside the
@@ -20,7 +21,7 @@ const TOPICS = [
   { id: 'Something else', icon: Sparkle },
 ];
 
-export function ContactPanel() {
+export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'light' | 'auto' }) {
   const [topic, setTopic] = useState('Oncure');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'offline' | 'failed'>('idle');
@@ -58,9 +59,14 @@ export function ContactPanel() {
         <div>
           <p className="dt-kicker">Contact</p>
           <h2 className="dt-title">Say hello to {profile.firstName}</h2>
-          <p className="dt-lede">Questions about his research, his app or tutoring are welcome. Messages are read by his family first.</p>
+          <p className="dt-lede">Questions about his research, his app or tutoring are welcome. Email, call, or write below.</p>
         </div>
       </header>
+
+      <div className="ct-reach">
+        <p className="dt-kicker">Resume and direct contact</p>
+        <Reach tone={reachTone} />
+      </div>
 
       {state === 'sent' ? (
         <p className="ct-done" role="status">

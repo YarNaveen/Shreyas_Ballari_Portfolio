@@ -49,4 +49,4 @@ export const within = (t: number, c: Chapter) => seg(t, F[c][0], F[c][1]);
 export const envelope = (k: number, edge = 0.14) => Math.min(seg(k, 0, edge), 1 - seg(k, 1 - edge, 1));
 
 /** Resume (the updated file in public/assets). */
-export const RESUME = `${import.meta.env.BASE_URL}assets/Shreyas_Ballari_Resume_public.pdf`;
+export { RESUME } from '@/features/details/Reach';

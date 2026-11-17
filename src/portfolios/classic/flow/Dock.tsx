@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Check, Cube, DownloadSimple, EnvelopeSimple, LinkSimple, List, X } from '@phosphor-icons/react';
+import { ArrowUpRight, Check, Cube, DownloadSimple, EnvelopeSimple, FileText, LinkSimple, List, X } from '@phosphor-icons/react';
+import { Reach } from '@/features/details/Reach';
 import { RESUME } from './timeline';
 
 /**
@@ -124,9 +125,14 @@ export function Dock({ go, active }: { go: (id: string) => void; active: string 
             <EnvelopeSimple weight="bold" aria-hidden="true" /> Contact
           </button>
           {hasResume && (
-            <a className="dk-btn" href={RESUME} download="Shreyas_Ballari_Resume.pdf">
-              <DownloadSimple weight="bold" aria-hidden="true" /> Resume
-            </a>
+            <>
+              <a className="dk-btn is-ghost" href={RESUME} target="_blank" rel="noopener">
+                <FileText weight="bold" aria-hidden="true" /> View resume
+              </a>
+              <a className="dk-btn" href={RESUME} download="Shreyas_Ballari_Resume.pdf">
+                <DownloadSimple weight="bold" aria-hidden="true" /> Download
+              </a>
+            </>
           )}
         </div>
 
@@ -145,6 +151,7 @@ export function Dock({ go, active }: { go: (id: string) => void; active: string 
         <button type="button" onClick={() => jump('contact')}>
           Contact <ArrowUpRight weight="bold" aria-hidden="true" />
         </button>
+        <Reach tone="dark" className="dk-reach" />
       </div>
     </nav>
   );
