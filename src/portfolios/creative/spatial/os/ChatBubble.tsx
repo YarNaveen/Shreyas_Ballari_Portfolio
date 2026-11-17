@@ -116,6 +116,9 @@ export function ChatBubble() {
       <button type="button" className="cb-fab" aria-label={open ? 'Close the AI chat' : 'Ask the AI about Shreyas'} aria-expanded={open} data-voice="ask ai" onClick={() => spatial.set({ bubble: !open })}>
         <span className="cb-orb" aria-hidden="true" />
         {open ? <X weight="bold" /> : <Sparkle weight="fill" />}
+        <span className="sp-cap" aria-hidden="true">
+          {open ? 'Close' : 'Ask AI'}
+        </span>
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
-import { CaretLeft, CaretRight, HandWaving, MapTrifold, Microphone, MicrophoneSlash, SlidersHorizontal, SpeakerHigh, SpeakerSlash, SquaresFour, VirtualReality } from '@phosphor-icons/react';
+import { CaretDown, CaretLeft, CaretRight, HandWaving, MapTrifold, Microphone, MicrophoneSlash, SlidersHorizontal, SpeakerHigh, SpeakerSlash, SquaresFour, VirtualReality } from '@phosphor-icons/react';
 import { useVoice } from '@/features/voice/useVoice';
 import { CHAPTERS } from '../story/chapters';
 import { playUi, spatial, useSpatial } from '../store';
@@ -230,13 +230,17 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
         <button type="button" className="sp-icon-btn" aria-label="Previous app" data-voice="previous" onClick={() => spatial.prev()} disabled={chapter === 0}>
           <CaretLeft weight="bold" />
         </button>
-        <span className="sp-capsule-room" aria-live="polite">
+        {/* The app's name: tap it to see every app. */}
+        <button type="button" className="sp-capsule-room" aria-live="polite" aria-label={`${c.title}: show all apps`} data-voice="all apps" onClick={() => spatial.set({ homeView: !homeView, control: false })}>
           <I weight="duotone" aria-hidden="true" />
           <span>
-            <b>{c.title}</b>
+            <b>
+              {c.title}
+              <CaretDown className="sp-capsule-caret" weight="bold" aria-hidden="true" />
+            </b>
             <small>{c.line}</small>
           </span>
-        </span>
+        </button>
         <button type="button" className="sp-icon-btn" aria-label="Next app" data-voice="next" onClick={() => spatial.next()} disabled={chapter === CHAPTERS.length - 1}>
           <CaretRight weight="bold" />
         </button>
@@ -283,6 +287,9 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
         <span className="sp-tourbtn-text" key={apps ? 'a' : 't'}>
           <b>{apps ? 'Vision apps' : 'House tour'}</b>
           <small>{apps ? 'Bring the apps back' : 'Walk through his home'}</small>
+        </span>
+        <span className="sp-cap" aria-hidden="true">
+          {apps ? 'Apps' : 'Tour'}
         </span>
       </button>
 

@@ -2313,3 +2313,71 @@
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
 }
+
+/* Touch screens: a finger on a card scrolls the page (cards are only dragged with a mouse or in
+   hand mode; a finger just taps them), so scrolling works wherever the finger starts. */
+.os-w,
+.os-story {
+  touch-action: pan-y;
+}
+@media (pointer: coarse), (max-width: 760px) {
+  .os-win-bar,
+  .sp-window-bar {
+    touch-action: pan-y;
+  }
+}
+
+/* --- Easy to understand on phones ------------------------------------------------------------
+   The app name at the top opens every app (a small arrow says so); the round buttons at the
+   bottom carry a word under them (Tour, Ask AI); the Control Center is solid, not see-through. */
+button.sp-capsule-room {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.sp-capsule-room b {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sp-capsule-caret {
+  font-size: 12px;
+  opacity: 0.75;
+}
+.sp-cap {
+  display: none;
+}
+@media (max-width: 760px) {
+  .sp-tourbtn,
+  .cb-fab {
+    overflow: visible;
+  }
+  .sp-cap {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 4px);
+    display: block;
+    translate: -50% 0;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(12, 14, 20, 0.72);
+    color: #fff;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .sp .os-cc {
+    background: rgba(20, 22, 30, 0.96);
+  }
+  .sp .os-homeview {
+    background-color: rgba(10, 12, 18, 0.88);
+  }
+  .w-tag {
+    display: none;
+  }
+}
