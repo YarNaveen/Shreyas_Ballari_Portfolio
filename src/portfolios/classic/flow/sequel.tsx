@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowsOut, ArrowClockwise, ArrowCounterClockwise, Info, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react';
 import { oncure } from '@/content/portfolio';
-import { show, useFx, type Reg } from './fx';
-import { F, seg, smooth } from './timeline';
 import './sequel.css';
 
 /**
@@ -22,7 +20,8 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
 
 // --- Film -------------------------------------------------------------------------------------
 
-export function Film({ reg }: { reg: Reg }) {
+/** His Oncure video with its own controls; plays (muted) while mostly on screen. */
+export function Film() {
   const root = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -30,34 +29,20 @@ export function Film({ reg }: { reg: Reg }) {
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(0);
   const userPaused = useRef(false);
-  const inView = useRef(false);
 
-  useFx(reg, (t) => {
-    const el = root.current;
-    const v = video.current;
-    if (!el || !v) return;
-    const appear = seg(t, F.fill[1] - 0.012, F.fill[1] + 0.004);
-    const leave = smooth(seg(t, F.video[1] - 0.03, F.video[1]));
-    const on = appear > 0 && leave < 1;
-    show(el, on);
-    el.style.opacity = String(appear);
-    // Leaving: tip back and rise away.
-    el.style.transform = `perspective(1400px) translateY(${-leave * 105}vh) rotateX(${leave * 28}deg) scale(${1 - leave * 0.25})`;
-    el.style.borderRadius = `${leave * 40}px`;
-    const wasIn = inView.current;
-    inView.current = on && appear >= 1 && leave < 0.6;
-    if (inView.current && !wasIn && !userPaused.current) void v.play().catch(() => undefined);
-    if (!inView.current && wasIn) v.pause();
-  });
-
-  // The film is the last chapter, so it scrolls away with the page: pause it once it is off screen.
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e?.isIntersecting) video.current?.pause();
-      else if (inView.current && !userPaused.current) void video.current?.play().catch(() => undefined);
-    });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        const v = video.current;
+        if (!v) return;
+        if (e && e.intersectionRatio >= 0.5) {
+          if (!userPaused.current) void v.play().catch(() => undefined);
+        } else v.pause();
+      },
+      { threshold: [0, 0.5] },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -78,7 +63,7 @@ export function Film({ reg }: { reg: Reg }) {
     if (v) v.currentTime = Math.max(0, Math.min(v.duration || 0, v.currentTime + d));
   };
   return (
-    <div ref={root} className="fv">
+    <div ref={root} className="fv is-free">
       <video
         ref={video}
         src={oncure.video}

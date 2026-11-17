@@ -1,8 +1,9 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { ArrowUpRight, Atom, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
-import { achievements, activities, courses, languages, profile, researchInterests, schools, stockApp, subjects } from '@/content/portfolio';
+import { ArrowUpRight, Atom, EnvelopeSimple, Phone, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
+import { achievements, activities, contact, courses, journey, languages, profile, researchInterests, schools, stockApp, subjects } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
 import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
+import { Film } from '../flow/sequel';
 import { useSeen } from './ui';
 
 /**
@@ -489,46 +490,93 @@ function ChromeLinks() {
   );
 }
 
+/** His path so far: a glowing line with milestones that slides sideways as you scroll. */
 function Momentum() {
   const sec = useRef<HTMLElement>(null);
-  const line = useRef<HTMLParagraphElement>(null);
+  const track = useRef<HTMLOListElement>(null);
+  const seen = useSeen<HTMLDivElement>();
   useEffect(() => {
     const s = sec.current;
-    const l = line.current;
-    if (!s || !l || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const tr = track.current;
+    if (!s || !tr) return;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0;
     const update = () => {
       raf = 0;
+      const wide = window.innerWidth > 900;
       const r = s.getBoundingClientRect();
       const vh = window.innerHeight;
       if (r.bottom < 0 || r.top > vh) return;
-      const t = Math.min(1, Math.max(0, (vh - r.top) / (r.height + vh)));
-      l.style.transform = `translate3d(${(40 - t * 110).toFixed(2)}%,0,0)`;
+      const t = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
       s.style.setProperty('--m', t.toFixed(3));
+      if (!wide || still) {
+        tr.style.transform = '';
+        return;
+      }
+      const max = Math.max(0, tr.scrollWidth - window.innerWidth);
+      tr.style.transform = `translate3d(${(-max * t).toFixed(1)}px,0,0)`;
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, []);
   return (
-    <section ref={sec} className="sd-momentum" aria-labelledby="sd-mo-h">
-      <span className="sd-band" aria-hidden="true" />
+    <section ref={sec} id="cx-journey" className="sd-momentum" aria-labelledby="sd-mo-h">
       <div className="sd-mo-in">
-        <h2 id="sd-mo-h" className="sd-mo-h">
-          <span>Ideas with</span>
-          <span className="is-soft">momentum</span>
-        </h2>
-        <ChromeLinks />
+        <span className="sd-band" aria-hidden="true" />
+        <div className="sd-mo-head">
+          <div>
+            <p className="sd-label is-light">
+              <i aria-hidden="true" /> His journey
+            </p>
+            <h2 id="sd-mo-h" className="sd-mo-h">
+              <span>Ideas with</span>
+              <span className="is-soft">momentum</span>
+            </h2>
+            <p className="sd-mo-lede">From the 2nd grade to Oncure and his trading app: every step so far, in order.</p>
+          </div>
+          <ChromeLinks />
+        </div>
+        <div ref={seen} className="sd-jr">
+          <span className="sd-jr-line" aria-hidden="true">
+            <i />
+          </span>
+          <ol ref={track} className="sd-jr-track">
+            {journey.map((j, i) => (
+              <li key={j.when + j.title} style={{ '--i': i } as CSSProperties}>
+                <span className="sd-jr-dot" aria-hidden="true" />
+                <small>{j.when}</small>
+                <h3>{j.title}</h3>
+                <p>{j.line}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
-      <p ref={line} className="sd-mo-line" aria-hidden="true">
-        from a classroom to a research lab
-      </p>
+    </section>
+  );
+}
+
+/** His Oncure video, framed, with its controls. */
+function OncureFilm() {
+  return (
+    <section id="cx-oncure" className="sd-film" aria-labelledby="sd-film-h">
+      <div className="sd-film-head">
+        <p className="sd-label is-light">
+          <i aria-hidden="true" /> Research concept
+        </p>
+        <Blur id="sd-film-h" text="The technology that could make cancer treatment precise." dimFrom={3} />
+        <p className="sd-film-lede">Oncure: AI, nanobots and targeted antibodies, in his own short film. A conceptual research proposal, not an existing or clinically validated treatment.</p>
+      </div>
+      <Film />
     </section>
   );
 }
@@ -595,10 +643,15 @@ function Finale() {
         </div>
         <div className="sd-foot-c">
           <h4>Contact</h4>
+          <a href={`mailto:${contact.email}`}>
+            <EnvelopeSimple weight="bold" aria-hidden="true" /> {contact.email}
+          </a>
+          <a href={`tel:${contact.phone.replace(/[^0-9+]/g, '')}`}>
+            <Phone weight="bold" aria-hidden="true" /> {contact.phone}
+          </a>
           <button type="button" onClick={() => scrollTo('cx-contact')}>
-            Use the contact form
+            Or use the contact form
           </button>
-          <span>Messages are read by his family first.</span>
         </div>
         <div>
           <h4>School</h4>
@@ -627,7 +680,6 @@ function PageHost() {
 export const StrideTop = () => (
   <>
     <PageHost />
-    <Trading />
     <Marquee />
     <About />
     <Craft />
@@ -638,6 +690,8 @@ export const StrideTop = () => (
 export const StrideBottom = () => (
   <>
     <Momentum />
+    <OncureFilm />
+    <Trading />
     <Goals />
     <Contact />
     <Finale />

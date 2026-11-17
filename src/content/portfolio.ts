@@ -36,6 +36,12 @@ export const profile = {
   socials: [] as { label: string; url: string }[],
 };
 
+/** Public contact details, shown in the Classic footer (approved by the family on 2026-11-17). */
+export const contact = {
+  email: 'shreyasballari2010@gmail.com',
+  phone: '415-581-5887',
+};
+
 /** Subjects he is most drawn to. */
 export const subjects = ['Computer Science', 'Artificial Intelligence', 'Business and FinTech'];
 
@@ -124,6 +130,21 @@ export const activities = [
   { title: 'Guitar', role: 'Since 2021 · Atlanta Piano Fortissimo' },
   { title: 'Science Olympiad', role: 'FSA, 2024 and 2025' },
   { title: 'DECA', role: 'FSA, 2026' },
+];
+
+/** Areas of interest (from his resume). */
+export const areasOfInterest = ['Biomedical research', 'Artificial intelligence', 'Finance and investing', 'Teaching and mentoring', 'Creative writing'];
+
+/** His path so far, oldest first (years where known, otherwise his grade). */
+export const journey = [
+  { when: '2nd grade', title: 'Project Arrow', line: 'Placed in the advanced Project Arrow program at Indian Prairie School District 204.' },
+  { when: '2021', title: 'Mini-Medical School and guitar', line: 'Certificate of completion from Mini-Medical School; started guitar at Atlanta Piano Fortissimo.' },
+  { when: '2023', title: 'Young Authors Contest', line: 'Winner, Indian Prairie School District 204.' },
+  { when: '8th grade', title: 'PSAT 8/9: 1280 of 1440', line: 'Top 99% nationwide.' },
+  { when: '2024', title: 'Science Olympiad', line: 'Competed for Fulton Science Academy.' },
+  { when: '2025', title: 'Principal’s Honors List', line: 'Plus Science Olympiad again and starting Muay Thai.' },
+  { when: '2026', title: 'Oncure and the trading app', line: 'Wrote the Oncure research proposal, started building his stock trading application, joined DECA and made the Principal’s Honors List again.' },
+  { when: 'Now', title: 'Junior at Fulton Science Academy', line: 'All Honors and AP courses, PSAT and MAP in the top 98 to 99%.' },
 ];
 
 export const goals = {
@@ -371,7 +392,10 @@ export const oncure = {
     { title: 'Shorter treatment', line: 'A goal of hours rather than months, which is not yet proven.' },
     { title: 'Lower cost', line: 'Designed to reduce the financial burden of cancer treatment.' },
     { title: 'Fewer side effects', line: 'Precise targeting aims to protect healthy cells.' },
+    { title: 'Universal treatment vision', line: 'Aspires to address multiple cancer types using a common technology platform.' },
   ],
+  /** How the proposal suggests presenting Oncure first. */
+  positioning: 'For a research proposal or investor presentation, Oncure is best positioned first as an AI-assisted targeted cancer drug-delivery research platform, rather than as a universal cancer cure.',
   steps: [
     { title: 'Nanobot injection', line: 'Microscopic robots enter the bloodstream.' },
     { title: 'Cancer detection', line: 'Nanobots scan tissue and send what they find to the AI.' },

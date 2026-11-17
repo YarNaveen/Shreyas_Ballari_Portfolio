@@ -2,26 +2,42 @@ import { Fragment, useEffect, useRef, type CSSProperties, type ReactNode } from 
 import { createPortal } from 'react-dom';
 import {
   ArrowRight,
+  Atom,
   Brain,
+  Briefcase,
   Calculator,
+  ChalkboardTeacher,
   ChartLineUp,
   CheckCircle,
   ClockCountdown,
   Database,
   Dna,
+  FirstAid,
   Flask,
   GraduationCap,
+  HandFist,
   HandHeart,
   Heartbeat,
+  Lightning,
+  MagnifyingGlass,
+  MathOperations,
   Medal,
+  MusicNotes,
+  Robot,
   Rocket,
   Sparkle,
+  Student,
+  SwimmingPool,
+  Syringe,
   Target,
   TrendUp,
+  UsersThree,
+  Virus,
   Warning,
   X,
 } from '@phosphor-icons/react';
-import { achievements, activities, goals, oncure, percentiles, resume, stockApp, volunteering } from '@/content/portfolio';
+import { achievements, areasOfInterest, goals, journey, oncure, percentiles, resume, stockApp, volunteering } from '@/content/portfolio';
+import { Badges, Bars, CertWall, Columns, Donut, Flow, Orbit, Rings, Timeline, Years } from './Viz';
 import { useSeen } from './ui';
 
 /**
@@ -271,7 +287,9 @@ function Note({ children, icon: I = Warning }: { children: ReactNode; icon?: typ
 
 /* ---------------------------------------------------------------- the pages */
 
-const ONCURE_ICONS = [Brain, Dna, Target, Target, Heartbeat, CheckCircle, ClockCountdown, TrendUp, HandHeart];
+const ONCURE_ICONS = [Brain, Dna, Target, Target, Heartbeat, CheckCircle, ClockCountdown, TrendUp, HandHeart, Sparkle];
+const STEP_ICONS = [Syringe, MagnifyingGlass, Brain, Target, Virus];
+const ROAD_ICONS = [Flask, Robot, Lightning, Brain, Dna, Flask, Heartbeat];
 
 function OncurePage() {
   return (
@@ -280,16 +298,29 @@ function OncurePage() {
       <figure className="pg-media">
         <video src={oncure.video} controls muted playsInline preload="metadata" />
       </figure>
-      <Block label="The problem" lead="Why cancer care" rest="needs a new idea." lede="Figures as the proposal cites them, with its sources.">
-        <Stats
+      <Block label="The problem" lead="Why cancer care" rest="needs a new idea." lede="Figures as the proposal cites them, with their sources.">
+        <Bars
           items={[
-            { v: '20M', k: 'People diagnosed each year', s: 'WHO, IARC / GLOBOCAN' },
-            { v: '$100K+', k: 'Late-stage chemotherapy', s: 'Out of pocket, American Cancer Society' },
-            { v: '6–8 mo', k: 'A standard regimen', s: 'Late-stage lung cancer' },
-            { v: '15–25%', k: 'Develop clinical depression', s: 'NIH' },
+            { label: 'Diagnosed every year', v: 20, shown: '20M', note: 'WHO, IARC / GLOBOCAN' },
+            { label: 'Deaths every year', v: 10, shown: '~10M', note: 'IARC / GLOBOCAN. Population estimates, not a death rate among treated patients.', tone: '#7c4dff' },
           ]}
         />
+        <div className="pg-two">
+          <Donut from={15} to={25} label="Develop clinical depression" note="About 15 to 25% of people with cancer; caregivers often feel as much distress (NIH / PubMed)." />
+          <Stats
+            items={[
+              { v: '$100K+', k: 'Late-stage chemotherapy', s: 'Out of pocket, even with insurance (American Cancer Society)' },
+              { v: '6–8 mo', k: 'A standard regimen', s: 'Late-stage lung cancer' },
+            ]}
+          />
+        </div>
         <Cards items={oncure.problems} />
+      </Block>
+      <Block label="How it would work" lead="Five steps," rest="from injection to apoptosis." lede="A conceptual workflow only. The complete process has not been demonstrated as a working treatment.">
+        <Flow items={oncure.steps.map((s, i) => ({ ...s, icon: STEP_ICONS[i] ?? Sparkle }))} />
+      </Block>
+      <Block label="Inside each nanobot" lead="Five parts," rest="as first proposed." lede="The considerations below explain why some parts would need to change.">
+        <Orbit center="Nanobot" parts={oncure.parts} />
       </Block>
       <Block label="The story" lead="In his" rest="own words.">
         <div className="pg-prose">
@@ -298,18 +329,6 @@ function OncurePage() {
           ))}
         </div>
       </Block>
-      <Block label="How it would work" lead="Five steps," rest="from injection to apoptosis." lede="A conceptual workflow, not a tested procedure.">
-        <Numbered items={oncure.steps} />
-      </Block>
-      <Block label="Inside each nanobot" lead="What every nanobot" rest="would carry.">
-        <Rise className="pg-chips">
-          {oncure.parts.map((p, i) => (
-            <span key={p} style={at(i)}>
-              {p}
-            </span>
-          ))}
-        </Rise>
-      </Block>
       <Block label="Features" lead="What it is" rest="designed to do.">
         <Cards items={oncure.features.map((f, i) => ({ ...f, icon: ONCURE_ICONS[i] }))} />
       </Block>
@@ -317,21 +336,27 @@ function OncurePage() {
         <Numbered items={oncure.challenges} />
       </Block>
       <Block label="Why it is possible" lead="Robots keep" rest="getting smaller.">
-        <Cards items={oncure.evidence.map((e, i) => ({ title: i ? 'Smaller than a grain of salt' : 'A battery-free flying robot', line: e, icon: Flask }))} cols={2} />
+        <Bars
+          items={[
+            { label: 'UC Berkeley flying robot', v: 10000, shown: '1 cm', note: 'Battery-free, fits on a fingertip (UC Berkeley News)' },
+            { label: 'UPenn and Michigan robot', v: 300, shown: '0.2–0.3 mm', note: 'Smaller than a grain of salt (ScienceDaily)', tone: '#7c4dff' },
+          ]}
+        />
       </Block>
       <Block label="Roadmap" lead="From feasibility" rest="to clinical development.">
-        <Numbered items={oncure.roadmap} />
+        <Timeline items={oncure.roadmap.map((r, i) => ({ when: `Stage ${i + 1}`, title: r.title, line: r.line, icon: ROAD_ICONS[i] }))} />
       </Block>
       <Block label="Scientific considerations" lead="What the proposal" rest="must refine.">
         <Cards items={oncure.considerations.map((c) => ({ ...c, icon: Warning }))} tone="warm" />
       </Block>
       <Block label="Values" lead="What it" rest="stands for.">
-        <Cards items={oncure.values} cols={4} />
+        <Badges items={oncure.values.map((v, i) => ({ ...v, icon: [Target, ClockCountdown, HandHeart, Heartbeat][i] ?? Sparkle }))} />
       </Block>
       <div className="pg-verdict">
         <Heartbeat weight="duotone" aria-hidden="true" />
         <small>Overall assessment</small>
         <p>{oncure.assessment}</p>
+        <p className="pg-verdict-sub">{oncure.positioning}</p>
       </div>
     </>
   );
@@ -347,9 +372,16 @@ export function TradingPage() {
         <AppMockup />
       </div>
       <Block label="What it is" lead="Friendly to beginners," rest="welcoming to veterans." lede={stockApp.summary}>
-        <Numbered items={stockApp.approach.map((a, i) => ({ title: ['No jargon', 'The best hypothetical choice', 'A time frame', 'Advice along the way'][i] ?? '', line: a }))} />
+        <Flow
+          items={[
+            { icon: Database, title: 'Real-world data', line: 'Market data and real-world factors go in.' },
+            { icon: Calculator, title: 'Algorithms', line: 'They work out the best hypothetical choice.' },
+            { icon: Brain, title: 'AI model', line: 'Does the work of candlesticks and equations for you.' },
+            { icon: ChartLineUp, title: 'Advice by the chart', line: 'How much, when to buy, and when to sell.' },
+          ]}
+        />
       </Block>
-      <Block label="Next to the chart" lead="AI advice where" rest="you are already looking." lede="For the stock you are viewing, the AI model shows three things beside the graph.">
+      <Block label="Next to the chart" lead="Three answers," rest="for the stock you are viewing.">
         <Stats
           items={[
             { v: 'How much', k: 'The best amount of the stock to buy' },
@@ -357,6 +389,9 @@ export function TradingPage() {
             { v: 'Sell', k: 'An estimated time to sell, from real-world factors' },
           ]}
         />
+      </Block>
+      <Block label="Why it is different" lead="Advice," rest="not jargon.">
+        <Numbered items={stockApp.approach.map((a, i) => ({ title: ['No candlesticks or equations', 'The best hypothetical choice', 'A time frame', 'Advice along the way'][i] ?? '', line: a }))} />
       </Block>
       <Block label="Everything it will have" lead="All the parts of" rest="a trading site.">
         <Cards items={stockApp.features.map((f, i) => ({ ...f, icon: FIN_ICONS[i] }))} />
@@ -370,46 +405,36 @@ export function TradingPage() {
   );
 }
 
+const ISSUER: Record<string, string> = {
+  cbnrp: 'College Board',
+  honors: 'Fulton Science Academy',
+  psat: 'College Board · PSAT',
+  map: 'NWEA · MAP Growth',
+  arrow: 'Indian Prairie School District 204',
+  authors: 'Indian Prairie School District 204',
+  minimed: 'Mini-Medical School',
+};
+const CERT_TONES = ['#b8901c', '#1f4dff', '#7c4dff', '#0f9f8f', '#d9452f', '#e0761a', '#0e8ec9'];
+
 function AwardsPage() {
+  const byTest = (test: string) => ['8th grade', '9th grade', '10th grade'].map((g) => percentiles.find((p) => p.test === test && p.grade === g)?.value ?? null);
   return (
     <>
-      <Stats
-        items={[
-          { v: 'Top 99%', k: 'PSAT', s: '8th and 10th grade' },
-          { v: 'Top 99%', k: 'MAP', s: '10th grade' },
-          { v: '1280', k: 'PSAT 8/9', s: 'out of 1440' },
-          { v: String(achievements.length), k: 'Awards, honors and certificates' },
-        ]}
-      />
-      <Block label="Every award" lead="Recognition from" rest="elementary to high school.">
-        <Rise className="pg-cards is-3">
-          {achievements.map((a, i) => (
-            <article key={a.id} className="pg-card" style={at(i)}>
-              <Medal weight="duotone" aria-hidden="true" />
-              <small className="pg-kind">
-                {a.kind} · {a.when}
-              </small>
-              <h4>{a.title}</h4>
-              <b className="pg-val">{a.value}</b>
-              <p>{a.detail}</p>
-            </article>
-          ))}
-        </Rise>
+      <Rings items={percentiles.map((p) => ({ v: p.value, label: p.test, sub: p.grade }))} />
+      <Block label="Certificates" lead="Every award," rest="as a certificate." lede="Designed presentations of each award, not scans of the originals.">
+        <CertWall items={achievements.map((a, i) => ({ id: a.id, issuer: ISSUER[a.id] ?? '', kind: a.kind, title: a.title, value: a.value, when: a.when, tone: CERT_TONES[i % CERT_TONES.length]! }))} />
       </Block>
-      <Block label="Scores" lead="How he compares" rest="nationwide." lede="Percentile ranks: higher than that share of students.">
-        <Rise className="pg-bars">
-          {percentiles.map((p, i) => (
-            <div key={`${p.test}${p.grade}`} style={at(i)}>
-              <span>
-                {p.test} · {p.grade}
-              </span>
-              <i>
-                <em style={{ width: `${p.value}%` }} />
-              </i>
-              <b>{p.value}%</b>
-            </div>
-          ))}
-        </Rise>
+      <Block label="Scores" lead="Consistently in" rest="the top percentiles." lede="Percentile rank by grade: higher than that share of students nationwide. PSAT 8/9 in 8th grade: 1280 out of 1440.">
+        <Columns
+          groups={['8th grade', '9th grade', '10th grade']}
+          series={[
+            { name: 'PSAT', color: '#4f7bff', points: byTest('PSAT') },
+            { name: 'MAP', color: '#b49cff', points: byTest('MAP') },
+          ]}
+        />
+      </Block>
+      <Block label="Over the years" lead="Recognition from" rest="2nd grade to now.">
+        <Timeline items={journey.map((j) => ({ ...j, icon: Medal }))} />
       </Block>
     </>
   );
@@ -418,11 +443,30 @@ function AwardsPage() {
 function LifePage() {
   return (
     <>
-      <Block label="Activities" lead="Sport, music" rest="and competitions.">
-        <Cards items={activities.map((a) => ({ title: a.title, line: a.role, icon: Sparkle }))} />
+      <Block label="Activities" lead="Sport, music" rest="and competitions." lede="When each one started, on a shared timeline.">
+        <Years
+          from={2021}
+          to={2026}
+          items={[
+            { title: 'Guitar', role: 'Atlanta Piano Fortissimo', start: 2021, end: null, icon: MusicNotes },
+            { title: 'Science Olympiad', role: 'Fulton Science Academy', start: 2024, end: 2025, icon: Atom },
+            { title: 'Muay Thai', role: 'Martial arts', start: 2025, end: null, icon: HandFist },
+            { title: 'DECA', role: 'Fulton Science Academy', start: 2026, end: 2026, icon: Briefcase },
+            { title: 'Swim Atlanta', role: 'Senior Team member', start: null, end: null, icon: SwimmingPool, note: 'Senior Team' },
+          ]}
+        />
       </Block>
       <Block label="Volunteering" lead="Giving" rest="back.">
-        <Cards items={volunteering.map((v) => ({ title: v.title, line: v.role, icon: HandHeart }))} />
+        <Badges items={volunteering.map((v, i) => ({ title: v.title, line: v.role, icon: [FirstAid, HandHeart, ChalkboardTeacher][i] ?? HandHeart }))} />
+      </Block>
+      <Block label="Interests" lead="What he" rest="is drawn to.">
+        <Rise className="pg-chips">
+          {areasOfInterest.map((p, i) => (
+            <span key={p} style={at(i)}>
+              {p}
+            </span>
+          ))}
+        </Rise>
       </Block>
     </>
   );
@@ -431,10 +475,27 @@ function LifePage() {
 function TutoringPage() {
   return (
     <>
+      <Badges
+        items={[
+          { icon: Student, title: '7th and 8th graders', line: 'Who he tutored' },
+          { icon: MathOperations, title: 'Math and Science', line: 'The subjects' },
+          { icon: UsersThree, title: 'One on one and groups', line: 'At lunch and after school' },
+        ]}
+      />
       <div className="pg-prose">
         <p>{resume.summary}</p>
       </div>
-      <Block label="What he does" lead="One on one" rest="and in groups." lede={`${volunteering[2]?.role ?? ''}, at lunch and after school.`}>
+      <Block label="How he helps" lead="From the first question" rest="to better grades.">
+        <Flow
+          items={[
+            { icon: MagnifyingGlass, title: 'Find the gap', line: 'Spot what is hard and build better study habits.' },
+            { icon: ChalkboardTeacher, title: 'Explain it simply', line: 'Visual aids, diagrams and step-by-step explanations.' },
+            { icon: UsersThree, title: 'Practise together', line: 'Homework help and small-group sessions.' },
+            { icon: CheckCircle, title: 'Prepare', line: 'Quizzes and exams, with feedback on writing and thinking.' },
+          ]}
+        />
+      </Block>
+      <Block label="What he does" lead="Every part" rest="of a session.">
         <Numbered items={resume.tutoring.map((t) => ({ title: t.split(/[,.]/)[0] ?? t, line: t }))} />
       </Block>
     </>

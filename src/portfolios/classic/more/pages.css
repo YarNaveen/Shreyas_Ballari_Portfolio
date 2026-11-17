@@ -1026,3 +1026,285 @@
     transform: none;
   }
 }
+
+/* --- his journey (the momentum band) --------------------------------------------------------- */
+.sd-momentum {
+  min-height: 0;
+  height: 320svh;
+  overflow: visible;
+}
+.sd-mo-in {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  height: 100svh;
+  min-height: 0;
+  padding: 12vh 0 10vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sd-mo-in .sd-band {
+  inset: 10% -20% -20%;
+}
+.sd-mo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 0 5vw;
+}
+.sd-mo-head .sd-label {
+  margin-bottom: 16px;
+}
+.sd-mo-lede {
+  max-width: 440px;
+  margin-top: 20px !important;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.sd-mo-head .sd-chrome {
+  width: clamp(90px, 9vw, 140px);
+  margin: 0 4vw 0 0;
+}
+.sd-jr {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+}
+.sd-jr-line {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.sd-jr-line i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #1f4dff, #8fb0ff);
+  box-shadow: 0 0 14px rgba(80, 130, 255, 0.9);
+  transform-origin: 0 50%;
+  transform: scaleX(calc(0.08 + var(--m, 0) * 0.92));
+}
+.sd-jr-track {
+  display: flex;
+  gap: 40px;
+  width: max-content;
+  margin: 0;
+  padding: 0 5vw;
+  list-style: none;
+  will-change: transform;
+}
+.sd-jr-track li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  width: 300px;
+  padding-top: 40px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms var(--sd-ease) calc(var(--i) * 90ms), transform 800ms var(--sd-ease) calc(var(--i) * 90ms);
+}
+.sd-jr.is-in .sd-jr-track li {
+  opacity: 1;
+  transform: none;
+}
+.sd-jr-dot {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #000;
+  border-radius: 50%;
+  background: #8fb0ff;
+  box-shadow: 0 0 0 1px #8fb0ff, 0 0 18px rgba(120, 160, 255, 0.9);
+}
+.sd-jr-track small {
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 300;
+  color: #8fb0ff;
+}
+.sd-jr-track h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.sd-jr-track p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* --- the Oncure film section ----------------------------------------------------------------- */
+.sd-film {
+  display: grid;
+  justify-items: center;
+  gap: 48px;
+  padding: clamp(80px, 10vw, 140px) 5vw;
+  background: radial-gradient(60% 50% at 50% 100%, rgba(31, 77, 255, 0.35), transparent 70%), #000;
+  color: #fff;
+}
+.sd-film-head {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  max-width: 860px;
+  text-align: center;
+}
+.sd-film-head h2 {
+  font-size: clamp(32px, 4.4vw, 64px);
+  line-height: 1.05;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  --sd-dim: #9aa0b6;
+}
+.sd-film-lede {
+  max-width: 620px;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.sd-film .fv.is-free {
+  max-width: 1180px;
+}
+.sd-film .fv-bar {
+  bottom: 20px;
+  width: min(760px, calc(100% - 32px));
+}
+
+/* --- footer contact ------------------------------------------------------------------------- */
+.sd-foot a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 500ms var(--sd-ease);
+  overflow-wrap: anywhere;
+}
+.sd-foot a:hover {
+  background-size: 100% 1px;
+}
+.sd-foot a:focus-visible {
+  outline: 2px solid #8fb0ff;
+  outline-offset: 3px;
+}
+
+/* --- page extras ----------------------------------------------------------------------------- */
+.pg-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+.pg-verdict-sub {
+  font-size: 16px !important;
+  line-height: 24px !important;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .sd-momentum {
+    height: auto;
+  }
+  .sd-mo-in {
+    position: relative;
+    height: auto;
+    padding: 96px 0;
+  }
+  .sd-mo-head {
+    flex-direction: column;
+  }
+  .sd-jr-line {
+    top: 0;
+    bottom: 0;
+    left: calc(5vw + 7px);
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+  .sd-jr-line i {
+    height: 100%;
+    transform: none;
+  }
+  .sd-jr-track {
+    flex-direction: column;
+    width: auto;
+    gap: 32px;
+  }
+  .sd-jr-track li {
+    width: auto;
+    padding: 0 0 0 40px;
+  }
+  .sd-jr-dot {
+    top: 8px;
+  }
+  .sd-jr-track small {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .pg-two {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .sd-film {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .sd-film .fv.is-free {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    height: auto;
+    aspect-ratio: auto;
+    max-height: none;
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .sd-film .fv.is-free video {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 16px;
+  }
+  .sd-film .fv-bar {
+    position: static;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    border-radius: 24px;
+    transform: none;
+  }
+  .sd-film .fv-bar .fv-more {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .sd-mo-head {
+    padding: 0 16px;
+  }
+  .sd-jr-track {
+    padding: 0 16px;
+  }
+  .sd-jr-line {
+    left: 23px;
+  }
+}

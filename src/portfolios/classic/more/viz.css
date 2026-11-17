@@ -1,0 +1,948 @@
+/* Visual pieces for the inner pages (Viz.tsx). Dark, blue light, one font. */
+
+.pg,
+.sd {
+  --vx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --vx-blue: #1f4dff;
+  --vx-sky: #8fb0ff;
+}
+
+/* --- certificates ------------------------------------------------------------------------ */
+.vx-certs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  perspective: 1400px;
+}
+.vx-cert {
+  opacity: 0;
+  transform: rotateX(28deg) translateY(48px) scale(0.92);
+  transform-origin: 50% 100%;
+  transition: opacity 900ms var(--vx-ease) calc(var(--i) * 90ms), transform 1100ms var(--vx-ease) calc(var(--i) * 90ms);
+}
+.vx-certs.is-in .vx-cert {
+  opacity: 1;
+  transform: none;
+}
+.vx-cert-in {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  aspect-ratio: 4 / 3;
+  align-content: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: radial-gradient(120% 90% at 50% 0%, #fffdf7, #f4efe2);
+  color: #1b1b22;
+  text-align: center;
+  box-shadow: inset 0 0 0 6px #fffdf7, inset 0 0 0 7px var(--tone), inset 0 0 0 10px #fffdf7, inset 0 0 0 11px color-mix(in srgb, var(--tone) 45%, transparent), 0 30px 60px rgba(0, 0, 0, 0.45);
+  transition: transform 600ms var(--vx-ease), box-shadow 600ms var(--vx-ease);
+}
+.vx-cert:hover .vx-cert-in {
+  transform: translateY(-8px) rotate(-1.5deg) scale(1.02);
+}
+.vx-cert-issuer {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tone);
+}
+.vx-cert-kind,
+.vx-cert-to {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a8578;
+}
+.vx-cert h4 {
+  margin: 4px 0 8px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.vx-cert-name {
+  padding: 0 16px 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--tone) 60%, transparent);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+}
+.vx-cert-val {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4b4a45;
+}
+.vx-cert-seal {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--tone);
+  font-size: 44px;
+}
+.vx-cert-seal svg {
+  grid-area: 1 / 1;
+}
+.vx-cert-seal svg + svg {
+  font-size: 18px;
+  color: #fffdf7;
+}
+
+/* --- rings ------------------------------------------------------------------------------- */
+.vx-rings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+}
+.vx-ring {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms var(--vx-ease) calc(var(--i) * 110ms), transform 800ms var(--vx-ease) calc(var(--i) * 110ms);
+}
+.vx-rings.is-in .vx-ring {
+  opacity: 1;
+  transform: none;
+}
+.vx-ring svg {
+  width: 140px;
+  height: 140px;
+  transform: rotate(-90deg);
+}
+.vx-ring circle {
+  fill: none;
+  stroke-width: 10;
+}
+.vx-ring-bg {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+.vx-ring-fg {
+  stroke: var(--vx-blue);
+  stroke-linecap: round;
+  stroke-dasharray: 0 var(--c);
+  filter: drop-shadow(0 0 8px rgba(60, 110, 255, 0.7));
+  transition: stroke-dasharray 1600ms var(--vx-ease) calc(300ms + var(--i) * 140ms);
+}
+.vx-rings.is-in .vx-ring-fg {
+  stroke-dasharray: var(--dash) var(--c);
+}
+.vx-ring b {
+  position: absolute;
+  top: 50px;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 300;
+}
+.vx-ring figcaption {
+  display: grid;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.vx-ring small {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: rgba(244, 245, 248, 0.6);
+}
+
+/* --- line chart -------------------------------------------------------------------------- */
+.vx-line {
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.vx-line svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.vx-grid {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+.vx-axis {
+  fill: rgba(244, 245, 248, 0.55);
+  font-size: 13px;
+  font-family: inherit;
+}
+.vx-path {
+  fill: none;
+  stroke: var(--col);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px var(--col));
+  transition: stroke-dashoffset 1800ms var(--vx-ease) calc(300ms + var(--i) * 300ms);
+}
+.vx-line.is-in .vx-path {
+  stroke-dashoffset: 0;
+}
+.vx-dot {
+  fill: #000;
+  stroke: var(--col);
+  stroke-width: 3;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: opacity 400ms var(--vx-ease), transform 600ms var(--vx-ease);
+  transition-delay: calc(600ms + var(--i) * 300ms + var(--k) * 300ms);
+}
+.vx-line.is-in .vx-dot {
+  opacity: 1;
+  transform: none;
+}
+.vx-legend {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.vx-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.vx-legend i {
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* --- bars -------------------------------------------------------------------------------- */
+.vx-bars {
+  display: grid;
+  gap: 20px;
+}
+.vx-bar {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 16px;
+}
+.vx-bar-label {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.8);
+}
+.vx-bar-track {
+  height: 28px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.vx-bar-track i {
+  display: block;
+  width: var(--w);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--tone);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--tone) 60%, transparent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 1500ms var(--vx-ease) calc(200ms + var(--i) * 160ms);
+}
+.vx-bars.is-in .vx-bar-track i {
+  transform: scaleX(1);
+}
+.vx-bar b {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+}
+.vx-bar small {
+  grid-column: 2 / -1;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(244, 245, 248, 0.55);
+}
+
+/* --- donut ------------------------------------------------------------------------------- */
+.vx-donut {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.vx-donut figure {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  margin: 0;
+}
+.vx-donut svg {
+  width: 180px;
+  height: 180px;
+  transform: rotate(-90deg);
+}
+.vx-donut circle {
+  fill: none;
+  stroke-width: 18;
+}
+.vx-d-bg {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+.vx-d-a,
+.vx-d-b {
+  stroke-dasharray: 0 var(--c);
+  transition: stroke-dasharray 1500ms var(--vx-ease) 300ms;
+}
+.vx-d-a {
+  stroke: var(--vx-blue);
+}
+.vx-d-b {
+  stroke: rgba(143, 176, 255, 0.45);
+  stroke-dashoffset: calc(var(--a) * -1);
+  transition-delay: 900ms;
+}
+.vx-donut.is-in .vx-d-a {
+  stroke-dasharray: var(--a) var(--c);
+}
+.vx-donut.is-in .vx-d-b {
+  stroke-dasharray: var(--b) var(--c);
+}
+.vx-donut b {
+  position: absolute;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+.vx-donut h4 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.vx-donut p {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.68);
+}
+
+/* --- flow -------------------------------------------------------------------------------- */
+.vx-flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.vx-flow::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  right: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--vx-blue), var(--vx-sky));
+  box-shadow: 0 0 12px rgba(60, 110, 255, 0.8);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 1800ms var(--vx-ease) 200ms;
+}
+.vx-flow.is-in::before {
+  transform: scaleX(1);
+}
+.vx-flow li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms var(--vx-ease) calc(300ms + var(--i) * 220ms), transform 800ms var(--vx-ease) calc(300ms + var(--i) * 220ms);
+}
+.vx-flow.is-in li {
+  opacity: 1;
+  transform: none;
+}
+.vx-flow-node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(143, 176, 255, 0.4);
+  border-radius: 50%;
+  background: #05070f;
+  color: var(--vx-sky);
+  font-size: 30px;
+  box-shadow: 0 0 0 6px #000, 0 0 30px rgba(31, 77, 255, 0.45);
+  transition: transform 500ms var(--vx-ease), background-color 300ms var(--vx-ease), color 300ms var(--vx-ease);
+}
+.vx-flow li:hover .vx-flow-node {
+  transform: scale(1.08);
+  background: var(--vx-blue);
+  color: #fff;
+}
+.vx-flow-node em {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--vx-blue);
+  color: #fff;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+}
+.vx-flow h4 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.vx-flow p {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.68);
+}
+
+/* --- timeline ---------------------------------------------------------------------------- */
+.vx-tl {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  margin: 0;
+  padding: 0 0 0 56px;
+  list-style: none;
+}
+.vx-tl::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 19px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--vx-blue), rgba(143, 176, 255, 0.2));
+  box-shadow: 0 0 12px rgba(60, 110, 255, 0.6);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  transition: transform 2000ms var(--vx-ease) 200ms;
+}
+.vx-tl.is-in::before {
+  transform: scaleY(1);
+}
+.vx-tl li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 700ms var(--vx-ease) calc(300ms + var(--i) * 160ms), transform 700ms var(--vx-ease) calc(300ms + var(--i) * 160ms);
+}
+.vx-tl.is-in li {
+  opacity: 1;
+  transform: none;
+}
+.vx-tl-dot {
+  position: absolute;
+  top: 0;
+  left: -56px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--vx-blue);
+  color: #fff;
+  font-size: 18px;
+  box-shadow: 0 0 0 6px #000, 0 0 24px rgba(31, 77, 255, 0.6);
+}
+.vx-tl small {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vx-sky);
+}
+.vx-tl h4 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.vx-tl p {
+  max-width: 640px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.68);
+}
+
+/* --- years (activities) ------------------------------------------------------------------ */
+.vx-years {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.vx-years-axis,
+.vx-years-row {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+.vx-years-axis > div,
+.vx-years-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+.vx-years-axis em {
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(244, 245, 248, 0.55);
+}
+.vx-years-row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 700ms var(--vx-ease) calc(var(--i) * 120ms), transform 700ms var(--vx-ease) calc(var(--i) * 120ms);
+}
+.vx-years.is-in .vx-years-row {
+  opacity: 1;
+  transform: none;
+}
+.vx-years-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vx-years-name > svg {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  background: rgba(31, 77, 255, 0.18);
+  color: var(--vx-sky);
+}
+.vx-years-name > span {
+  display: grid;
+  min-width: 0;
+}
+.vx-years-name b {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.vx-years-name small {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(244, 245, 248, 0.6);
+}
+.vx-years-track {
+  position: relative;
+  height: 40px;
+}
+.vx-years-track > i {
+  border-left: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.vx-years-bar {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--vx-blue), #4f7bff);
+  box-shadow: 0 0 24px rgba(31, 77, 255, 0.5);
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 1300ms var(--vx-ease) calc(400ms + var(--i) * 140ms);
+}
+.vx-years-bar.is-open {
+  background: linear-gradient(90deg, var(--vx-blue), #4f7bff 70%, rgba(79, 123, 255, 0.25));
+}
+.vx-years.is-in .vx-years-bar {
+  transform: scaleX(1);
+}
+
+/* --- badges ------------------------------------------------------------------------------ */
+.vx-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+.vx-badges figure {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  margin: 0;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 800ms var(--vx-ease) calc(var(--i) * 140ms), transform 900ms var(--vx-ease) calc(var(--i) * 140ms);
+}
+.vx-badges.is-in figure {
+  opacity: 1;
+  transform: none;
+}
+.vx-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3f6bff, #0a1fb8 70%);
+  color: #fff;
+  font-size: 48px;
+  box-shadow: 0 20px 50px rgba(31, 77, 255, 0.45);
+  transition: transform 600ms var(--vx-ease);
+}
+.vx-badge::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border: 2px dashed rgba(143, 176, 255, 0.55);
+  border-radius: 50%;
+  animation: vx-spin 18s linear infinite;
+}
+.vx-badges figure:hover .vx-badge {
+  transform: translateY(-6px) scale(1.05);
+}
+@keyframes vx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.vx-badges figcaption {
+  display: grid;
+  gap: 4px;
+}
+.vx-badges b {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.vx-badges small {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.68);
+}
+
+/* --- orbit ------------------------------------------------------------------------------- */
+.vx-orbit {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.vx-orbit-ring {
+  position: absolute;
+  inset: 16%;
+  border: 1px dashed rgba(143, 176, 255, 0.4);
+  border-radius: 50%;
+  animation: vx-spin 40s linear infinite;
+}
+.vx-orbit-core {
+  position: absolute;
+  inset: 34%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff, #8fb0ff 18%, #1f4dff 55%, #06104a);
+  box-shadow: 0 0 80px rgba(31, 77, 255, 0.7);
+  text-align: center;
+  animation: vx-pulse 4s ease-in-out infinite alternate;
+}
+.vx-orbit-core span {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+@keyframes vx-pulse {
+  to {
+    transform: scale(1.06);
+  }
+}
+.vx-orbit ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.vx-orbit li {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--a)) translateX(min(34vw, 190px)) rotate(calc(var(--a) * -1));
+}
+.vx-orbit li span {
+  position: absolute;
+  display: block;
+  width: max-content;
+  max-width: 170px;
+  padding: 8px 16px;
+  border: 1px solid rgba(143, 176, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(5, 7, 15, 0.85);
+  backdrop-filter: blur(8px);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  white-space: normal;
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  transition: opacity 700ms var(--vx-ease) calc(400ms + var(--i) * 160ms), transform 900ms var(--vx-ease) calc(400ms + var(--i) * 160ms);
+}
+.vx-orbit.is-in li span {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* --- smaller screens --------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .vx-certs {
+    grid-template-columns: 1fr;
+  }
+  .vx-rings {
+    grid-template-columns: 1fr 1fr;
+  }
+  .vx-ring svg {
+    width: 120px;
+    height: 120px;
+  }
+  .vx-ring b {
+    top: 42px;
+    font-size: 24px;
+  }
+  .vx-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .vx-bar-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 8px;
+  }
+  .vx-bar small {
+    grid-column: 1 / -1;
+  }
+  .vx-donut {
+    flex-direction: column;
+    text-align: center;
+  }
+  .vx-flow {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+  .vx-flow::before {
+    top: 36px;
+    bottom: 36px;
+    left: 35px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    transform-origin: 50% 0;
+    transform: scaleY(0);
+  }
+  .vx-flow.is-in::before {
+    transform: scaleY(1);
+  }
+  .vx-flow li {
+    grid-template-columns: 72px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .vx-flow-node {
+    grid-row: span 2;
+    margin: 0;
+  }
+  .vx-years {
+    padding: 16px;
+  }
+  .vx-years-axis {
+    display: none;
+  }
+  .vx-years-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .vx-orbit li {
+    transform: rotate(var(--a)) translateX(36vw) rotate(calc(var(--a) * -1));
+  }
+  .vx-orbit li span {
+    max-width: 120px;
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .vx-orbit-core span {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vx-badge::after,
+  .vx-orbit-ring,
+  .vx-orbit-core {
+    animation: none;
+  }
+}
+
+/* --- grouped columns --------------------------------------------------------------------- */
+.vx-cols {
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.vx-cols-plot {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  height: 300px;
+}
+.vx-cols-axis {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 32px;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(244, 245, 248, 0.55);
+  text-align: right;
+}
+.vx-cols-axis span {
+  transform: translateY(-50%);
+}
+.vx-cols-axis span:last-child {
+  transform: translateY(50%);
+}
+.vx-cols-groups {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+.vx-cols-grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: 0;
+  transform: translateY(calc(var(--y, 0) * 1px));
+}
+.vx-cols-groups > .vx-cols-grid {
+  max-height: calc(100% - 32px);
+}
+.vx-cols-group {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 32px;
+  margin-bottom: -32px;
+}
+.vx-cols-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+}
+.vx-cols-bar {
+  position: relative;
+  width: min(56px, 30%);
+  height: var(--h);
+  border-radius: 12px 12px 4px 4px;
+  background: linear-gradient(180deg, var(--col), color-mix(in srgb, var(--col) 40%, #000));
+  box-shadow: 0 0 24px color-mix(in srgb, var(--col) 50%, transparent);
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+  transition: transform 1300ms var(--vx-ease) calc(200ms + var(--i) * 120ms);
+}
+.vx-cols.is-in .vx-cols-bar {
+  transform: scaleY(1);
+}
+.vx-cols-bar b {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.vx-cols-none {
+  align-self: flex-end;
+  width: min(56px, 30%);
+  padding-bottom: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(244, 245, 248, 0.4);
+  text-align: center;
+}
+.vx-cols-group small {
+  align-self: center;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(244, 245, 248, 0.75);
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .vx-cols {
+    padding: 16px;
+  }
+  .vx-cols-plot {
+    height: 240px;
+  }
+  .vx-cols-groups {
+    gap: 8px;
+  }
+  .vx-cols-bars {
+    gap: 6px;
+  }
+  .vx-cols-bar b {
+    font-size: 12px;
+  }
+  .vx-cols-group small {
+    font-size: 12px;
+  }
+}

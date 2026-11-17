@@ -3,7 +3,6 @@ import '@fontsource-variable/geist';
 import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
 import { languages, profile, subjects } from '@/content/portfolio';
 import { Dock, NAV_ITEMS } from './Dock';
-import { Film } from './sequel';
 import { StageHero } from '../hero/StageHero';
 import { show, useFx, type Fx, type Reg } from './fx';
 import { END, F, out, seg, smooth, within } from './timeline';
@@ -49,7 +48,6 @@ const BASE = import.meta.env.BASE_URL;
 const JUMP: Record<string, number> = {
   home: 0,
   work: 0.1,
-  oncure: 0.37,
   contact: END,
 };
 const activeAt = (t: number) => {
@@ -298,7 +296,6 @@ export function Flow() {
             </Suspense>
           </Optional3D>
         )}
-        <Film reg={reg} />
       </div>
     </section>
   );
