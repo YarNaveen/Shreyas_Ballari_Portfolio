@@ -3,10 +3,10 @@ import '@fontsource-variable/geist';
 import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
 import { languages, profile, subjects } from '@/content/portfolio';
 import { Dock, NAV_ITEMS } from './Dock';
-import { Film, Finance, Stack3D, TechSkills } from './sequel';
+import { Film, Finance } from './sequel';
 import { StageHero } from '../hero/StageHero';
 import { show, useFx, type Fx, type Reg } from './fx';
-import { F, out, seg, smooth, within } from './timeline';
+import { END, F, out, seg, smooth, within } from './timeline';
 import './flow.css';
 
 const FlowCanvas = lazy(() => import('./FlowCanvas'));
@@ -51,12 +51,10 @@ const JUMP: Record<string, number> = {
   work: 0.1,
   oncure: 0.37,
   finance: 0.56,
-  awards: 0.74,
-  skills: 0.95,
-  contact: 1,
+  contact: END,
 };
 const activeAt = (t: number) => {
-  if (t > 0.95) return 'contact';
+  if (t > END - 0.005) return 'contact';
   if (t < 0.05) return 'home';
   let id = 'home';
   for (const n of NAV_ITEMS) if (t >= JUMP[n.id]! - 0.03) id = n.id;
@@ -233,7 +231,7 @@ export function Flow() {
     (t: number, duration = 1.8) => {
       const sec = section.current;
       if (!sec) return;
-      const y = sec.getBoundingClientRect().top + window.scrollY + t * (sec.offsetHeight - window.innerHeight);
+      const y = sec.getBoundingClientRect().top + window.scrollY + (Math.min(t, END) / END) * (sec.offsetHeight - window.innerHeight);
       if (smoothScroll) smoothScroll.scrollToY(y, { duration });
       else window.scrollTo({ top: y, behavior: 'smooth' });
     },
@@ -272,7 +270,7 @@ export function Flow() {
       const r = sec.getBoundingClientRect();
       const vh = window.innerHeight;
       if (r.bottom < -vh || r.top > vh * 1.5) return;
-      const t = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
+      const t = END * Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
       progress.current = t;
       const vw = window.innerWidth;
       fxs.current.forEach((fx) => fx(t, vw, vh));
@@ -303,8 +301,6 @@ export function Flow() {
         )}
         <Film reg={reg} />
         <Finance reg={reg} />
-        <Stack3D reg={reg} />
-        <TechSkills reg={reg} />
       </div>
     </section>
   );

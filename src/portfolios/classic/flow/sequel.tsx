@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { ArrowRight, ArrowsOut, ArrowClockwise, ArrowCounterClockwise, BookOpen, ChalkboardTeacher, ChatCircleText, Cpu, Info, Lightning, Pause, Play, SpeakerHigh, SpeakerSlash, Sparkle } from '@phosphor-icons/react';
-import { achievements, languages, oncure, profile, resumeExtra } from '@/content/portfolio';
+import { ArrowsOut, ArrowClockwise, ArrowCounterClockwise, Info, Pause, Play, SpeakerHigh, SpeakerSlash, Sparkle } from '@phosphor-icons/react';
+import { oncure } from '@/content/portfolio';
 import { show, useFx, type Reg } from './fx';
 import { F, out, seg, smooth, within } from './timeline';
 import './sequel.css';
@@ -18,8 +18,6 @@ import './sequel.css';
  *             a soft blur of the current picture.
  */
 
-const BASE = import.meta.env.BASE_URL;
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
 // --- Film -------------------------------------------------------------------------------------
@@ -120,8 +118,8 @@ export function Film({ reg }: { reg: Reg }) {
           data-voice="view more oncure"
           onClick={() => {
             video.current?.pause();
-            // The full proposal is a section further down the page.
-            document.getElementById('cx-oncure')?.scrollIntoView({ behavior: 'smooth' });
+            // The full proposal opens in the detail sheet.
+            window.dispatchEvent(new CustomEvent('sd-sheet', { detail: 'oncure' }));
           }}
         >
           <Info weight="bold" aria-hidden="true" /> Read the full proposal
@@ -232,247 +230,6 @@ export function Finance({ reg }: { reg: Reg }) {
         </p>
       </div>
       <p className="ff-note">Concept design · sample data · names and figures are made up</p>
-    </div>
-  );
-}
-
-// --- Everything else, as a receding 3D stack -----------------------------------------------------
-
-const ISSUER: Record<string, string> = {
-  cbnrp: 'College Board',
-  honors: 'Fulton Science Academy',
-  psat: 'College Board · PSAT',
-  map: 'NWEA · MAP Growth',
-  arrow: 'Indian Prairie School District 204',
-  authors: 'Indian Prairie School District 204',
-  minimed: 'Mini-Medical School',
-};
-const CERT_TONES = ['#c9a227', '#2f5fd6', '#7a3cff', '#14b8a6', '#e8432f', '#f97316', '#0ea5e9'];
-const STACK = achievements.map((a, i) => ({
-  id: a.id,
-  title: a.title,
-  line: a.detail,
-  kind: a.kind,
-  value: a.value,
-  when: a.when,
-  issuer: ISSUER[a.id] ?? '',
-  tone: CERT_TONES[i % CERT_TONES.length]!,
-}));
-
-export function Stack3D({ reg }: { reg: Reg }) {
-  const root = useRef<HTMLDivElement>(null);
-  const [cur, setCur] = useState(0);
-  const last = useRef(-1);
-  useFx(reg, (t, vw) => {
-    const el = root.current;
-    if (!el) return;
-    const k = within(t, 'mara');
-    const enter = t >= F.mara[0] ? 1 : 0;
-    const leave = seg(t, F.tech[0], F.tech[0] + 0.025);
-    show(el, enter > 0 && leave < 1);
-    if (enter <= 0 || leave >= 1) return;
-    el.style.opacity = String(1 - leave);
-    const n = STACK.length;
-    const f = smooth(seg(k, 0.05, 0.95)) * (n - 1);
-    const W = Math.min(440, vw * 0.3);
-    el.querySelectorAll<HTMLElement>('.fm-card').forEach((c, i) => {
-      const d = i - f;
-      let x = 0;
-      let y = 0;
-      let z = 0;
-      let ry = 0;
-      let op = 1;
-      if (d >= 0) {
-        // Waiting: a stack receding up and to the right.
-        x = d * W * 0.36 + Math.min(d, 1) * W * 0.32;
-        y = -d * 14;
-        z = -d * 120;
-        ry = -Math.min(d, 1) * 42;
-        op = d > 8 ? 0 : 1;
-      } else {
-        // Seen: slide to the left and fade.
-        x = d * W * 0.22 - Math.min(-d, 1) * W * 0.4;
-        z = d * 80;
-        ry = Math.min(-d, 1) * 34;
-        op = Math.max(0, 1 + d * 0.45);
-      }
-      c.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateY(${ry}deg)`;
-      c.style.opacity = String(op);
-      c.style.zIndex = String(100 - Math.round(Math.abs(d) * 5));
-    });
-    el.querySelectorAll<HTMLElement>('.fm-bg').forEach((b, i) => {
-      b.style.opacity = String(Math.max(0, 1 - Math.abs(i - f) * 1.4));
-    });
-    const i = Math.round(f);
-    if (i !== last.current) setCur((last.current = i));
-  });
-  const c = STACK[cur]!;
-  return (
-    <div ref={root} className="fm">
-      {STACK.map((s) => (
-        <div key={s.title} className="fm-bg" style={{ '--tone': s.tone } as CSSProperties} aria-hidden="true" />
-      ))}
-      <p className="fm-about">
-        <b>Awards &amp; certificates</b>
-        <br />
-        Recognition from elementary school to high school. Cards are designed presentations, not scans of the original certificates.
-      </p>
-      <div className="fm-space">
-        {STACK.map((s) => (
-          <div key={s.title} className="fm-card is-cert" style={{ '--tone': s.tone } as CSSProperties}>
-            <div className="cert">
-              <span className="cert-issuer">{s.issuer}</span>
-              <span className="cert-kind">{s.kind}</span>
-              <b className="cert-title">{s.title}</b>
-              <span className="cert-to">presented to</span>
-              <span className="cert-name">{profile.name}</span>
-              <span className="cert-meta">
-                {s.value} · {s.when}
-              </span>
-              <span className="cert-seal" aria-hidden="true">
-                ★
-              </span>
-            </div>
-            {/* A real scan or photo dropped in public/assets/certificates/<id>.jpg replaces the design. */}
-            <img className="cert-photo" src={`${BASE}assets/certificates/${s.id}.jpg`} alt="" loading="lazy" onError={(e) => e.currentTarget.remove()} />
-          </div>
-        ))}
-      </div>
-      <h2 className="fm-title" key={c.title}>
-        <span className="fm-n">{String(cur + 1).padStart(2, '0')}</span> {c.title}
-      </h2>
-      <p className="fm-line" key={`l${c.title}`}>
-        {c.line}
-      </p>
-      <a
-        href="#cx-contact"
-        className="fm-cta"
-        onClick={(e) => {
-          e.preventDefault();
-          document.getElementById('cx-contact')?.scrollIntoView({ behavior: 'smooth' });
-        }}
-      >
-        Get in touch <ArrowRight weight="bold" aria-hidden="true" />
-      </a>
-    </div>
-  );
-}
-
-// --- Technical skills: the language cards come out of the stack and line up ---------------------
-
-const LANG_NOTE: Record<string, string> = {
-  JavaScript: 'The language of the web',
-  Python: 'A favourite for data and AI',
-  Java: 'The language of AP Computer Science A',
-};
-
-/** A few lines in each language, coloured like a code editor (for show; not a real program). */
-const CODE: Record<string, { file: string; lines: [string, string][][] }> = {
-  JavaScript: {
-    file: 'goal.js',
-    lines: [
-      [['k', 'const '], ['v', 'goal'], ['p', ' = '], ['s', "'AI for good'"], ['p', ';']],
-      [['k', 'function '], ['f', 'learn'], ['p', '(topic) {']],
-      [['p', '  '], ['k', 'return '], ['s', '`${topic} ✓`'], ['p', ';']],
-      [['p', '}']],
-    ],
-  },
-  Python: {
-    file: 'detect.py',
-    lines: [
-      [['k', 'def '], ['f', 'detect'], ['p', '(cells):']],
-      [['p', '    '], ['k', 'return '], ['p', '[c '], ['k', 'for '], ['p', 'c '], ['k', 'in '], ['p', 'cells']],
-      [['p', '            '], ['k', 'if '], ['p', 'c.'], ['v', 'is_tumour'], ['p', ']']],
-    ],
-  },
-  Java: {
-    file: 'Oncure.java',
-    lines: [
-      [['k', 'public class '], ['f', 'Oncure'], ['p', ' {']],
-      [['p', '  '], ['k', 'boolean '], ['v', 'precise'], ['p', ' = '], ['k', 'true'], ['p', ';']],
-      [['p', '}']],
-    ],
-  },
-};
-const GROUP_ICON = [BookOpen, Cpu, ChalkboardTeacher, ChatCircleText, Lightning];
-
-export function TechSkills({ reg }: { reg: Reg }) {
-  const root = useRef<HTMLDivElement>(null);
-  useFx(reg, (t, vw) => {
-    const el = root.current;
-    if (!el) return;
-    const k = within(t, 'tech');
-    const enter = seg(t, F.tech[0], F.tech[0] + 0.025);
-    show(el, enter > 0);
-    if (enter <= 0) return;
-    el.style.opacity = String(enter);
-    const W = Math.min(440, vw * 0.3);
-    el.querySelectorAll<HTMLElement>('.ft-lang').forEach((c, i) => {
-      const v = smooth(seg(k, 0.04 + i * 0.08, 0.36 + i * 0.08));
-      // From the stack's receding positions on the right into a row.
-      const sx = W * 0.7 + (i + 1) * W * 0.36;
-      const sz = -(i + 1) * 120;
-      c.style.transform = `translate3d(${(1 - v) * sx}px, ${(1 - v) * -(i + 1) * 14}px, ${(1 - v) * sz}px) rotateY(${(1 - v) * -42}deg)`;
-      c.style.opacity = String(Math.min(1, 0.2 + v));
-      c.style.setProperty('--type', String(clamp01((k - 0.2 - i * 0.08) / 0.3)));
-    });
-    el.querySelectorAll<HTMLElement>('.ft-group').forEach((c, i, all) => {
-      const v = out(seg(k, 0.42 + (i / all.length) * 0.3, 0.55 + (i / all.length) * 0.3));
-      c.style.opacity = String(v);
-      c.style.transform = `translateY(${(1 - v) * 24}px)`;
-    });
-  });
-  return (
-    <div ref={root} className="ft">
-      <div className="ft-head">
-        <p className="ft-kicker">Technical skills</p>
-        <h2 className="ft-h">Three languages, and the skills around them.</h2>
-      </div>
-      <div className="ft-row">
-        {languages.map((l, i) => {
-          const code = CODE[l];
-          return (
-            <article key={l} className="ft-lang" style={{ '--i': i } as CSSProperties}>
-              <header className="ft-win">
-                <i />
-                <i />
-                <i />
-                <span>{code?.file ?? l}</span>
-              </header>
-              <pre className="ft-code" aria-hidden="true">
-                {code?.lines.map((line, n) => (
-                  <span key={n} className="ft-line">
-                    <em>{n + 1}</em>
-                    {line.map(([kind, text], j) => (
-                      <span key={j} className={`tk-${kind}`}>
-                        {text}
-                      </span>
-                    ))}
-                  </span>
-                ))}
-              </pre>
-              <footer className="ft-foot">
-                <b>{l}</b>
-                <small>{LANG_NOTE[l] ?? ''}</small>
-              </footer>
-            </article>
-          );
-        })}
-      </div>
-      <div className="ft-groups">
-        {resumeExtra.skills.map((g, i) => {
-          const I = GROUP_ICON[i % GROUP_ICON.length]!;
-          return (
-            <div key={g.group} className="ft-group">
-              <span className="ft-group-ico">
-                <I weight="duotone" aria-hidden="true" />
-              </span>
-              <b>{g.group}</b>
-              <small>{g.items.slice(0, 4).join(' · ')}</small>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }

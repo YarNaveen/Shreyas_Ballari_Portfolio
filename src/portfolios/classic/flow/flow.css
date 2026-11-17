@@ -8,7 +8,7 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   z-index: 2;
-  height: 1800svh;
+  height: 1260svh;
   font-family: var(--fl-font);
   color: #fff;
 }

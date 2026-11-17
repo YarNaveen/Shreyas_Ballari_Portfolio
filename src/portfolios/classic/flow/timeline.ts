@@ -1,3 +1,6 @@
+/** The film now ends after the trading app: its scroll progress runs 0..END. */
+export const END = 0.7;
+
 /** Where each chapter of the scroll film sits along its 0..1 progress. */
 export const F = {
   hero: [0, 0.05],
@@ -17,9 +20,9 @@ export const F = {
   /** ...as the trading app. */
   finance: [0.49, 0.69],
   /** Everything else, as a 3D stack. */
-  mara: [0.68, 0.875],
+  mara: [2.95, 2.97],
   /** Technical skills. */
-  tech: [0.865, 1],
+  tech: [2.97, 2.99],
   // Parked chapters (being rebuilt).
   problem: [2, 2.1],
   steps: [2.1, 2.2],

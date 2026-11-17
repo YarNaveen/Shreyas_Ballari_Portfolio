@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNo
 import { ArrowUpRight, Atom, Brain, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle, X } from '@phosphor-icons/react';
 import { achievements, activities, courses, goals, intro, languages, profile, researchInterests, resume, schools, subjects, volunteering } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
+import { DetailSheet, type DetailId } from '@/features/details/Details';
 import { Activities, Certificates, Scores } from '@/features/visuals/Visuals';
 import { useSeen } from './ui';
 
@@ -15,6 +16,8 @@ import { useSeen } from './ui';
 
 const BASE = import.meta.env.BASE_URL;
 const photo = (n: string) => `${BASE}assets/photos/${n}.jpg`;
+/** Opens Oncure or the trading app in the detail sheet (see Sheet below). */
+const openSheet = (id: DetailId) => void window.dispatchEvent(new CustomEvent('sd-sheet', { detail: id }));
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 /** Words that come into focus one after another (blur to sharp). `dimFrom` greys the rest. */
@@ -309,7 +312,7 @@ function Craft() {
       </span>
       <div className="sd-craft-head">
         <Blur id="sd-craft-h" text="Careful study behind every idea he builds." dimFrom={3} />
-        <button type="button" className="sd-pill is-outline" onClick={() => scrollTo('cx-oncure')}>
+        <button type="button" className="sd-pill is-outline" onClick={() => openSheet('oncure')}>
           Read the Oncure proposal
         </button>
       </div>
@@ -331,8 +334,8 @@ function Craft() {
 type Modal = 'awards' | 'life' | 'tutoring' | null;
 
 const WORK: { id: string; title: string; line: string; img: string; tint: string; open: () => void | Modal; anchor?: string }[] = [
-  { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030', open: () => scrollTo('cx-oncure') },
-  { id: 'trading', title: 'AI trading app', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a', open: () => scrollTo('cx-trading') },
+  { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030', open: () => openSheet('oncure') },
+  { id: 'trading', title: 'AI trading app', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a', open: () => openSheet('finance') },
   { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606', open: () => 'awards' },
   { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', open: () => 'life', anchor: 'cx-life' },
   { id: 'tutoring', title: 'Peer tutoring', line: 'Math and Science, at lunch and after school.', img: 'chalkboard-math', tint: '#0d1a10', open: () => 'tutoring', anchor: 'cx-tutoring' },
@@ -640,8 +643,6 @@ function Finale() {
   const site = [
     { l: 'About', id: 'cx-about' },
     { l: 'His work', id: 'sd-work' },
-    { l: 'Oncure', id: 'cx-oncure' },
-    { l: 'Trading app', id: 'cx-trading' },
     { l: 'Goals', id: 'cx-goals' },
   ];
   return (
@@ -688,8 +689,20 @@ function Finale() {
   );
 }
 
+/** The Oncure and trading app detail sheet, opened from anywhere with the 'sd-sheet' event. */
+function Sheet() {
+  const [id, setId] = useState<DetailId | null>(null);
+  useEffect(() => {
+    const open = (e: Event) => setId((e as CustomEvent<DetailId>).detail);
+    window.addEventListener('sd-sheet', open);
+    return () => window.removeEventListener('sd-sheet', open);
+  }, []);
+  return <DetailSheet id={id} origin={null} onClose={() => setId(null)} theme="classic" />;
+}
+
 export const StrideTop = () => (
   <>
+    <Sheet />
     <Hero />
     <Marquee />
     <About />

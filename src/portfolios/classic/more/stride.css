@@ -572,6 +572,7 @@
 /* --- work gallery -------------------------------------------------------------------------- */
 .sd-work {
   position: relative;
+  clip-path: inset(0);
   padding: 0 5vw 20vh;
   background: radial-gradient(70% 50% at 50% 50%, var(--tint, #0b1030), #000 75%);
   color: #fff;
