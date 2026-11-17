@@ -8,8 +8,6 @@ coverage
 playwright-report
 test-results
 
-# Private: the resume lists his email, phone and ZIP code (not for a public repository).
-public/assets/Shreyas_Ballari_Resume.pdf
 # Local Claude Code permissions.
 .claude/settings.local.json
 .claude/settings.json

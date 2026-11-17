@@ -40,8 +40,8 @@ export const profile = {
 export const contact = {
   email: 'shreyasballari2010@gmail.com',
   phone: '415-581-5887',
-  /** The public copy of his resume (without the home-address line). */
-  resume: `${import.meta.env.BASE_URL}assets/Shreyas_Ballari_Resume_public.pdf`,
+  /** His resume (the original file, chosen by the family on 2026-11-17). */
+  resume: `${import.meta.env.BASE_URL}assets/Shreyas_Ballari_Resume.pdf`,
 };
 
 /** Subjects he is most drawn to. */

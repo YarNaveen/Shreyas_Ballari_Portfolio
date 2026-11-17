@@ -2498,3 +2498,50 @@ button.sp-capsule-room {
     grid-template-rows: repeat(3, 42px);
   }
 }
+
+/* Profile card: the photo fills the top and the name and buttons sit under it, so his face is
+   never covered. */
+.w-profile {
+  display: flex;
+  flex-direction: column;
+}
+.w-profile .w-portrait {
+  position: relative;
+  inset: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  object-position: 50% 18%;
+}
+.w-profile .w-portrait-text {
+  flex: none;
+  margin: 0;
+  gap: 6px;
+  padding: 12px;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+}
+.w-profile .w-portrait-text > b {
+  font-size: 20px;
+  line-height: 24px;
+}
+.w-profile .w-row {
+  gap: 6px;
+}
+.w-profile .w-reach {
+  margin-top: 2px;
+  flex-wrap: nowrap;
+}
+.w-profile .w-reach .rc-btn:not(.is-main) span {
+  display: none;
+}
+.w-profile .w-reach .rc-btn:not(.is-main) {
+  padding: 6px;
+}
+.os-w.w-profile {
+  padding: 0;
+}
+.os-w.w-profile .w-portrait-text {
+  margin: 0;
+}

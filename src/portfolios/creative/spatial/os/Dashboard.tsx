@@ -86,7 +86,7 @@ function ProfileW() {
             <ChatsCircle weight="bold" aria-hidden="true" /> Ask
           </button>
         </div>
-        <Reach tone="auto" compact className="w-reach" />
+        <Reach tone="auto" compact short className="w-reach" />
       </div>
     </>
   );
