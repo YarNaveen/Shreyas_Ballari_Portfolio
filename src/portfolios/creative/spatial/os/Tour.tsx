@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ChatsCircle, HandPointing, Info, Play, SpeakerHigh, SquaresFour, X } from '@phosphor-icons/react';
 import { HOTSPOTS, hotspotEls, type Hotspot } from '../house/hotspots';
 import { CHAPTERS } from '../story/chapters';
@@ -253,21 +253,9 @@ export function Tour() {
         </article>
       )}
 
-      {/* Move through the house: forward and back between rooms, turn left and right. */}
-      <div className="tour-pad" role="group" aria-label="Move through the house">
-        <button type="button" className="tour-pad-btn is-up" aria-label="Next room" data-voice="next room" disabled={last} onClick={() => spatial.tourStep(1, TOUR.length)}>
-          <ArrowUp weight="bold" />
-        </button>
-        <button type="button" className="tour-pad-btn is-left" aria-label="Turn left" data-voice="turn left" onClick={() => window.dispatchEvent(new CustomEvent('sp-look', { detail: 0.6 }))}>
-          <ArrowLeft weight="bold" />
-        </button>
-        <button type="button" className="tour-pad-btn is-right" aria-label="Turn right" data-voice="turn right" onClick={() => window.dispatchEvent(new CustomEvent('sp-look', { detail: -0.6 }))}>
-          <ArrowRight weight="bold" />
-        </button>
-        <button type="button" className="tour-pad-btn is-down" aria-label="Previous room" data-voice="previous room" disabled={at === 0} onClick={() => spatial.tourStep(-1, TOUR.length)}>
-          <ArrowDown weight="bold" />
-        </button>
-      </div>
+      {/* Move through the house with a joystick: push up or down for the next or previous room,
+          hold left or right to turn. */}
+      <Joystick canNext={!last} canBack={at > 0} />
 
       <div className="tour-progress" aria-hidden="true">
         <i style={{ transform: `scaleX(${Math.min(1, target / (TOUR.length - 1))})` }} />
@@ -277,6 +265,102 @@ export function Tour() {
           <span className="tour-mouse" aria-hidden="true" /> Swipe or use the arrows to walk room to room
         </p>
       )}
+    </div>
+  );
+}
+
+/** A thumb joystick: drag the knob up or down to walk to the next or previous room, and hold it
+ *  left or right to turn. Arrow keys do the same when it has focus. */
+function Joystick({ canNext, canBack }: { canNext: boolean; canBack: boolean }) {
+  const base = useRef<HTMLDivElement>(null);
+  const [knob, setKnob] = useState({ x: 0, y: 0, active: false });
+  const fired = useRef(false);
+  const turnX = useRef(0);
+  const timer = useRef(0);
+  const R = 40;
+
+  const step = (dir: 1 | -1) => {
+    if ((dir === 1 && !canNext) || (dir === -1 && !canBack)) return;
+    spatial.tourStep(dir, TOUR.length);
+  };
+  const startTurning = () => {
+    if (timer.current) return;
+    timer.current = window.setInterval(() => {
+      if (Math.abs(turnX.current) > 0.25) window.dispatchEvent(new CustomEvent('sp-look', { detail: -turnX.current * 0.32 }));
+    }, 60);
+  };
+  const stopTurning = () => {
+    window.clearInterval(timer.current);
+    timer.current = 0;
+    turnX.current = 0;
+  };
+  useEffect(() => stopTurning, []);
+
+  const moveTo = (cx: number, cy: number) => {
+    const r = base.current!.getBoundingClientRect();
+    let dx = cx - (r.left + r.width / 2);
+    let dy = cy - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy);
+    if (d > R) {
+      dx = (dx / d) * R;
+      dy = (dy / d) * R;
+    }
+    setKnob({ x: dx, y: dy, active: true });
+    turnX.current = dx / R;
+    // A firm push up or down walks one room; let go (or come back to the middle) to walk again.
+    if (!fired.current && Math.abs(dy) > R * 0.7 && Math.abs(dy) > Math.abs(dx)) {
+      fired.current = true;
+      step(dy < 0 ? 1 : -1);
+    } else if (Math.hypot(dx, dy) < R * 0.3) fired.current = false;
+  };
+  const onDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    fired.current = false;
+    moveTo(e.clientX, e.clientY);
+    startTurning();
+  };
+  const onMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    if (knob.active) moveTo(e.clientX, e.clientY);
+  };
+  const onUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setKnob({ x: 0, y: 0, active: false });
+    fired.current = false;
+    stopTurning();
+  };
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowUp') step(1);
+    else if (e.key === 'ArrowDown') step(-1);
+    else if (e.key === 'ArrowLeft') window.dispatchEvent(new CustomEvent('sp-look', { detail: 0.6 }));
+    else if (e.key === 'ArrowRight') window.dispatchEvent(new CustomEvent('sp-look', { detail: -0.6 }));
+    else return;
+    e.preventDefault();
+  };
+
+  return (
+    <div
+      ref={base}
+      className={`tour-stick ${knob.active ? 'is-active' : ''}`}
+      role="application"
+      tabIndex={0}
+      aria-label="Joystick: push up for the next room, down for the previous room, left or right to turn. Arrow keys work too."
+      data-voice="joystick"
+      onPointerDown={onDown}
+      onPointerMove={onMove}
+      onPointerUp={onUp}
+      onPointerCancel={onUp}
+      onKeyDown={onKey}
+    >
+      <svg className="tour-stick-arrows" viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M60 14 l-6 7 h12 z" className={canNext ? '' : 'is-off'} />
+        <path d="M60 106 l-6 -7 h12 z" className={canBack ? '' : 'is-off'} />
+        <path d="M14 60 l7 -6 v12 z" />
+        <path d="M106 60 l-7 -6 v12 z" />
+      </svg>
+      <span className="tour-stick-knob" style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} aria-hidden="true" />
     </div>
   );
 }
