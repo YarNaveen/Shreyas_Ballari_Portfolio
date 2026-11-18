@@ -1,0 +1,327 @@
+/* Classic motion: a different entrance for each section, scroll-linked effects and hover tilt
+   (motion.ts). States that hide content are scoped to html.sd-motion, which is only set when the
+   visitor has not asked for reduced motion, so nothing stays hidden without JavaScript. */
+
+/* --- scroll progress ----------------------------------------------------------------------- */
+.sd-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 95;
+  height: 3px;
+  background: linear-gradient(90deg, #1f4dff, #8fb0ff);
+  box-shadow: 0 0 12px rgba(80, 130, 255, 0.8);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+/* --- About: bento cards flip up one by one; the photo is unveiled from the bottom -------------- */
+html.sd-motion .sd-bento {
+  perspective: 1200px;
+}
+html.sd-motion .sd-bento > .sd-b {
+  transform: rotateX(22deg) translateY(72px) scale(0.94);
+  transform-origin: 50% 100%;
+  transition: opacity 900ms var(--sd-ease) calc(var(--i, 0) * 120ms), filter 900ms var(--sd-ease) calc(var(--i, 0) * 120ms), transform 1100ms var(--sd-ease) calc(var(--i, 0) * 120ms), rotate 400ms var(--sd-ease);
+}
+html.sd-motion .sd-bento.is-in > .sd-b {
+  transform: none;
+}
+html.sd-motion .sd-b-photo img {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1300ms var(--sd-ease) 200ms, transform 1200ms var(--sd-ease);
+}
+html.sd-motion .sd-bento.is-in .sd-b-photo img {
+  clip-path: inset(0 0 0 0);
+}
+html.sd-motion .sd-b-big {
+  display: inline-block;
+  transform: translateY(40%);
+  opacity: 0;
+  transition: transform 900ms var(--sd-ease) calc(300ms + var(--i, 0) * 120ms), opacity 900ms var(--sd-ease) calc(300ms + var(--i, 0) * 120ms);
+}
+html.sd-motion .sd-bento.is-in .sd-b-big {
+  transform: none;
+  opacity: 1;
+}
+
+/* --- Marquee: rows slide in from opposite sides and lean with scroll speed ------------------- */
+.sd-mq-row {
+  transform: skewX(var(--skew, 0deg));
+  transition: transform 200ms linear;
+}
+html.sd-motion .sd-marquee .sd-mq-row {
+  opacity: 0;
+  translate: -12% 0;
+  transition: transform 200ms linear, opacity 900ms var(--sd-ease), translate 1200ms var(--sd-ease);
+}
+html.sd-motion .sd-marquee .sd-mq-row.is-rev {
+  translate: 12% 0;
+}
+html.sd-motion .sd-marquee.is-seen .sd-mq-row {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* --- How he works: the photo wipes open from the left; cards swing in from both sides --------- */
+html.sd-motion .sd-craft-pic figure {
+  clip-path: inset(0 100% 0 0 round 24px);
+  transition: clip-path 1400ms var(--sd-ease), opacity 800ms var(--sd-ease), filter 800ms var(--sd-ease), transform 800ms var(--sd-ease) !important;
+}
+html.sd-motion .sd-craft-pic.is-in figure {
+  clip-path: inset(0 0 0 0 round 24px);
+}
+html.sd-motion .sd-craft-pic figcaption {
+  opacity: 0;
+  translate: 0 16px;
+  transition: opacity 700ms var(--sd-ease) 900ms, translate 700ms var(--sd-ease) 900ms;
+}
+html.sd-motion .sd-craft-pic.is-in figcaption {
+  opacity: 1;
+  translate: 0 0;
+}
+html.sd-motion .sd-cols {
+  perspective: 1000px;
+}
+html.sd-motion .sd-cols article:nth-child(odd) {
+  transform: translateX(-48px) rotate(-3deg);
+}
+html.sd-motion .sd-cols article:nth-child(even) {
+  transform: translateX(48px) rotate(3deg);
+}
+html.sd-motion .sd-cols.is-in article {
+  transform: none;
+}
+html.sd-motion .sd-lines i {
+  transform-origin: 50% 0;
+  scale: 1 0;
+  transition: scale 1600ms var(--sd-ease);
+}
+html.sd-motion .sd-craft.is-seen .sd-lines i {
+  scale: 1 1;
+}
+
+/* --- His work: the title of the card in front rises into place ----------------------------- */
+.sd-card img {
+  scale: 1.14;
+}
+.sd-card-btn h3 {
+  translate: 0 18px;
+  opacity: 0.5;
+  transition: translate 700ms var(--sd-ease), opacity 700ms var(--sd-ease);
+}
+.sd-card.is-on .sd-card-btn h3 {
+  translate: 0 0;
+  opacity: 1;
+}
+
+/* --- Journey: each dot pops and keeps a soft pulse ----------------------------------------- */
+html.sd-motion .sd-jr-dot {
+  scale: 0;
+  transition: scale 600ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(200ms + var(--i, 0) * 90ms);
+}
+html.sd-motion .sd-jr.is-in .sd-jr-dot {
+  scale: 1;
+}
+.sd-jr-dot::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 1px solid rgba(143, 176, 255, 0.6);
+  border-radius: 50%;
+  animation: sd-ping 2.4s var(--sd-ease) infinite;
+  animation-delay: calc(var(--i, 0) * 300ms);
+}
+@keyframes sd-ping {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* --- Oncure film: the heading rises, the frame grows into place (scale set by scroll) ------- */
+html.sd-motion .sd-film-head > * {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 800ms var(--sd-ease), translate 800ms var(--sd-ease);
+}
+html.sd-motion .sd-film.is-seen .sd-film-head > * {
+  opacity: 1;
+  translate: 0 0;
+}
+html.sd-motion .sd-film.is-seen .sd-film-head > :nth-child(2) {
+  transition-delay: 120ms;
+}
+html.sd-motion .sd-film.is-seen .sd-film-head > :nth-child(3) {
+  transition-delay: 240ms;
+}
+.sd-film .fv.is-free {
+  will-change: scale;
+}
+
+/* --- Goals: steps turn in like pages, arrows pop between them ----------------------------- */
+html.sd-motion .gp {
+  perspective: 1200px;
+}
+html.sd-motion .gp > .gp-step {
+  transform: rotateY(-28deg) translateX(40px) scale(0.92);
+  transform-origin: 0 50%;
+}
+html.sd-motion .gp.is-in > .gp-step {
+  transform: none;
+}
+html.sd-motion .gp > .gp-arrow {
+  transform: scale(0);
+  transition: opacity 500ms var(--sd-ease) calc(400ms + var(--i, 0) * 110ms), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(400ms + var(--i, 0) * 110ms) !important;
+}
+html.sd-motion .gp.is-in > .gp-arrow {
+  transform: scale(1);
+}
+@media (max-width: 640px) {
+  html.sd-motion .gp.is-in > .gp-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+/* --- Contact: the form builds itself, the underlines draw in -------------------------------- */
+html.sd-motion .sd-contact .ct-form > *,
+html.sd-motion .sd-contact .ct-reach {
+  opacity: 0;
+  translate: 0 24px;
+  transition: opacity 700ms var(--sd-ease), translate 700ms var(--sd-ease);
+}
+html.sd-motion .sd-contact.is-seen .ct-reach,
+html.sd-motion .sd-contact.is-seen .ct-form > * {
+  opacity: 1;
+  translate: 0 0;
+}
+html.sd-motion .sd-contact.is-seen .ct-form > :nth-child(1) { transition-delay: 120ms; }
+html.sd-motion .sd-contact.is-seen .ct-form > :nth-child(2) { transition-delay: 220ms; }
+html.sd-motion .sd-contact.is-seen .ct-form > :nth-child(3) { transition-delay: 320ms; }
+html.sd-motion .sd-contact.is-seen .ct-form > :nth-child(4) { transition-delay: 420ms; }
+html.sd-motion .sd-contact.is-seen .ct-form > :nth-child(5) { transition-delay: 520ms; }
+.sd-form input,
+.sd-form textarea {
+  background-image: linear-gradient(#1f4dff, #1f4dff);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 600ms var(--sd-ease), border-color 300ms var(--sd-ease);
+}
+.sd-form input:focus,
+.sd-form textarea:focus {
+  background-size: 100% 2px;
+}
+
+/* --- Finale: footer columns rise in turn --------------------------------------------------- */
+html.sd-motion .sd-foot > * {
+  opacity: 0;
+  translate: 0 32px;
+  transition: opacity 800ms var(--sd-ease), translate 800ms var(--sd-ease);
+}
+html.sd-motion .sd-finale.is-seen .sd-foot > * {
+  opacity: 1;
+  translate: 0 0;
+}
+html.sd-motion .sd-finale.is-seen .sd-foot > :nth-child(2) { transition-delay: 100ms; }
+html.sd-motion .sd-finale.is-seen .sd-foot > :nth-child(3) { transition-delay: 200ms; }
+html.sd-motion .sd-finale.is-seen .sd-foot > :nth-child(4) { transition-delay: 300ms; }
+html.sd-motion .sd-finale.is-seen .sd-foot > :nth-child(5) { transition-delay: 400ms; }
+
+/* --- Inner pages: each block's heading slides up, notes and verdicts fade up --------------- */
+html.sd-motion .pg-bhead,
+html.sd-motion .pg-note,
+html.sd-motion .pg-media,
+html.sd-motion .pg-mock,
+html.sd-motion .pg-verdict,
+html.sd-motion .pg-prose {
+  opacity: 0;
+  translate: 0 40px;
+  transition: opacity 900ms var(--sd-ease), translate 900ms var(--sd-ease);
+}
+html.sd-motion .pg-bhead.is-seen,
+html.sd-motion .pg-note.is-seen,
+html.sd-motion .pg-media.is-seen,
+html.sd-motion .pg-mock.is-seen,
+html.sd-motion .pg-verdict.is-seen,
+html.sd-motion .pg-prose.is-seen {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* --- Hover: 3D tilt with a soft glare (set by motion.ts) ---------------------------------- */
+.sd-b,
+.sd-card,
+.sd-cols article,
+.gp-step,
+.pg-card,
+.pg-stat,
+.vx-cert-in,
+.sd-g {
+  position: relative;
+}
+.sd-cards li,
+.pg-cards,
+.pg-stats,
+.vx-cert {
+  perspective: 1000px;
+}
+.is-tilt {
+  transition-property: opacity, filter, transform, rotate, background-color, border-color, color, box-shadow !important;
+  transition-duration: 800ms, 800ms, 600ms, 200ms, 300ms, 300ms, 300ms, 300ms !important;
+}
+.is-tilt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.22), transparent 55%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.sd-card.is-tilt {
+  box-shadow: 0 50px 140px rgba(0, 0, 0, 0.7), 0 0 80px rgba(31, 77, 255, 0.25);
+}
+
+/* --- Buttons: a light sweep on hover -------------------------------------------------------- */
+.sd-pill {
+  position: relative;
+  overflow: hidden;
+}
+.sd-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  translate: -120% 0;
+  transition: translate 700ms var(--sd-ease);
+  pointer-events: none;
+}
+.sd-pill:hover::after {
+  translate: 120% 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-progress,
+  .sd-jr-dot::after,
+  .sd-pill::after {
+    display: none;
+  }
+  .sd-mq-row {
+    transform: none;
+  }
+}
+/* The work cards scale with the scroll every frame: only the tilt and shadow ease. */
+.sd-card.is-tilt {
+  transition-property: rotate, box-shadow !important;
+  transition-duration: 200ms, 400ms !important;
+}

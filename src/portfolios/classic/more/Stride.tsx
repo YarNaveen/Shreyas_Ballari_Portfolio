@@ -4,6 +4,7 @@ import { achievements, activities, contact, courses, journey, languages, profile
 import { ContactPanel } from '@/features/details/Contact';
 import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
 import { Film } from '../flow/sequel';
+import { useClassicMotion } from './motion';
 import { useSeen } from './ui';
 
 /**
@@ -645,6 +646,7 @@ function Finale() {
 
 /** Hosts the inner pages: anything can open one with the 'sd-page' event. */
 function PageHost() {
+  useClassicMotion();
   const [id, setId] = useState<PageId | null>(null);
   useEffect(() => {
     const open = (e: Event) => setId((e as CustomEvent<PageId>).detail);

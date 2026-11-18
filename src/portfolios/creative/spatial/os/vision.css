@@ -2460,7 +2460,7 @@ button.sp-capsule-room {
   }
   .os-board .w-chat {
     order: 6;
-    min-height: 0;
+    min-height: 176px;
   }
   .os-board .w-games {
     order: 7;

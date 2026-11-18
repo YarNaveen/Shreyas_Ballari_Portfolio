@@ -1281,7 +1281,9 @@
   }
   .sd-film .fv.is-free video {
     position: relative;
-    inset: auto;
+    inset: auto !important;
+    translate: none !important;
+    transform: none !important;
     aspect-ratio: 16 / 9;
     height: auto;
     border-radius: 16px;

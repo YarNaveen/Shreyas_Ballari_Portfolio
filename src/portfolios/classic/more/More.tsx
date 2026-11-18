@@ -4,6 +4,7 @@ import './more.css';
 import './stride.css';
 import './pages.css';
 import './viz.css';
+import './motion.css';
 
 /**
  * After the scroll film: a hero, marquee, about and bento cards, a white grid section and the work

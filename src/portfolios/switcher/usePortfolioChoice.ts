@@ -13,27 +13,19 @@ export const PORTFOLIOS = [
 export type PortfolioId = (typeof PORTFOLIOS)[number]['id'];
 
 const DEFAULT: PortfolioId = 'creative';
-// v2: Creative became the first tab; older saved picks are ignored once.
-const STORAGE_KEY = 'portfolio-style-v2';
 const isPortfolio = (v: string | null): v is PortfolioId => PORTFOLIOS.some((p) => p.id === v);
 
 /**
  * Which portfolio to show. Pre-rendered HTML is the default (Creative); after load the choice comes
- * from `?style=` first, then the visitor's last pick, then Creative.
+ * from `?style=` when the link has one, else Creative.
  */
 export function usePortfolioChoice() {
   const [choice, setChoice] = useState<PortfolioId>(DEFAULT);
 
   useEffect(() => {
+    // Creative always opens first; only a link with ?style= opens another style.
     const fromUrl = new URLSearchParams(location.search).get('style');
-    let stored: string | null = null;
-    try {
-      stored = localStorage.getItem(STORAGE_KEY);
-    } catch {
-      // Storage unavailable: fall back to the default.
-    }
     if (isPortfolio(fromUrl)) setChoice(fromUrl);
-    else if (isPortfolio(stored)) setChoice(stored);
   }, []);
 
   // Each style styles the page behind it (html background, overscroll colour).
@@ -43,11 +35,6 @@ export function usePortfolioChoice() {
 
   const choose = useCallback((next: PortfolioId) => {
     setChoice(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      // Storage unavailable: the choice lasts for this visit only.
-    }
     const url = new URL(location.href);
     url.searchParams.set('style', next);
     url.hash = '';

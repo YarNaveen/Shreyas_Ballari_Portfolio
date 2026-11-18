@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, type CSSProperties, type ReactNode, type R
 
 /** Shared pieces of the Classic sections: reveal on first sight, two-tone headlines, section frame. */
 
-/** Marks an element `is-in` the first time it is seen (the CSS plays its entrance). */
+/** Marks an element `is-in` while it is in view (the CSS plays its entrance each time). */
 export function useSeen<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   useEffect(() => {
@@ -12,14 +12,18 @@ export function useSeen<T extends HTMLElement>() {
       el.classList.add('is-in');
       return;
     }
+    // In view → play the entrance; fully out of view → reset, so it plays again next time
+    // (scrolling down or back up). Reduced motion: shown once and left alone.
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e?.isIntersecting) {
+        if (!e) return;
+        if (e.intersectionRatio >= 0.12) {
           el.classList.add('is-in');
-          io.disconnect();
-        }
+          if (still) io.disconnect();
+        } else if (!e.isIntersecting) el.classList.remove('is-in');
       },
-      { threshold: 0.12 },
+      { threshold: [0, 0.12] },
     );
     io.observe(el);
     return () => io.disconnect();
