@@ -47,10 +47,27 @@ export function Dock({ go, active }: { go: (id: string) => void; active: string 
   }, []);
   const closeT = useRef(0);
   const root = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    const el = root.current;
+    if (!vv || !el) return;
+    const pin = () => {
+      el.style.transform = `translate3d(0, ${Math.max(0, vv.offsetTop).toFixed(1)}px, 0)`;
+    };
+    pin();
+    vv.addEventListener('scroll', pin);
+    vv.addEventListener('resize', pin);
+    return () => {
+      vv.removeEventListener('scroll', pin);
+      vv.removeEventListener('resize', pin);
+    };
+  }, []);
 
+  /** Phones and small tablets: the bar never widens; the menu button opens the full sheet. */
+  const small = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
   const show = () => {
     window.clearTimeout(closeT.current);
-    setOpen(true);
+    if (!small()) setOpen(true);
   };
   const hide = () => {
     window.clearTimeout(closeT.current);
@@ -136,15 +153,16 @@ export function Dock({ go, active }: { go: (id: string) => void; active: string 
           )}
         </div>
 
-        <button type="button" className="dk-toggle" aria-label={open ? 'Menu' : 'Open the menu'} aria-expanded={open} onClick={() => (open ? setSheet((s) => !s) : setOpen(true))}>
+        <button type="button" className="dk-toggle" aria-label={sheet ? 'Close the menu' : 'Open the menu'} aria-expanded={open || sheet} onClick={() => (small() ? (setOpen(false), setSheet((s) => !s)) : open ? setSheet((s) => !s) : setOpen(true))}>
           {sheet ? <X weight="bold" /> : <List weight="bold" />}
         </button>
       </div>
 
       {/* Small screens: the links drop down under the bar. */}
       <div className="dk-sheet" hidden={!sheet}>
-        {NAV_ITEMS.map((n) => (
-          <button key={n.id} type="button" onClick={() => jump(n.id)}>
+        <p className="dk-sheet-name">{'Shreyas Ballari'}</p>
+        {NAV_ITEMS.map((n, i) => (
+          <button key={n.id} type="button" className={active === n.id ? 'is-on' : ''} style={{ ['--i' as string]: i }} onClick={() => jump(n.id)}>
             {n.label} <ArrowUpRight weight="bold" aria-hidden="true" />
           </button>
         ))}

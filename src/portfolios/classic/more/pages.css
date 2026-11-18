@@ -1372,3 +1372,27 @@
     padding: 64px 0;
   }
 }
+
+/* Footer columns may shrink; long words (the email) wrap instead of pushing past the edge. */
+.sd-foot {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.sd-foot > * {
+  min-width: 0;
+}
+.sd-foot a,
+.sd-foot button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+@media (max-width: 900px) {
+  .sd-foot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.sd-fin-head {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}

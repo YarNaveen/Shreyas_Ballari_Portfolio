@@ -398,7 +398,9 @@ function Work() {
         if (!still) {
           const sc = 1 - Math.min(0.14, Math.abs(d) * 0.16);
           const op = d < 0 ? Math.max(0.25, 1 + d * 0.9) : 1;
-          c.style.transform = `scale(${sc.toFixed(4)})`;
+          // Below the centre a card lies back like a page on a desk and stands up as it arrives.
+          const tilt = d > 0 ? Math.min(32, d * 48) : 0;
+          c.style.transform = `perspective(1400px) rotateX(${tilt.toFixed(2)}deg) scale(${sc.toFixed(4)})`;
           c.style.opacity = op.toFixed(3);
         }
       });

@@ -9,8 +9,10 @@ import { useEffect } from 'react';
  * Nothing runs for visitors who ask for reduced motion; then every section simply shows.
  */
 
-const SEEN = '.sd-marquee, .sd-craft, .sd-film, .sd-goals, .sd-contact, .sd-finale, .pg-bhead, .pg-note, .pg-media, .pg-mock, .pg-verdict, .pg-prose';
+const SEEN = '.sd-momentum, .sd-marquee, .sd-craft, .sd-film, .sd-goals, .sd-contact, .sd-finale, .pg-bhead, .pg-note, .pg-media, .pg-mock, .pg-verdict, .pg-prose';
 const TILT = '.sd-b, .sd-card, .sd-cols article, .gp-step, .pg-card, .pg-stat, .vx-cert-in, .sd-g';
+const CURTAIN = '.sd-work, .sd-goals, .sd-finale';
+const COUNT = '.sd-b-big, .sd-b-over b';
 const PARALLAX = '.sd-craft-pic img, .sd-b-photo img, .sd-card img, .pg-hero img';
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
@@ -44,6 +46,32 @@ export function useClassicMotion() {
     const onPage = () => window.setTimeout(scan, 120);
     window.addEventListener('sd-page', onPage);
 
+    // --- numbers count up each time they come into view ---
+    const counted = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const el = e.target as HTMLElement;
+          const final = el.dataset.final ?? el.textContent ?? '';
+          el.dataset.final = final;
+          if (!e.isIntersecting) {
+            el.textContent = final;
+            continue;
+          }
+          if (final.includes('·')) continue; // year ranges stay as they are
+          const t0 = performance.now();
+          const step = (now: number) => {
+            const k = Math.min(1, (now - t0) / 1400);
+            const ease = 1 - Math.pow(1 - k, 3);
+            el.textContent = final.replace(/\d+/g, (n) => String(Math.round(Number(n) * ease)));
+            if (k < 1 && el.isConnected) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.6 },
+    );
+    document.querySelectorAll(COUNT).forEach((el) => counted.observe(el));
+
     // --- scroll-linked effects ---
     const bar = document.createElement('div');
     bar.className = 'sd-progress';
@@ -76,6 +104,30 @@ export function useClassicMotion() {
         const p = clamp((vh - r.top) / (vh * 0.85), 0, 1);
         film.style.scale = (0.84 + 0.16 * p).toFixed(4);
         film.style.borderRadius = `${(48 - 24 * p).toFixed(1)}px`;
+      }
+
+      // Curtains: a section slides over the one before it with rounded top corners.
+      document.querySelectorAll<HTMLElement>(CURTAIN).forEach((s) => {
+        const r = s.getBoundingClientRect();
+        if (r.top > vh || r.bottom < 0) return;
+        const p = clamp((vh - r.top) / (vh * 0.7), 0, 1);
+        if (p >= 1) {
+          s.style.scale = '';
+          s.style.borderRadius = '';
+          return;
+        }
+        s.style.scale = (0.92 + 0.08 * p).toFixed(4);
+        const rr = (1 - p) * 56;
+        s.style.borderRadius = `${rr.toFixed(1)}px ${rr.toFixed(1)}px 0 0`;
+      });
+
+      // The closing headline settles from large to its size as it arrives.
+      const fin = document.querySelector<HTMLElement>('.sd-fin-h');
+      if (fin) {
+        const r = fin.getBoundingClientRect();
+        const p = clamp((vh - r.top) / (vh * 0.8), 0, 1);
+        const big = window.innerWidth < 700 ? 0.12 : 0.35;
+        fin.style.scale = (1 + big - big * p).toFixed(4);
       }
 
       const mk = document.querySelector<HTMLElement>('.sd-hero-mock .mk');
@@ -134,6 +186,7 @@ export function useClassicMotion() {
     return () => {
       root.classList.remove('sd-motion');
       io.disconnect();
+      counted.disconnect();
       cancelAnimationFrame(raf);
       bar.remove();
       window.removeEventListener('sd-page', onPage);
