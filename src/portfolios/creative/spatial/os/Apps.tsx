@@ -30,6 +30,7 @@ import {
   SwimmingPool,
   Target,
   UserCircle,
+  EnvelopeSimple,
 } from '@phosphor-icons/react';
 import { activities, profile, volunteering } from '@/content/portfolio';
 import { createGuitar, TRACKS, type GuitarEngine, type GuitarState, type TrackId } from '../fun';
@@ -337,10 +338,16 @@ export function HomeView() {
           </span>
           <small>Profile</small>
         </button>
+        <button type="button" className="os-hv-app" style={st(1)} data-voice="contact" onClick={() => (spatial.set({ homeView: false }), spatial.openWindow('contact'))}>
+          <span className="os-hv-ico" style={{ '--tint': '#1f4dff' } as CSSProperties}>
+            <EnvelopeSimple weight="fill" aria-hidden="true" />
+          </span>
+          <small>Contact</small>
+        </button>
         {CHAPTERS.map((c, i) => {
           const I = c.icon;
           return (
-            <button key={c.id} type="button" className="os-hv-app" style={st(i + 1)} data-voice={c.title} onClick={() => spatial.goChapter(c.id)}>
+            <button key={c.id} type="button" className="os-hv-app" style={st(i + 2)} data-voice={c.title} onClick={() => spatial.goChapter(c.id)}>
               <span className="os-hv-ico" style={{ '--tint': c.tint } as CSSProperties}>
                 <I weight="fill" aria-hidden="true" />
               </span>
@@ -368,6 +375,7 @@ export function ControlCenter({ voice, hands, setHands, replayIntro }: { voice: 
     { k: 'Voice', on: voice.listening, icon: Microphone, act: () => (spatial.set({ control: false }), voice.listening ? voice.stop() : voice.start()) },
     { k: 'Hands', on: hands, icon: HandWaving, act: () => setHands(!hands) },
     { k: 'Profile', on: false, icon: UserCircle, act: () => (spatial.set({ control: false }), spatial.openWindow('profile')) },
+    { k: 'Contact', on: false, icon: EnvelopeSimple, act: () => (spatial.set({ control: false }), spatial.openWindow('contact')) },
     { k: 'House tour', on: false, icon: MapTrifold, act: () => (spatial.set({ control: false }), replayIntro()) },
     { k: auto ? 'Stop reading' : 'Read apps aloud', on: auto, icon: Play, act: () => (auto ? spatial.pause() : spatial.play()) },
     // The toolbar's other actions, so on phones this one panel holds every control.

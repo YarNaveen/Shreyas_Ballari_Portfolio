@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { Reach } from '@/features/details/Reach';
-import { ArrowRight, ArrowsOutCardinal, Briefcase, ChatsCircle, Dna, Flask, GameController, Guitar, HandFist, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, SwimmingPool, Trophy, X } from '@phosphor-icons/react';
+import { ArrowRight, ArrowsOutCardinal, EnvelopeSimple, Briefcase, ChatsCircle, Dna, Flask, GameController, Guitar, HandFist, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, SwimmingPool, Trophy, X } from '@phosphor-icons/react';
 import { achievements, activities, profile } from '@/content/portfolio';
 import { spatial, useSpatial } from '../store';
 import { useDrag } from './dnd';
@@ -84,6 +84,9 @@ function ProfileW() {
           </button>
           <button type="button" className="os-chip" data-voice="ask about him" onClick={() => askAI('Who is Shreyas?')}>
             <ChatsCircle weight="bold" aria-hidden="true" /> Ask
+          </button>
+          <button type="button" className="os-chip" data-voice="contact" onClick={() => spatial.openWindow('contact')}>
+            <EnvelopeSimple weight="bold" aria-hidden="true" /> Message
           </button>
         </div>
         <Reach tone="auto" compact short className="w-reach" />

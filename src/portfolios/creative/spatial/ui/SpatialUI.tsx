@@ -6,6 +6,7 @@ import { playUi, spatial, useSpatial } from '../store';
 import { ActivitiesApp, ControlCenter, FinanceApp, GamesApp, HomeView } from '../os/Apps';
 import { Dashboard } from '../os/Dashboard';
 import { ProfileWindow } from '../os/Profile';
+import { ContactWindow } from '../os/ContactWindow';
 import { OSWindow } from '../os/Window';
 import { envNow } from '../os/localTime';
 import { ChatBubble } from '../os/ChatBubble';
@@ -264,6 +265,12 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
         <>
           <div className="os-scrim" aria-hidden="true" onClick={() => spatial.closeWindow('profile')} />
           <ProfileWindow />
+        </>
+      )}
+      {windows.includes('contact') && (
+        <>
+          <div className="os-scrim" aria-hidden="true" onClick={() => spatial.closeWindow('contact')} />
+          <ContactWindow />
         </>
       )}
       {homeView && <HomeView />}

@@ -143,6 +143,10 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
       spatial.set({ env, envAuto: false });
       return `Light: ${env}`;
     }
+  if (has('contact', 'message', 'send a message', 'contact form', 'get in touch')) {
+    spatial.openWindow('contact');
+    return 'Opening the contact form';
+  }
   if (has('profile', 'about him', 'his profile')) {
     spatial.openWindow('profile');
     return 'Opening his profile';

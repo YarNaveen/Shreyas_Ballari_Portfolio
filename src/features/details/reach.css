@@ -164,3 +164,60 @@
   height: 1px !important;
   opacity: 0 !important;
 }
+/* Studio: a "Message" button beside the resume buttons that opens the contact form in the phone. */
+.fo-top-msg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #1f4dff;
+  color: #fff;
+  font: 600 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fo-top-msg:hover {
+  transform: translateY(-2px);
+  background: #3b63ff;
+}
+.fo-top-msg:focus-visible {
+  outline: 2px solid #8fb0ff;
+  outline-offset: 2px;
+}
+@media (max-width: 560px) {
+  .fo-top-msg {
+    order: 4;
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 560px) {
+  .fo-top {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'logo modes' 'msg reach';
+    align-items: center;
+    row-gap: 8px;
+  }
+  .fo-top .fo-logo {
+    grid-area: logo;
+  }
+  .fo-top .fo-modes {
+    grid-area: modes;
+    justify-self: end;
+  }
+  .fo-top .fo-top-msg {
+    grid-area: msg;
+    order: 0;
+    justify-self: start;
+  }
+  .fo-top .fo-top-reach {
+    grid-area: reach;
+    order: 0;
+    width: auto;
+    justify-self: end;
+    justify-content: flex-end;
+  }
+}

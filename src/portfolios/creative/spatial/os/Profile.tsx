@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { Reach } from '@/features/details/Reach';
-import { Books, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, House, Rocket, SpeakerHigh, Sparkle, Trophy } from '@phosphor-icons/react';
+import { Books, EnvelopeSimple, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, House, Rocket, SpeakerHigh, Sparkle, Trophy } from '@phosphor-icons/react';
 import { achievements, courses, goals, languages, profile, researchInterests, resume, subjects } from '@/content/portfolio';
 import { speak } from '../story/narrator';
 import { spatial } from '../store';
@@ -54,6 +54,9 @@ export function ProfileWindow() {
                 {profile.grade} · {profile.school}
               </span>
               <Reach tone="dark" compact className="os-reach" />
+              <button type="button" className="os-chip is-solid os-msg" data-voice="send a message" onClick={() => spatial.openWindow('contact')}>
+                <EnvelopeSimple weight="bold" aria-hidden="true" /> Send a message
+              </button>
             </figcaption>
             <span className="os-hero-sheen" aria-hidden="true" />
           </figure>

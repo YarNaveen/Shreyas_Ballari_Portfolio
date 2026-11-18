@@ -426,6 +426,9 @@ export function StudioPortfolio() {
       <header className="fo-top">
         <span className="fo-logo fo-display">{profile.name}</span>
         <Reach tone="light" compact className="fo-top-reach" />
+        <button type="button" className="fo-top-msg" data-voice="send a message" onClick={talk}>
+          <EnvelopeSimple weight="bold" aria-hidden="true" /> <span>Message</span>
+        </button>
         <div className="fo-modes" role="radiogroup" aria-label="Background">
           {MODES.map((m) => (
             <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? 'is-on' : ''} onClick={() => setMode(m)}>

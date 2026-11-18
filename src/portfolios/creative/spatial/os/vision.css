@@ -2545,3 +2545,48 @@ button.sp-capsule-room {
 .os-w.w-profile .w-portrait-text {
   margin: 0;
 }
+
+/* Contact window: the shared contact form on a light card inside the glass window. */
+.os-win.os-contact {
+  position: fixed;
+  inset: 96px max(80px, calc(50vw - 420px)) 110px;
+  z-index: 30;
+}
+.os-contact .os-win-glass {
+  overflow: hidden;
+}
+.os-contact-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 20px;
+  text-shadow: none;
+}
+.os-contact-body .dt-body {
+  padding: 24px 20px 32px;
+}
+.os-msg {
+  margin-top: 10px;
+  pointer-events: auto;
+}
+@media (max-width: 760px) {
+  .os-win.os-contact {
+    inset: 64px 8px 96px;
+  }
+  .os-contact-body .dt-body {
+    padding: 16px 14px 24px;
+  }
+}
+/* Profile card: three compact buttons fit on one row. */
+.w-profile .w-row {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+.w-profile .w-row .os-chip {
+  flex: none;
+  padding: 6px 10px;
+  font-size: 12px;
+  gap: 5px;
+}
