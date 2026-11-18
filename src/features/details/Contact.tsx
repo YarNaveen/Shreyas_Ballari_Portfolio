@@ -42,10 +42,24 @@ export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'lig
     }
     setState('sending');
     try {
-      // Sent as plain text: a "simple" request the Apps Script API accepts without a CORS preflight.
-      const res = await fetch(env.VITE_CONTACT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
+      // FormSubmit (formsubmit.co/ajax/…) emails the message; the extra fields set the subject,
+      // the reply address, a tidy table layout and its bot trap.
+      const payload = {
+        name: data.name,
+        email: data.email,
+        topic: data.topic,
+        message: data.message,
+        page: data.page,
+        _subject: `Portfolio message: ${data.topic} from ${data.name}`,
+        _replyto: data.email,
+        _template: 'table',
+        _captcha: 'false',
+        _honey: data.website ?? '',
+      };
+      const res = await fetch(env.VITE_CONTACT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
       if (!res.ok) throw new Error(String(res.status));
-      const reply = (await res.json().catch(() => ({ ok: true }))) as { ok?: boolean; error?: string; fields?: Record<string, string> };
+      const reply = (await res.json().catch(() => ({ ok: true }))) as { ok?: boolean; success?: boolean | string; error?: string; fields?: Record<string, string> };
+      if (reply.success === false || reply.success === 'false') throw new Error('not sent');
       if (reply.ok === false) {
         if (reply.fields) {
           setErrors(reply.fields);

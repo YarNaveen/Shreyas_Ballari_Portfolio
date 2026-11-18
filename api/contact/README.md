@@ -1,5 +1,10 @@
 # Contact API
 
+> **In use now: FormSubmit.** The form posts to `https://formsubmit.co/ajax/<inbox>` (set in
+> `.github/workflows/pages.yml`), which emails each message on. No server or Google setup is needed;
+> the inbox clicks FormSubmit's one-time "Activate Form" email once. The Google Apps Script below is
+> an optional alternative.
+
 The portfolio is a static website on GitHub Pages, so it cannot send email by itself. This small API
 receives the contact form and emails each message to one inbox.
 
