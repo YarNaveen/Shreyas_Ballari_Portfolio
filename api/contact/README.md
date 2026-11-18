@@ -33,7 +33,7 @@ Do this signed in to the Google account that should send the emails.
 2. Delete what is in `Code.gs` and paste in everything from `api/contact/Code.gs`. Save.
 3. **Project Settings** (gear icon) → **Script properties** → **Add script property**:
    - Property: `CONTACT_TO`
-   - Value: the inbox that should receive messages (for testing: `naveenymsd@gmail.com`)
+   - Value: the inbox that should receive messages (for example Shreyas's email)
    
    Save.
 4. Back in the editor, choose the function `sendTestEmail` and click **Run**. Google asks for
