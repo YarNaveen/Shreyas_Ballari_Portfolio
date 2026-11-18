@@ -22,9 +22,10 @@
   --dt-bg: #ffffff;
   --dt-card: #f2f1ee;
   --dt-accent: #2f5fd6;
-  --dt-display: 'Sofia Sans Extra Condensed', 'Bebas Neue', sans-serif;
-  --dt-case: uppercase;
-  --dt-weight: 800;
+  --dt-display: 'Geist Variable', 'Geist', system-ui, sans-serif;
+  --dt-mono: 'Geist Variable', 'Geist', system-ui, sans-serif;
+  --dt-case: none;
+  --dt-weight: 700;
 }
 
 /* The sheet itself. */

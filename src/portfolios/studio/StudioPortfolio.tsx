@@ -6,7 +6,7 @@ import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
 import { achievements, languages, profile } from '@/content/portfolio';
-import { Activities, Certificates, Courses, Education, Goals, Languages, Scores, Tutoring } from '@/features/visuals/Visuals';
+import { StudioSections } from './Sections';
 import { DetailSheet, type DetailId } from '@/features/details/Details';
 import './studio.css';
 
@@ -16,7 +16,7 @@ import './studio.css';
  * Closed, it shows a lock screen in front of his name. Scrolling unfolds it into a wide screen,
  * and the site scrolls inside that screen: hero, numbers, selected work, skills, where he learns,
  * and a contact card. At the end it folds shut again on an "incoming call" screen.
- * The dots under the phone change its colour; Basic / Glow / Orbit change the background.
+ * The dots under the phone change its colour.
  *
  * How the fold works: the device is two halves. The left half turns on the hinge (rotateY);
  * its back is the cover screen, so when it lies on top of the right half you see a closed phone.
@@ -36,8 +36,6 @@ const RIMS = [
   { id: 'Rose', c: '#e6a497' },
   { id: 'Sage', c: '#b5c2a6' },
 ];
-const MODES = ['Basic', 'Glow', 'Orbit'] as const;
-type Mode = (typeof MODES)[number];
 
 const NUMBERS = [
   { v: 'Top 99%', l: 'PSAT' },
@@ -49,14 +47,13 @@ const NUMBERS = [
 const WORK: { kind: string; title: string; line: string; img: string; tone: string; more?: DetailId }[] = [
   { kind: 'Research concept', title: 'Oncure', line: 'AI-guided nanobots that could carry cancer therapy straight to tumour cells. A conceptual research proposal, not an existing treatment.', img: J('oncure'), tone: '#2f5fd6', more: 'oncure' },
   { kind: 'FinTech · in progress', title: 'AI trading app', line: 'Suggests how much to buy, when to buy and when to sell. Hypothetical sample data, not financial advice.', img: J('trading'), tone: '#e39a2d', more: 'finance' },
-  { kind: 'Recognition', title: 'Awards', line: 'College Board National Recognition Program, and the Principal’s Honors List in 2025 and 2026.', img: J('trophy'), tone: '#e8ae9f' },
-  { kind: 'Teaching', title: 'Peer tutoring', line: 'Math and Science for 7th and 8th graders, at lunch and after school.', img: J('tutor'), tone: '#4f9a6f' },
+  { kind: 'Recognition', title: 'Awards', line: 'College Board National Recognition Program, and the Principal’s Honors List in 2025 and 2026.', img: J('trophy'), tone: '#e8ae9f', more: 'awards' },
+  { kind: 'Teaching', title: 'Peer tutoring', line: 'Math and Science for 7th and 8th graders, at lunch and after school.', img: J('tutor'), tone: '#4f9a6f', more: 'tutoring' },
   { kind: 'Writing', title: 'Young Authors', line: 'Young Authors Contest winner in 2023.', img: J('writing'), tone: '#f1c232' },
 ];
 
 
 
-const ORBIT = [J('oncure'), J('trading'), J('trophy'), J('tutor'), J('academy'), PORTRAIT];
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const seg = (p: number, a: number, b: number) => clamp((p - a) / (b - a));
@@ -76,18 +73,6 @@ function useClock() {
   return now;
 }
 
-/** Sofia Sans Extra Condensed (open font) for the big lettering, from Google Fonts. */
-function useDisplayFont() {
-  useEffect(() => {
-    const id = 'fo-font';
-    if (document.getElementById(id)) return;
-    const l = document.createElement('link');
-    l.id = id;
-    l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap';
-    document.head.appendChild(l);
-  }, []);
-}
 
 // --- The site inside the unfolded screen -------------------------------------------------------
 
@@ -127,8 +112,8 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
 
       <section className="fo-work" data-sec="work">
         <header className="fo-work-head">
-          <h3 className="fo-display">Selected work</h3>
-          <span className="fo-chip">{WORK.length} projects</span>
+          <h3 className="fo-display">Highlights</h3>
+          <span className="fo-chip">Research · projects · awards</span>
         </header>
         {WORK.map((w, i) => (
           <article key={w.title} className="fo-card" style={{ '--tone': w.tone } as CSSProperties}>
@@ -149,7 +134,7 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
                     data-voice={`view more ${w.title}`}
                     onClick={(e) => onMore?.(w.more!, e.currentTarget.closest('.fo-card') as HTMLElement)}
                   >
-                    View more →
+                    View more <ArrowUpRight weight="bold" aria-hidden="true" />
                   </button>
                 ) : null}
               </div>
@@ -158,52 +143,7 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
         ))}
       </section>
 
-      <section className="fo-sec fo-light" data-sec="about">
-        <p className="fo-mono">Education</p>
-        <h3 className="fo-display fo-h">Where he learns</h3>
-        <Education />
-      </section>
-
-      <section className="fo-sec fo-dark vz-on-dark" data-sec="skills">
-        <p className="fo-mono">Technical skills</p>
-        <h3 className="fo-display fo-h">Courses &amp; languages</h3>
-        <Languages />
-        <div className="fo-gap" />
-        <Courses />
-      </section>
-
-      <section className="fo-sec fo-cream" data-sec="awards">
-        <p className="fo-mono">Achievements and certificates</p>
-        <h3 className="fo-display fo-h">Awards</h3>
-        <Certificates />
-        <div className="fo-gap" />
-        <Scores />
-      </section>
-
-      <section className="fo-sec fo-dark vz-on-dark" data-sec="life">
-        <p className="fo-mono">Beyond the classroom</p>
-        <h3 className="fo-display fo-h">Activities &amp; volunteering</h3>
-        <Activities />
-      </section>
-
-      <section className="fo-sec fo-light" data-sec="tutoring">
-        <p className="fo-mono">As a peer tutor</p>
-        <h3 className="fo-display fo-h">How he helps others learn</h3>
-        <Tutoring />
-      </section>
-
-      <section className="fo-sec fo-blue vz-on-dark" data-sec="goals">
-        <p className="fo-mono">Goals</p>
-        <h3 className="fo-display fo-h">Where he is heading</h3>
-        <Goals />
-        <div className="fo-cta" data-sec="contact">
-          <b className="fo-display">Curious about Oncure? Let’s talk.</b>
-          <button type="button" className="fo-btn is-dark" tabIndex={tab} data-voice="contact form" onClick={(e) => onMore?.('contact', e.currentTarget.closest('.fo-cta') as HTMLElement)}>
-            Contact form <ArrowUpRight weight="bold" aria-hidden="true" />
-          </button>
-          <Reach tone="dark" compact className="fo-reach" tabIndex={tab} />
-        </div>
-      </section>
+      <StudioSections go={go} live={live} onMore={onMore} />
     </div>
   );
 }
@@ -293,10 +233,8 @@ function CallScreen({ onTalk }: { onTalk: (from: HTMLElement) => void }) {
 // --- The page ----------------------------------------------------------------------------------
 
 export function StudioPortfolio() {
-  useDisplayFont();
   const time = useClock();
   const smooth = useContext(SmoothScrollContext);
-  const [mode, setMode] = useState<Mode>('Basic');
   const [rim, setRim] = useState(RIMS[0]!);
   const [open, setOpen] = useState(false);
   const [call, setCall] = useState(false);
@@ -317,10 +255,11 @@ export function StudioPortfolio() {
     const fit = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const phone = vw < 760;
+      // Phones, and tablets held upright, get the tall phone (a wide tablet would be too short).
+      const phone = vw < 760 || (vh > vw && vw < 1100);
       // On phones it folds top to bottom like the reference: closed it is a near-square cover,
       // open a tall phone; on larger screens it opens side to side into a wide tablet.
-      const W = phone ? Math.min(vw * 0.84, 330) : Math.min(860, vw * 0.58, (vh - 200) / 0.68);
+      const W = phone ? Math.min(vw * 0.84, vw < 760 ? 330 : 500) : Math.min(860, vw * 0.58, (vh - 200) / 0.68);
       const H = phone ? Math.min(vh * 0.68, W * 1.95) : W * 0.68;
       setSize({ W: Math.round(W), H: Math.round(H), phone });
     };
@@ -407,7 +346,10 @@ export function StudioPortfolio() {
     if (!sec || !inner) return;
     const el = inner.querySelector<HTMLElement>(`[data-sec="${id}"]`);
     const max = Math.max(1, inner.scrollHeight - inner.parentElement!.clientHeight);
-    const k = el ? clamp(el.offsetTop / max) : 0;
+    // Distance from the top of the inner site (works however deeply the section is nested).
+    let top = 0;
+    for (let n: HTMLElement | null = el; n && n !== inner && inner.contains(n); n = n.offsetParent as HTMLElement | null) top += n.offsetTop;
+    const k = el ? clamp(top / max) : 0;
     const p = T.scroll[0] + k * (T.scroll[1] - T.scroll[0]);
     const y = sec.getBoundingClientRect().top + window.scrollY + p * (sec.offsetHeight - window.innerHeight);
     if (smooth) smooth.scrollToY(y, { duration: 1.4 });
@@ -422,30 +364,19 @@ export function StudioPortfolio() {
   );
 
   return (
-    <div className={`fo is-${mode.toLowerCase()} ${size.phone ? 'is-phone' : ''}`} style={vars}>
+    <div className={`fo is-basic ${size.phone ? 'is-phone' : ''}`} style={vars}>
       <header className="fo-top">
-        <span className="fo-logo fo-display">{profile.name}</span>
+        <span className="fo-logo fo-display">
+          {profile.firstName} <span>{profile.lastName}</span>
+        </span>
         <Reach tone="light" compact className="fo-top-reach" />
-        <button type="button" className="fo-top-msg" data-voice="send a message" onClick={talk}>
+        <button type="button" className="fo-top-msg" data-voice="send a message" aria-label="Send a message" onClick={talk}>
           <EnvelopeSimple weight="bold" aria-hidden="true" /> <span>Message</span>
         </button>
-        <div className="fo-modes" role="radiogroup" aria-label="Background">
-          {MODES.map((m) => (
-            <button key={m} type="button" role="radio" aria-checked={mode === m} className={mode === m ? 'is-on' : ''} onClick={() => setMode(m)}>
-              {m}
-            </button>
-          ))}
-        </div>
       </header>
 
       <section ref={section} className="fo-scroll" aria-label={`${profile.name}: portfolio on a folding phone`}>
         <div ref={stage} className="fo-stage">
-          <div className="fo-glow" aria-hidden="true" />
-          <div className="fo-orbit" aria-hidden="true">
-            {ORBIT.map((src, i) => (
-              <img key={src} src={src} alt="" style={{ '--i': i } as CSSProperties} draggable={false} />
-            ))}
-          </div>
           <h2 className="fo-name fo-display" aria-hidden="true">
             <span ref={nameL} className="is-l">
               {profile.firstName}

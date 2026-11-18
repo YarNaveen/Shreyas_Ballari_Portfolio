@@ -2,6 +2,15 @@ import { useContext, useEffect, useLayoutEffect, useRef, useState, type CSSPrope
 import { createPortal } from 'react-dom';
 import {
   BatteryCharging,
+  ChalkboardTeacher,
+  ChatCircleText,
+  Exam,
+  Medal,
+  Notebook,
+  PencilLine,
+  Student,
+  Trophy,
+  UsersThree,
   Brain,
   Calculator,
   ChartBar,
@@ -33,8 +42,8 @@ import {
   type Icon,
 } from '@phosphor-icons/react';
 import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
-import { oncure, stockApp } from '@/content/portfolio';
-import { Reveal } from '@/features/visuals/Visuals';
+import { achievements, oncure, resume, stockApp } from '@/content/portfolio';
+import { Certificates, Reveal, Scores } from '@/features/visuals/Visuals';
 import { ContactPanel } from './Contact';
 import './style';
 
@@ -47,7 +56,7 @@ import './style';
  * screen); otherwise it covers the page.
  */
 
-export type DetailId = 'oncure' | 'finance' | 'contact';
+export type DetailId = 'oncure' | 'finance' | 'awards' | 'tutoring' | 'contact';
 export type DetailTheme = 'studio' | 'classic' | 'page';
 
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
@@ -291,9 +300,89 @@ export function FinanceDetails() {
   );
 }
 
+// --- Awards ------------------------------------------------------------------------------------
+
+const KIND_ICON: Record<string, Icon> = { Award: Trophy, Honor: Medal, Score: ChartBar, Program: Student, Certificate: GraduationCap };
+
+export function AwardsDetails() {
+  return (
+    <article className="dt-body">
+      <header className="dt-head">
+        <p className="dt-kicker">Achievements · {achievements.length} awards and honors</p>
+        <h2 className="dt-title">Awards</h2>
+        <p className="dt-lede">Every award, honor and certificate since 2nd grade, and how his test scores compare nationwide.</p>
+      </header>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">Every award</h3>
+        <Tiles items={achievements.map((a) => ({ title: `${a.title} · ${a.value}`, line: a.detail }))} icons={achievements.map((a) => KIND_ICON[a.kind] ?? Trophy)} />
+      </section>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">Test scores</h3>
+        <p className="dt-note">Percentile rank by grade: higher than that share of students nationwide.</p>
+        <Scores />
+      </section>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">As certificates</h3>
+        <p className="dt-note">Designed presentations of each award, not scans of the originals.</p>
+        <Certificates />
+      </section>
+    </article>
+  );
+}
+
+// --- Peer tutoring ------------------------------------------------------------------------------
+
+export function TutoringDetails() {
+  return (
+    <article className="dt-body">
+      <header className="dt-head">
+        <p className="dt-kicker">Teaching · peer tutor</p>
+        <h2 className="dt-title">Peer tutoring</h2>
+        <p className="dt-lede">Math and Science for 7th and 8th graders, one on one and in small groups, at lunch and after school.</p>
+      </header>
+
+      <section className="dt-sec">
+        <Tiles
+          items={[
+            { title: '7th and 8th graders', line: 'The students he tutors.' },
+            { title: 'Math and Science', line: 'The subjects.' },
+            { title: 'One on one and groups', line: 'At lunch and after school.' },
+          ]}
+          icons={[Student, Flask, UsersThree]}
+        />
+      </section>
+
+      <section className="dt-sec">
+        <p className="dt-big">{resume.summary}</p>
+      </section>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">How he helps</h3>
+        <Flow
+          steps={[
+            { title: 'Find the gap', line: 'Spot what is hard and build better study habits.' },
+            { title: 'Explain it simply', line: 'Visual aids, diagrams and step-by-step explanations.' },
+            { title: 'Practise together', line: 'Homework help and small-group sessions.' },
+            { title: 'Prepare', line: 'Quizzes and exams, with feedback on writing and thinking.' },
+          ]}
+          icons={[MagnifyingGlass, ChalkboardTeacher, UsersThree, CheckCircle]}
+        />
+      </section>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">What he does</h3>
+        <Tiles items={resume.tutoring.map((t) => ({ title: t, line: '' }))} icons={[Exam, Notebook, PencilLine, ChalkboardTeacher, UsersThree, ChatCircleText]} />
+      </section>
+    </article>
+  );
+}
+
 // --- The sheet that opens like an app -----------------------------------------------------------
 
-const TITLE: Record<DetailId, string> = { oncure: 'Oncure', finance: 'AI trading app', contact: 'Contact' };
+const TITLE: Record<DetailId, string> = { oncure: 'Oncure', finance: 'AI trading app', awards: 'Awards', tutoring: 'Peer tutoring', contact: 'Contact' };
 
 export function DetailSheet({ id, origin, onClose, contained = false, theme }: { id: DetailId | null; origin: DOMRect | null; onClose: () => void; contained?: boolean; theme: DetailTheme }) {
   const smooth = useContext(SmoothScrollContext);
@@ -384,7 +473,7 @@ export function DetailSheet({ id, origin, onClose, contained = false, theme }: {
           <X weight="bold" />
         </button>
       </div>
-      <div className="dt-inner">{shown === 'oncure' ? <OncureDetails /> : shown === 'finance' ? <FinanceDetails /> : <ContactPanel />}</div>
+      <div className="dt-inner">{shown === 'oncure' ? <OncureDetails /> : shown === 'finance' ? <FinanceDetails /> : shown === 'awards' ? <AwardsDetails /> : shown === 'tutoring' ? <TutoringDetails /> : <ContactPanel />}</div>
     </div>
   );
   return contained ? node : createPortal(node, document.body);

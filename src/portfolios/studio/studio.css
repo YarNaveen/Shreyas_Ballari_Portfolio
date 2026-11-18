@@ -1389,3 +1389,192 @@ button.fo-more:active {
 .fo.is-phone .fo-site > section:last-child {
   padding-bottom: 72px;
 }
+
+/* The new footer is the last thing on the screen: keep it clear of the phone's tab bar. */
+.fo.is-phone .sx-foot {
+  padding-bottom: 64px;
+}
+
+/* =============================================================================================
+   One font (Geist) and one button style for the whole Studio, and a compact header on phones.
+   ============================================================================================= */
+.fo {
+  --display: var(--sans);
+  --mono: var(--sans);
+}
+.fo .fo-display {
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: none;
+}
+.fo .fo-mono {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.fo .fo-name {
+  font-size: clamp(56px, calc(((100vw - var(--W) / 2) / 2 - 56px) / 4.4), 200px);
+}
+.fo.is-phone .fo-name {
+  font-size: min(15vw, 84px);
+}
+
+/* Buttons: rounded rectangles, Geist 500, black for the main action, white for the rest. */
+.fo .fo-btn,
+.fo button.fo-more,
+.fo .rc .rc-btn,
+.fo .fo-top-msg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(11, 11, 12, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  color: #0b0b0c;
+  font: 500 14px/20px var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: transform 400ms var(--ease), box-shadow 400ms var(--ease), background-color 300ms var(--ease);
+}
+.fo .fo-btn.is-dark,
+.fo .fo-top-msg {
+  border-color: transparent;
+  background: #0b0b0c;
+  color: #fff;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.fo .fo-btn:hover,
+.fo button.fo-more:hover,
+.fo .rc .rc-btn:hover,
+.fo .fo-top-msg:hover {
+  transform: translateY(-2px);
+  background: #f4f4f5;
+  color: #0b0b0c;
+}
+.fo .fo-btn.is-dark:hover,
+.fo .fo-top-msg:hover {
+  background: #26262a;
+  color: #fff;
+}
+.fo .fo-btn:active,
+.fo button.fo-more:active,
+.fo .rc .rc-btn:active,
+.fo .fo-top-msg:active {
+  transform: scale(0.98);
+}
+.fo .rc.is-compact .rc-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.fo button.fo-more {
+  margin-top: 12px;
+  padding: 8px 14px;
+}
+
+/* Header: one row. On phones the logo stacks and the pills become icons. */
+.fo .fo-top {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+}
+.fo .fo-top-reach {
+  order: 0;
+  width: auto;
+  margin-left: auto;
+  flex-wrap: nowrap;
+}
+.fo .fo-top-msg {
+  order: 0;
+}
+.fo .fo-logo {
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+@media (max-width: 560px) {
+  .fo .fo-top {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  .fo .fo-logo {
+    font-size: 14px;
+    line-height: 1.05;
+  }
+  .fo .fo-logo span {
+    display: block;
+  }
+  .fo .fo-top-reach {
+    gap: 6px;
+  }
+  .fo .fo-top-reach .rc-btn {
+    padding: 8px;
+  }
+  .fo .fo-top-reach .rc-btn span {
+    display: none;
+  }
+  .fo .fo-top-msg {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 370px) {
+  .fo .fo-top-msg {
+    padding: 8px;
+  }
+  .fo .fo-top-msg span {
+    display: none;
+  }
+}
+
+/* Inside the phone screen on narrow widths: the hero grows with its content (no overlap). */
+@container (max-width: 560px) {
+  .fo-hero {
+    height: auto;
+    grid-template-rows: auto auto;
+  }
+  .fo-hero-img {
+    height: auto;
+    aspect-ratio: 4 / 3.4;
+  }
+  .fo-hero-text h3 {
+    font-size: 12cqw;
+  }
+  .fo-nums b {
+    font-size: 10cqw;
+  }
+  .fo-work-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .fo-work-head h3 {
+    font-size: 11cqw;
+  }
+  .fo-card h4 {
+    font-size: 9cqw;
+  }
+  .fo-num {
+    font-size: 14cqw;
+  }
+}
+/* Geist is wider than the old condensed face: keep each figure on one line. */
+.fo .fo-nums b {
+  font-size: 5.4cqw;
+  white-space: nowrap;
+}
+@container (max-width: 560px) {
+  .fo .fo-nums b {
+    font-size: 10cqw;
+  }
+}
+/* One font in Studio, the certificate designs included. */
+.fo .vz-cert,
+.fo .vz-cert * {
+  font-family: var(--sans) !important;
+}
