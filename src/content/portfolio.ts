@@ -68,6 +68,12 @@ export const courses = [
 
 export const languages = ['JavaScript', 'Python', 'Java'];
 
+/** Courses for the Classic "Technical skills & courses" page, as listed by the family (2026-11-18). */
+export const skillsCourses = {
+  ap: ['AP Computer Science Principles', 'AP Computer Science A', 'AP Biology', 'AP Chemistry', 'AP Physics C'],
+  other: ['Artificial Intelligence', 'English Literature Honors', 'Spanish Honors', 'Entrepreneurship'],
+};
+
 /** The stock trading app, in plain words (from Shreyas's own description). */
 export const stockApp = {
   name: 'AI stock trading app',

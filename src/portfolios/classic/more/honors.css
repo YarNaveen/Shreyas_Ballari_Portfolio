@@ -1,0 +1,410 @@
+/* Awards and achievements: a fisheye strip of award cards after the trading app (Honors.tsx).
+   Same type and colour as the rest of Classic: Geist, Geist Mono for small labels, the Classic
+   blue, a light section between the dark trading app and the white goals row. */
+
+.hn {
+  --hn-bg: #f3f4f8;
+  --hn-ink: #0b0b10;
+  --hn-soft: #6b7183;
+  --hn-rule: rgba(11, 11, 16, 0.12);
+  --hn-blue: #1f4dff;
+  --hn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hn-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+  position: relative;
+  color: var(--hn-ink);
+  background: var(--hn-bg);
+  font-family: 'Geist Variable', 'Geist', system-ui, sans-serif;
+}
+.hn-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--hn-bg);
+}
+
+/* --- chrome ---------------------------------------------------------------------------------- */
+.hn-chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.hn-top {
+  position: absolute;
+  top: 72px; /* below the fixed menu pill */
+  left: clamp(16px, 3vw, 48px);
+  right: clamp(16px, 3vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hn-rule);
+}
+.hn .hn-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hn-label i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hn-blue);
+}
+.hn-top-r {
+  font: 500 12px/16px var(--hn-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hn-soft);
+  white-space: nowrap;
+}
+
+.hn .hn-intro {
+  position: absolute;
+  left: clamp(16px, 3vw, 48px);
+  top: 44%;
+  transform: translate3d(0, -50%, 0);
+  max-width: min(280px, 22vw);
+  margin: 0;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 300;
+  color: var(--hn-soft);
+  text-wrap: pretty;
+}
+.hn-intro span {
+  color: var(--hn-ink);
+  font-weight: 500;
+}
+
+.hn-caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.hn-cap-no {
+  font: 500 12px/16px var(--hn-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hn-soft);
+}
+.hn-cap-title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  animation: hn-roll 0.7s var(--hn-ease) both;
+}
+@keyframes hn-roll {
+  from {
+    opacity: 0;
+    transform: translateY(60%);
+    filter: blur(4px);
+  }
+}
+.hn-cap-value {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--hn-soft);
+}
+.hn-cap-value b {
+  font-weight: 600;
+  color: var(--hn-blue);
+}
+.hn-cap-detail {
+  max-width: 440px;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--hn-soft);
+  text-wrap: pretty;
+}
+
+.hn-count {
+  position: absolute;
+  left: 50%;
+  bottom: 84px; /* clear of the design switcher fixed at the bottom */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 1.6vw, 24px);
+  font-size: clamp(40px, 4.5vw, 72px);
+  line-height: 1;
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(11, 11, 16, 0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  padding-bottom: 0.05em;
+}
+.hn-count > * {
+  display: inline-block;
+}
+.hn-count-end {
+  color: rgba(11, 11, 16, 0.3);
+}
+.hn-count-line {
+  position: relative;
+  width: clamp(64px, 11vw, 180px);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--hn-rule);
+  overflow: hidden;
+}
+.hn-count-line i {
+  position: absolute;
+  inset: 0;
+  background: var(--hn-blue);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* --- strip ----------------------------------------------------------------------------------- */
+.hn-strip {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hn-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  will-change: transform, width, height;
+  appearance: none;
+  box-shadow: 0 18px 40px -24px rgba(11, 11, 16, 0.45);
+}
+.hn-card:focus-visible {
+  outline: 2px solid var(--hn-blue);
+  outline-offset: 6px;
+}
+.hn-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(0% 0% 0% 0%);
+}
+.hn-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: grayscale(0.35) contrast(0.98);
+  user-select: none;
+  transition: opacity 800ms var(--hn-ease), filter 600ms var(--hn-ease);
+}
+.hn-card img.is-loaded {
+  opacity: 1;
+}
+.hn-card:hover img,
+.hn-card.is-active img {
+  filter: none;
+}
+/* Number and title on the card (also what shows if a photo fails to load). */
+.hn-card-tag {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(11, 11, 16, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 500ms var(--hn-ease), transform 500ms var(--hn-ease);
+}
+.hn-card-tag b {
+  font: 500 12px/16px var(--hn-mono);
+  color: #9fb4ff;
+}
+.hn-card.is-active .hn-card-tag,
+.hn-card:hover .hn-card-tag {
+  opacity: 1;
+  transform: none;
+}
+.hn-card.is-full .hn-card-tag {
+  opacity: 0;
+}
+
+/* --- finale: the trophy fills the screen ------------------------------------------------------ */
+.hn-final {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(24px, 4vw, 64px);
+  padding-bottom: 96px; /* clear of the design switcher */
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(5, 8, 24, 0.82), rgba(5, 8, 24, 0.35) 45%, transparent 70%);
+}
+.hn .hn-final-kicker {
+  margin: 0 0 16px;
+  font: 500 12px/16px var(--hn-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.hn .hn-final-h {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: clamp(48px, 9vw, 128px);
+  line-height: 0.95;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+.hn-final-h .is-soft {
+  color: rgba(255, 255, 255, 0.6);
+}
+.hn .hn-final-body {
+  max-width: 440px;
+  margin: 24px 0;
+  font-size: 16px;
+  line-height: 24px;
+  opacity: 0.85;
+  text-wrap: pretty;
+}
+.hn-final-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.hn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: 500 14px/20px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  cursor: pointer;
+  transition: background-color 300ms var(--hn-ease), color 300ms var(--hn-ease), transform 500ms var(--hn-ease);
+}
+.hn-back:hover {
+  background: #fff;
+  color: #0b0b10;
+  transform: translateY(-2px);
+}
+.hn-back:active {
+  transform: scale(0.98);
+}
+.hn-back:focus-visible {
+  outline: 2px solid #8fb0ff;
+  outline-offset: 3px;
+}
+
+/* --- responsive ------------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .hn .hn-intro {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .hn-top {
+    top: 68px;
+  }
+  .hn-top-r {
+    display: none;
+  }
+  .hn-cap-title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .hn-cap-detail {
+    display: none;
+  }
+  .hn-count {
+    font-size: clamp(36px, 11vw, 48px);
+  }
+  .hn-count-line {
+    width: 40px;
+  }
+  .hn .hn-final-h {
+    font-size: clamp(36px, 10vw, 64px);
+  }
+  .hn .hn-final-body {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+/* Short screens (phones held sideways): keep the cards and caption, drop the counter and detail. */
+@media (max-height: 740px) {
+  .hn-cap-detail,
+  .hn-count {
+    display: none;
+  }
+}
+@media (max-height: 620px) {
+  .hn-top {
+    display: none;
+  }
+  .hn-cap-title {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .hn .hn-final-h {
+    font-size: 40px;
+  }
+  .hn .hn-final-kicker,
+  .hn .hn-final-body {
+    display: none;
+  }
+  .hn-final-cta {
+    margin-top: 16px;
+  }
+}
+@media (max-height: 860px) and (min-width: 701px) {
+  .hn-cap-detail {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hn-cap-title {
+    animation: none;
+  }
+  .hn-card img,
+  .hn-card-tag {
+    transition: none;
+  }
+}

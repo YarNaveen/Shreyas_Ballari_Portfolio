@@ -4,6 +4,7 @@ import { achievements, activities, contact, courses, journey, languages, profile
 import { ContactPanel } from '@/features/details/Contact';
 import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
 import { Film } from '../flow/sequel';
+import { Honors } from './Honors';
 import { useClassicMotion } from './motion';
 import { useSeen } from './ui';
 
@@ -366,6 +367,7 @@ function Craft() {
 const WORK: { id: PageId; title: string; line: string; img: string; tint: string; anchor?: string }[] = [
   { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030' },
   { id: 'trading', title: 'Stock trading application', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a' },
+  { id: 'skills', title: 'Technical skills & courses', line: 'JavaScript, Python and Java, with AP Computer Science, Biology, Chemistry and Physics C.', img: 'classroom', tint: '#0a1428' },
   { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606' },
   { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', anchor: 'cx-life' },
   { id: 'tutoring', title: 'Peer tutoring', line: 'Math and Science, at lunch and after school.', img: 'chalkboard-math', tint: '#0d1a10', anchor: 'cx-tutoring' },
@@ -589,6 +591,7 @@ function Finale() {
   const site = [
     { l: 'About', id: 'cx-about' },
     { l: 'Trading app', id: 'cx-finance' },
+    { l: 'Awards', id: 'cx-honors' },
     { l: 'His work', id: 'sd-work' },
     { l: 'Goals', id: 'cx-goals' },
   ];
@@ -673,6 +676,7 @@ export const StrideBottom = () => (
     <Momentum />
     <OncureFilm />
     <Trading />
+    <Honors />
     <Goals />
     <Contact />
     <Finale />

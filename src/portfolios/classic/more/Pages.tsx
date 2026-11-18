@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import {
   ArrowRight,
   Atom,
+  BookOpenText,
   Brain,
   Briefcase,
   Calculator,
@@ -10,14 +11,20 @@ import {
   ChartLineUp,
   CheckCircle,
   ClockCountdown,
+  Code,
+  Coffee,
   Database,
+  Desktop,
   Dna,
+  FileJs,
+  FilePy,
   FirstAid,
   Flask,
   GraduationCap,
   HandFist,
   HandHeart,
   Heartbeat,
+  Lightbulb,
   Lightning,
   MagnifyingGlass,
   MathOperations,
@@ -30,13 +37,14 @@ import {
   SwimmingPool,
   Syringe,
   Target,
+  Translate,
   TrendUp,
   UsersThree,
   Virus,
   Warning,
   X,
 } from '@phosphor-icons/react';
-import { achievements, areasOfInterest, goals, journey, oncure, percentiles, resume, stockApp, volunteering } from '@/content/portfolio';
+import { achievements, areasOfInterest, goals, journey, oncure, percentiles, resume, skillsCourses, stockApp, volunteering } from '@/content/portfolio';
 import { Badges, Bars, CertWall, Columns, Donut, Flow, Orbit, Rings, Timeline, Years } from './Viz';
 import { useSeen } from './ui';
 
@@ -45,7 +53,7 @@ import { useSeen } from './ui';
  * black with blue light, thin large type, bento cards that rise into focus. One font (Geist).
  */
 
-export type PageId = 'oncure' | 'trading' | 'awards' | 'life' | 'tutoring' | 'goals';
+export type PageId = 'oncure' | 'trading' | 'skills' | 'awards' | 'life' | 'tutoring' | 'goals';
 
 const BASE = import.meta.env.BASE_URL;
 const at = (i: number) => ({ '--i': i }) as CSSProperties;
@@ -502,6 +510,41 @@ function TutoringPage() {
   );
 }
 
+const COURSE_INFO: Record<string, { icon: typeof Code; line: string }> = {
+  'AP Computer Science Principles': { icon: Desktop, line: 'AP · Computer science' },
+  'AP Computer Science A': { icon: Code, line: 'AP · Computer science' },
+  'AP Biology': { icon: Dna, line: 'AP · Science' },
+  'AP Chemistry': { icon: Flask, line: 'AP · Science' },
+  'AP Physics C': { icon: Atom, line: 'AP · Science' },
+  'Artificial Intelligence': { icon: Brain, line: 'Technology' },
+  'English Literature Honors': { icon: BookOpenText, line: 'Honors · English' },
+  'Spanish Honors': { icon: Translate, line: 'Honors · Language' },
+  Entrepreneurship: { icon: Lightbulb, line: 'Business' },
+};
+const course = (c: string) => ({ title: c, icon: COURSE_INFO[c]?.icon ?? GraduationCap, line: COURSE_INFO[c]?.line ?? 'Course' });
+
+function SkillsPage() {
+  return (
+    <>
+      <Block label="Programming languages" lead="Three languages" rest="he codes in.">
+        <Badges
+          items={[
+            { icon: FileJs, title: 'JavaScript', line: 'Programming language' },
+            { icon: FilePy, title: 'Python', line: 'Programming language' },
+            { icon: Coffee, title: 'Java', line: 'Programming language' },
+          ]}
+        />
+      </Block>
+      <Block label="AP courses" lead="Advanced Placement," rest="across computing and science.">
+        <Badges items={skillsCourses.ap.map(course)} />
+      </Block>
+      <Block label="More courses" lead="Beyond AP," rest="from AI to entrepreneurship.">
+        <Badges items={skillsCourses.other.map(course)} />
+      </Block>
+    </>
+  );
+}
+
 function GoalsPage() {
   return <GoalPath />;
 }
@@ -543,6 +586,7 @@ export function GoalPath() {
 const PAGES: Record<PageId, { label: string; lead: string; rest: string; lede: string; img: string; body: () => ReactNode }> = {
   oncure: { label: 'Research concept', lead: 'Oncure.', rest: 'AI‑guided nanobots against cancer.', lede: oncure.summary, img: 'microscope', body: OncurePage },
   trading: { label: 'Personal project · in progress', lead: 'Stock trading', rest: 'made simple.', lede: 'AI advice right beside the chart: how much to buy, when to buy it and an estimate of when to sell.', img: 'stock-charts', body: TradingPage },
+  skills: { label: 'Technical skills', lead: 'Technical skills', rest: 'and courses taken.', lede: 'JavaScript, Python and Java, with AP courses in computer science, biology, chemistry and physics.', img: 'classroom', body: SkillsPage },
   awards: { label: 'Achievements', lead: 'Awards', rest: 'and honors.', lede: 'Every award, honor and certificate, and how his test scores compare nationwide.', img: 'trophy', body: AwardsPage },
   life: { label: 'Beyond the classroom', lead: 'Activities', rest: 'and volunteering.', lede: 'Swimming, Muay Thai, guitar, Science Olympiad, DECA and giving back.', img: 'guitar', body: LifePage },
   tutoring: { label: 'Peer tutoring', lead: 'Helping others', rest: 'learn.', lede: 'Math and Science for 7th and 8th graders, at lunch and after school.', img: 'chalkboard-math', body: TutoringPage },
