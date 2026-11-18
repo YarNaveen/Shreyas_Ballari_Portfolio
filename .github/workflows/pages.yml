@@ -29,9 +29,9 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
           VITE_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
-          # Where the contact form sends messages (FormSubmit emails them on). A repository variable
-          # VITE_CONTACT_ENDPOINT overrides it (Settings → Secrets and variables → Actions → Variables).
-          VITE_CONTACT_ENDPOINT: ${{ vars.VITE_CONTACT_ENDPOINT || 'https://formsubmit.co/ajax/naveenymsd@gmail.com' }}
+          # Optional override for where the contact form sends messages. Empty = the default in
+          # src/lib/env.ts (Settings → Secrets and variables → Actions → Variables to override).
+          VITE_CONTACT_ENDPOINT: ${{ vars.VITE_CONTACT_ENDPOINT }}
         run: pnpm run build
       # Unknown paths fall back to the app so client routes still work.
       - run: cp dist/index.html dist/404.html
