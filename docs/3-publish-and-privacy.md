@@ -24,14 +24,14 @@ project's GitHub page, open the **Actions** tab:
 
 ## The contact form
 
-The form on `/contact` sends messages to the address in the setting `VITE_CONTACT_ENDPOINT`. Until
-it is set, the form says plainly that it is not connected and sends nothing. To connect it, create a
-free form at a service such as Formspree (it forwards messages to a family email address), then add
-its form URL as a repository variable and to the build in `.github/workflows/pages.yml`, or to a
-local `.env` file:
+The contact form (in every portfolio and on `/contact`) sends messages to the contact API in
+`api/contact`: a small Google Apps Script that emails each message to the inbox saved in its
+`CONTACT_TO` setting. Until the API's URL is set as `VITE_CONTACT_ENDPOINT`, the form says plainly
+that it is not connected and sends nothing. Setup takes about five minutes: see
+[api/contact/README.md](../api/contact/README.md).
 
 ```sh
-VITE_CONTACT_ENDPOINT=https://formspree.io/f/your-form-id
+VITE_CONTACT_ENDPOINT=https://script.google.com/macros/s/your-deployment-id/exec
 ```
 
 To undo a version: `git log --oneline` lists them; `git revert <id>` then `git push` undoes one

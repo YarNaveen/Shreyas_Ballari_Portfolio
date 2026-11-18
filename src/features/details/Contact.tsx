@@ -8,8 +8,8 @@ import { Reach } from './Reach';
  * The contact panel: his photo, what to write about (tap a topic) and a short form. Used inside the
  * Studio phone, over Classic, and on /contact.
  *
- * Messages go to the address in VITE_CONTACT_ENDPOINT (for example a Formspree form that forwards
- * to a family inbox). Until that is set the panel says plainly that nothing was sent. No email
+ * Messages go to VITE_CONTACT_ENDPOINT: the contact API in api/contact (Google Apps Script), which
+ * emails them to the inbox saved in its Script Properties. Until that is set the panel says plainly that nothing was sent. No email
  * address, phone number or home address is ever shown.
  */
 
@@ -24,12 +24,12 @@ const TOPICS = [
 export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'light' | 'auto' }) {
   const [topic, setTopic] = useState('Oncure');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'offline' | 'failed'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'offline' | 'failed' | 'busy'>('idle');
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const data: Record<string, string> = { ...(Object.fromEntries(new FormData(form)) as Record<string, string>), topic };
+    const data: Record<string, string> = { ...(Object.fromEntries(new FormData(form)) as Record<string, string>), topic, page: window.location.href };
     const next: Record<string, string> = {};
     if (!data.name?.trim()) next.name = 'Please add your name.';
     if (!/^\S+@\S+\.\S+$/.test(data.email ?? '')) next.email = 'Please add an email address we can reply to.';
@@ -42,8 +42,19 @@ export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'lig
     }
     setState('sending');
     try {
-      const res = await fetch(env.VITE_CONTACT_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      // Sent as plain text: a "simple" request the Apps Script API accepts without a CORS preflight.
+      const res = await fetch(env.VITE_CONTACT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
       if (!res.ok) throw new Error(String(res.status));
+      const reply = (await res.json().catch(() => ({ ok: true }))) as { ok?: boolean; error?: string; fields?: Record<string, string> };
+      if (reply.ok === false) {
+        if (reply.fields) {
+          setErrors(reply.fields);
+          setState('idle');
+          return;
+        }
+        setState(reply.error === 'rate_limited' ? 'busy' : 'failed');
+        return;
+      }
       setState('sent');
       form.reset();
     } catch {
@@ -111,12 +122,19 @@ export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'lig
               </span>
             )}
           </label>
+          {/* Hidden from people; bots that fill every field are ignored by the API. */}
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="ct-hp" />
           <button type="submit" className="dt-send" disabled={state === 'sending'}>
             <PaperPlaneTilt weight="fill" aria-hidden="true" /> {state === 'sending' ? 'Sending…' : 'Send message'}
           </button>
           {state === 'offline' && (
             <p className="dt-status" role="status">
               The contact form is not connected yet, so this message was not sent. Please try again later.
+            </p>
+          )}
+          {state === 'busy' && (
+            <p className="dt-status" role="alert">
+              Too many messages were sent just now. Please try again in an hour.
             </p>
           )}
           {state === 'failed' && (

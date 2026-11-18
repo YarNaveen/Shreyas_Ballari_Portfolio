@@ -155,3 +155,12 @@
   text-transform: none !important;
   opacity: 1 !important;
 }
+
+/* The contact form's hidden bot trap. */
+.ct-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
