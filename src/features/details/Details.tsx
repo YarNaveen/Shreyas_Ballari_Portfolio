@@ -228,9 +228,9 @@ export function FinanceDetails() {
     <article className="dt-body">
       <header className="dt-head">
         <p className="dt-kicker">FinTech · {stockApp.status.toLowerCase()}</p>
-        <h2 className="dt-title">AI trading app</h2>
-        <p className="dt-lede">A stock trading website that is friendly to beginners and welcoming to experienced traders.</p>
-        <p className="dt-note">A concept in progress. Everything shown here is hypothetical sample data, not financial advice.</p>
+        <h2 className="dt-title">Stock Trading Application</h2>
+        <p className="dt-lede">{stockApp.tagline}</p>
+        <p className="dt-note">Everything shown here is hypothetical sample data, not financial advice.</p>
       </header>
 
       <Reveal className="dt-dash-wrap">
@@ -261,6 +261,11 @@ export function FinanceDetails() {
 
       <section className="dt-sec">
         <p className="dt-big">{stockApp.summary}</p>
+      </section>
+
+      <section className="dt-sec">
+        <h3 className="dt-h">In short</h3>
+        <p className="dt-big">{stockApp.simple}</p>
       </section>
 
       <section className="dt-sec">
@@ -382,7 +387,7 @@ export function TutoringDetails() {
 
 // --- The sheet that opens like an app -----------------------------------------------------------
 
-const TITLE: Record<DetailId, string> = { oncure: 'Oncure', finance: 'AI trading app', awards: 'Awards', tutoring: 'Peer tutoring', contact: 'Contact' };
+const TITLE: Record<DetailId, string> = { oncure: 'Oncure', finance: 'Stock Trading Application', awards: 'Awards', tutoring: 'Peer tutoring', contact: 'Contact' };
 
 export function DetailSheet({ id, origin, onClose, contained = false, theme }: { id: DetailId | null; origin: DOMRect | null; onClose: () => void; contained?: boolean; theme: DetailTheme }) {
   const smooth = useContext(SmoothScrollContext);

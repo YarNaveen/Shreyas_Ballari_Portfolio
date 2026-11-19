@@ -180,7 +180,7 @@ function FinanceW() {
   const [lx, ly] = pts[pts.length - 1]!;
   return (
     <>
-      <Head icon={<span className="w-ico-txt">$</span>} title="AI trading app" sub="TradeMind · concept in progress" />
+      <Head icon={<span className="w-ico-txt">$</span>} title="Stock Trading Application" sub="Concept design" />
       <div className="w-fin">
         <div className="w-fin-chart">
           <div className="w-fin-val">
@@ -354,7 +354,7 @@ const BODY: Record<WidgetId, () => ReactNode> = {
   music: () => <MusicW />,
 };
 
-const LABEL: Record<WidgetId, string> = { profile: 'Profile', oncure: 'Oncure', clock: 'Time and light', finance: 'Trading app', awards: 'Awards', pinboard: 'Pinboard', chat: 'AI chat', games: 'Games', music: 'Activities' };
+const LABEL: Record<WidgetId, string> = { profile: 'Profile', oncure: 'Oncure', clock: 'Time and light', finance: 'Stock trading app', awards: 'Awards', pinboard: 'Pinboard', chat: 'AI chat', games: 'Games', music: 'Activities' };
 
 function Widget({ id, slot, swap, k }: { id: WidgetId; slot: number; swap: (a: WidgetId, b: WidgetId) => void; k: number }) {
   const drag = useDrag({

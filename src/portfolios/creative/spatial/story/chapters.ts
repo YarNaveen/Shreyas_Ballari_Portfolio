@@ -45,12 +45,12 @@ export const CHAPTERS: Chapter[] = [
   },
   {
     id: 'finance',
-    title: 'Finance App',
-    line: 'AI stock trading app · concept',
+    title: 'Stock Trading App',
+    line: 'Stock Trading Application · concept',
     station: 'lab',
     icon: ChartLineUp,
     tint: '#22a06b',
-    say: 'Shreyas is building an AI stock trading app. The idea is a beginner friendly website where an AI model uses real world data to suggest how much of a stock to buy, when to buy it, and when to sell. It is a project in progress, and its suggestions are hypothetical, not financial advice.',
+    say: 'Shreyas is building a stock trading application. The idea is a beginner friendly website where an AI model uses real world data to suggest how much of a stock to buy, when to buy it, and when to sell. Its suggestions are hypothetical, not financial advice.',
     voice: ['finance', 'finance app', 'fintech', 'trading', 'stock', 'stock app', 'trading app'],
   },
   {

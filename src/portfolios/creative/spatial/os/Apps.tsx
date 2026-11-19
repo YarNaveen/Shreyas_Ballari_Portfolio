@@ -32,7 +32,7 @@ import {
   UserCircle,
   EnvelopeSimple,
 } from '@phosphor-icons/react';
-import { activities, profile, volunteering } from '@/content/portfolio';
+import { activities, profile, stockApp, volunteering } from '@/content/portfolio';
 import { createGuitar, TRACKS, type GuitarEngine, type GuitarState, type TrackId } from '../fun';
 import { CHAPTERS } from '../story/chapters';
 import { speak } from '../story/narrator';
@@ -90,9 +90,9 @@ export function FinanceApp() {
       <section className="os-pane is-side is-left fi-how" style={st(1)}>
         <p className="os-label">How it would work</p>
         {[
-          { icon: Database, k: 'Real-world data', v: 'The app reads market data' },
-          { icon: Brain, k: 'An AI model', v: 'Looks for patterns in it' },
-          { icon: Target, k: 'A suggestion', v: 'How much to buy, when to buy, when to sell' },
+          { icon: Database, k: 'Real-world data', v: 'Real-world factors and market data' },
+          { icon: Brain, k: 'Algorithms and an AI model', v: 'Work out the best hypothetical choice' },
+          { icon: Target, k: 'Advice beside the graph', v: 'How much to buy, when to buy, and an estimate of when to sell' },
         ].map(({ icon: I, k, v }, i) => (
           <div key={k} className="fi-flow" style={st(i + 2)}>
             <span className="fi-flow-ico">
@@ -112,8 +112,8 @@ export function FinanceApp() {
             <ChartLineUp weight="fill" aria-hidden="true" />
           </span>
           <div>
-            <h2>AI trading app</h2>
-            <p>A beginner-friendly stock trading website · in progress</p>
+            <h2>Stock Trading Application</h2>
+            <p>{stockApp.tagline.replace(/\.$/, '')}</p>
           </div>
           <Actions id="finance" ask="What is his trading app?" />
         </header>
@@ -138,8 +138,8 @@ export function FinanceApp() {
           <img src={img} alt="Market charts on a trading screen" />
         </figure>
         <p className="os-label">Made for beginners</p>
-        <p className="fi-text">People buying their first stock get clear, simple suggestions instead of a wall of numbers.</p>
-        <span className="on-status">In progress · launch date to be supplied</span>
+        <p className="fi-text">No candlesticks or equations: clear, simple advice for people buying their first stock, and an easier way to decide for veterans.</p>
+        <span className="on-status">Concept design · sample data</span>
         <small className="fi-fine">Suggestions are hypothetical, not financial advice.</small>
       </section>
     </div>

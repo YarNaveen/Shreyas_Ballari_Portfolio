@@ -175,7 +175,7 @@ export const HOTSPOTS: Hotspot[] = [
     id: 'trade-board',
     station: 'lab',
     pos: [-8.2, 1.95, -8.84],
-    label: 'AI trading app',
+    label: 'Stock Trading Application',
     kicker: 'Research & Development · his app (concept)',
     title: stockApp.name,
     text: `${stockApp.summary} For: ${stockApp.forWhom.charAt(0).toLowerCase()}${stockApp.forWhom.slice(1)}`,

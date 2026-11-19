@@ -375,7 +375,7 @@ const FIN_ICONS = [Sparkle, Database, ChartLineUp, ClockCountdown, TrendUp, Calc
 export function TradingPage() {
   return (
     <>
-      <Note icon={Warning}>A personal project, {stockApp.status.toLowerCase()}. Figures are hypothetical sample data, not financial advice.</Note>
+      <Note icon={Warning}>A personal project. Figures are hypothetical sample data, not financial advice.</Note>
       <div className="pg-mock">
         <AppMockup />
       </div>
@@ -585,7 +585,7 @@ export function GoalPath() {
 
 const PAGES: Record<PageId, { label: string; lead: string; rest: string; lede: string; img: string; body: () => ReactNode }> = {
   oncure: { label: 'Research concept', lead: 'Oncure.', rest: 'AI‑guided nanobots against cancer.', lede: oncure.summary, img: 'microscope', body: OncurePage },
-  trading: { label: 'Personal project · in progress', lead: 'Stock trading', rest: 'made simple.', lede: 'AI advice right beside the chart: how much to buy, when to buy it and an estimate of when to sell.', img: 'stock-charts', body: TradingPage },
+  trading: { label: 'Stock Trading Application · personal project', lead: 'Stock trading', rest: 'made simple.', lede: 'AI advice right beside the chart: how much to buy, when to buy it and an estimate of when to sell.', img: 'stock-charts', body: TradingPage },
   skills: { label: 'Technical skills', lead: 'Technical skills', rest: 'and courses taken.', lede: 'JavaScript, Python and Java, with AP courses in computer science, biology, chemistry and physics.', img: 'classroom', body: SkillsPage },
   awards: { label: 'Achievements', lead: 'Awards', rest: 'and honors.', lede: 'Every award, honor and certificate, and how his test scores compare nationwide.', img: 'trophy', body: AwardsPage },
   life: { label: 'Beyond the classroom', lead: 'Activities', rest: 'and volunteering.', lede: 'Swimming, Muay Thai, guitar, Science Olympiad, DECA and giving back.', img: 'guitar', body: LifePage },

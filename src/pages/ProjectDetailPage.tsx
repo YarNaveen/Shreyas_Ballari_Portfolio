@@ -6,7 +6,7 @@ import { FinanceDetails } from '@/features/details/Details';
 export function Component() {
   return (
     <>
-      <Seo title="AI trading app" description={stockApp.summary} />
+      <Seo title="Stock Trading Application" description={stockApp.summary} />
       <div className="dt dt--page is-static">
         <FinanceDetails />
       </div>

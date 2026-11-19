@@ -34,7 +34,7 @@ const TIMELINE = [
   '2024: Science Olympiad at FSA',
   '2025: Science Olympiad again; Principal’s Honors List at FSA; started Muay Thai',
   '2026: Principal’s Honors List again; DECA at FSA',
-  'Now: a junior at Fulton Science Academy, researching AI in oncology and building an AI trading app',
+  'Now: a junior at Fulton Science Academy, researching AI in oncology and building a stock trading application',
 ];
 
 const TOPICS: Topic[] = [
@@ -42,7 +42,7 @@ const TOPICS: Topic[] = [
     id: 'bio',
     words: ['who', 'him', 'introduce', 'bio', 'himself', 'person', 'background', 'overview', 'summary', 'describe'],
     answer: () => ({
-      text: `${profile.name} is a ${profile.grade.toLowerCase()} at ${profile.school} in ${profile.schoolTown}. He is drawn to computer science, artificial intelligence, business and FinTech. He is exploring AI in cancer research through his concept Oncure, and he is building an AI stock trading app for beginners.`,
+      text: `${profile.name} is a ${profile.grade.toLowerCase()} at ${profile.school} in ${profile.schoolTown}. He is drawn to computer science, artificial intelligence, business and FinTech. He is exploring AI in cancer research through his concept Oncure, and he is building a stock trading application for beginners.`,
       cards: story('profile', 'oncure', 'finance'),
       chips: ['What does he study?', 'Tell me about Oncure', 'What are his awards?', 'Show his timeline'],
       open: { app: 'profile', label: 'Open his profile' },
@@ -61,7 +61,7 @@ const TOPICS: Topic[] = [
     id: 'code',
     words: ['code', 'coding', 'program', 'programming', 'language', 'languages', 'javascript', 'python', 'java', 'developer', 'computer science', 'software'],
     answer: () => ({
-      text: `He writes code in ${list(languages)}, and takes AP Computer Science Principles, AP Computer Science A and Artificial Intelligence at school. He is putting it to work in an AI stock trading app.`,
+      text: `He writes code in ${list(languages)}, and takes AP Computer Science Principles, AP Computer Science A and Artificial Intelligence at school. He is putting it to work in a stock trading application.`,
       cards: story('code', 'finance'),
       chips: ['Tell me about the trading app', 'What does he study?'],
     }),
@@ -144,7 +144,7 @@ const TOPICS: Topic[] = [
     id: 'finance',
     words: ['trading', 'stock', 'stocks', 'finance', 'financial', 'fintech', 'app', 'market', 'invest', 'investing', 'business', 'money', 'project', 'projects', 'build', 'building'],
     answer: () => ({
-      text: `${stockApp.summary} Features include ${list(stockApp.features.slice(0, 4).map((f) => f.title.toLowerCase()))}. It is in progress, and its suggestions are hypothetical, not financial advice.`,
+      text: `${stockApp.summary} Features include ${list(stockApp.features.slice(0, 4).map((f) => f.title.toLowerCase()))}. Its suggestions are hypothetical, not financial advice.`,
       cards: story('finance', 'code'),
       chips: ['Who is it for?', 'Tell me about Oncure', 'What does he study?'],
       open: { app: 'finance', label: 'Open the Finance App' },

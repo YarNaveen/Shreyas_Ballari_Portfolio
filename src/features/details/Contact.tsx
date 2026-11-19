@@ -16,7 +16,7 @@ import { Reach } from './Reach';
 const PHOTO = `${import.meta.env.BASE_URL}assets/shreyas/portrait-studio.jpg`;
 const TOPICS = [
   { id: 'Oncure', icon: Dna },
-  { id: 'AI trading app', icon: ChartLineUp },
+  { id: 'Stock trading app', icon: ChartLineUp },
   { id: 'Tutoring', icon: ChalkboardTeacher },
   { id: 'Something else', icon: Sparkle },
 ];

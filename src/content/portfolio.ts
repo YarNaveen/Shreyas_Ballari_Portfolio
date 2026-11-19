@@ -76,10 +76,15 @@ export const skillsCourses = {
 
 /** The stock trading app, in plain words (from Shreyas's own description). */
 export const stockApp = {
-  name: 'AI stock trading app',
-  status: 'In progress',
+  name: 'Stock Trading Application',
+  status: 'Concept',
+  /** One line under the title. */
+  tagline: 'A beginner-friendly stock trading website that is easy and welcoming for veterans too.',
   summary:
-    'A stock trading website that is friendly to beginners and welcoming to experienced traders. Instead of asking people to read candlestick charts and equations, it uses an AI model, real-world data and algorithms to suggest the best hypothetical choices: how much of a stock to buy, when to buy it, and an estimated time to sell.',
+    'A stock trading website that is beginner-friendly, and easy and welcoming for veterans too. It uses algorithms and real-world data to work out the best hypothetical choice when buying a stock, and gives you a time frame for when to buy and when to sell. Instead of the candlesticks and equations experienced traders rely on, it uses an AI model to streamline buying and selling, with useful advice for anyone who is interested.',
+  /** "To simplify", in his words. */
+  simple:
+    'To simplify: an AI model uses real-world data and algorithms to advise how much of a stock to buy, when to buy it and an estimate of when to sell it, based on real-world factors, and shows all of this next to the stock graph you are looking at. A dashboard shows the stocks you hold and the buy or sell stage each one is at, your pending buys and sells, and top-performing stocks you may be interested in.',
   features: [
     { title: 'AI advice next to the chart', line: 'How much to buy, when to buy and an estimated time to sell, shown beside the graph you are looking at.' },
     { title: 'Real-world data', line: 'Advice based on real market data and real-world factors, worked out with algorithms.' },
@@ -87,9 +92,9 @@ export const stockApp = {
     { title: 'Pending orders', line: 'Buys and sells that are still waiting to go through.' },
     { title: 'Top performers', line: 'Top-performing stocks you may be interested in.' },
     { title: 'Smart calculators', line: 'Calculators that use the AI model to suggest timing and the best amount to buy.' },
-    { title: 'Everything a trading site needs', line: 'Current stocks, holdings, buying and selling, and a progress graph for each stock.' },
+    { title: 'Everything a trading site needs', line: 'A dashboard, current stocks, what you hold, ways to buy and sell, and a progress graph for each stock.' },
   ],
-  forWhom: 'Beginners who want guidance without jargon, and veterans who want a faster way to decide.',
+  forWhom: 'Beginners who want clear advice without candlesticks or equations, and veterans who want an easier, faster way to decide.',
   /** Why it is different, in plain words. */
   approach: [
     'No candlesticks or equations to learn: an AI model does that work for you.',
@@ -227,12 +232,12 @@ export const clusters: Cluster[] = [
   },
   {
     id: 'stocks',
-    menu: 'Project — AI stock trading app',
-    title: 'AI stock trading app',
-    status: 'In progress',
+    menu: 'Project — Stock Trading Application',
+    title: 'Stock Trading Application',
+    status: 'Concept',
     body: [
       confirmed(stockApp.summary),
-      confirmed('It shows AI advice next to the stock graph, a dashboard of holdings and their buy or sell stage, pending orders, top performers and AI-powered calculators.'),
+      confirmed(stockApp.simple),
     ],
     link: { label: 'See the project page', href: '/projects/stock-trading-app' },
   },
@@ -349,8 +354,8 @@ export const faq = [
     a: 'A research concept by Shreyas for AI-guided nanobot cancer therapy, aimed at treating cancer cells while sparing healthy tissue.',
   },
   {
-    q: 'What is the stock trading app?',
-    a: 'A beginner-friendly trading website, in progress, that uses an AI model and real-world data to suggest how much of a stock to buy, when to buy it and when to sell, shown right next to the stock graph.',
+    q: 'What is his Stock Trading Application?',
+    a: 'A beginner-friendly stock trading website, welcoming to veterans too, that uses an AI model, algorithms and real-world data to suggest how much of a stock to buy, when to buy it and when to sell, shown right next to the stock graph.',
   },
   {
     q: 'What has he achieved?',

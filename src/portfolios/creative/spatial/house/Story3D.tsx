@@ -316,13 +316,13 @@ export function tradingBoardTexture() {
     g.fillRect(0, 0, 1200, 860);
     g.fillStyle = '#6be3a4';
     font(g, 26, 800);
-    g.fillText('IN PROGRESS · CONCEPT', 60, 80);
+    g.fillText('CONCEPT · PERSONAL PROJECT', 60, 80);
     g.fillStyle = '#fff';
     font(g, 60, 800);
-    g.fillText('AI trading app', 60, 148);
+    g.fillText('Stock Trading Application', 60, 148);
     font(g, 26, 500);
     g.fillStyle = 'rgba(255,255,255,0.82)';
-    wrap(g, 'Beginner-friendly and welcoming to veterans: an AI model reads real-world data and suggests how much to buy, when to buy and an estimated time to sell, right next to the chart.', 60, 200, 1080, 36, 3);
+    wrap(g, 'Beginner-friendly and welcoming to veterans: an AI model uses real-world data and algorithms to advise how much to buy, when to buy and an estimate of when to sell, right next to the stock graph.', 60, 200, 1080, 36, 3);
     const items = ['Dashboard', 'Current stocks', 'Your holdings', 'Buy and sell', 'Buy / sell stage', 'Pending orders', 'Progress graphs', 'Top performers', 'AI calculators'];
     items.forEach((t, i) => {
       const x = 60 + (i % 3) * 365;

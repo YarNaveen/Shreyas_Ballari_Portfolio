@@ -46,7 +46,7 @@ const NUMBERS = [
 
 const WORK: { kind: string; title: string; line: string; img: string; tone: string; more?: DetailId }[] = [
   { kind: 'Research concept', title: 'Oncure', line: 'AI-guided nanobots that could carry cancer therapy straight to tumour cells. A conceptual research proposal, not an existing treatment.', img: J('oncure'), tone: '#2f5fd6', more: 'oncure' },
-  { kind: 'FinTech · in progress', title: 'AI trading app', line: 'Suggests how much to buy, when to buy and when to sell. Hypothetical sample data, not financial advice.', img: J('trading'), tone: '#e39a2d', more: 'finance' },
+  { kind: 'FinTech · concept', title: 'Stock Trading Application', line: 'Beginner-friendly and welcoming to veterans: AI advice on how much to buy, when to buy and when to sell. Hypothetical, not financial advice.', img: J('trading'), tone: '#e39a2d', more: 'finance' },
   { kind: 'Recognition', title: 'Awards', line: 'College Board National Recognition Program, and the Principal’s Honors List in 2025 and 2026.', img: J('trophy'), tone: '#e8ae9f', more: 'awards' },
   { kind: 'Teaching', title: 'Peer tutoring', line: 'Math and Science for 7th and 8th graders, at lunch and after school.', img: J('tutor'), tone: '#4f9a6f', more: 'tutoring' },
   { kind: 'Writing', title: 'Young Authors', line: 'Young Authors Contest winner in 2023.', img: J('writing'), tone: '#f1c232' },
@@ -84,7 +84,7 @@ function Screen({ go, live, onMore }: { go: (id: string) => void; live: boolean;
         <div className="fo-hero-text">
           <p className="fo-mono">Student researcher &amp; peer tutor · {profile.school}</p>
           <h3 className="fo-display">{profile.name}</h3>
-          <p className="fo-lede">Exploring how AI could make cancer treatment more precise, and building an AI trading app for beginners.</p>
+          <p className="fo-lede">Exploring how AI could make cancer treatment more precise, and building a stock trading application for beginners.</p>
           <div className="fo-row">
             <button type="button" className="fo-btn is-dark" tabIndex={tab} onClick={() => go('work')}>
               See the work <ArrowUpRight weight="bold" aria-hidden="true" />
@@ -171,8 +171,8 @@ function LockScreen({ time }: { time: string }) {
         <div className="fo-note">
           <img src={J('trading')} alt="" />
           <span>
-            <b>AI trading app</b>
-            <small className="fo-mono">In progress</small>
+            <b>Stock Trading Application</b>
+            <small className="fo-mono">Concept</small>
           </span>
         </div>
       </div>

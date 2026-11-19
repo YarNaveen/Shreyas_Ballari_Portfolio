@@ -160,7 +160,7 @@ function Trading() {
             </h2>
           </div>
           <div className="sd-hero-copy">
-            <p className="sd-hero-sub">A stock trading application that is friendly to beginners and welcoming to veterans.</p>
+            <p className="sd-hero-sub">{stockApp.name}: {stockApp.tagline.charAt(0).toLowerCase() + stockApp.tagline.slice(1)}</p>
             <p className="sd-hero-body">
               Instead of candlesticks and equations, an AI model uses real-world data and algorithms to suggest how much of a stock to buy, when to buy it and an estimated time to sell, shown right next to the stock graph you are looking at.
             </p>
@@ -366,7 +366,7 @@ function Craft() {
 
 const WORK: { id: PageId; title: string; line: string; img: string; tint: string; anchor?: string }[] = [
   { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030' },
-  { id: 'trading', title: 'Stock trading application', line: 'In progress · hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a' },
+  { id: 'trading', title: 'Stock Trading Application', line: 'Hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a' },
   { id: 'skills', title: 'Technical skills & courses', line: 'JavaScript, Python and Java, with AP Computer Science, Biology, Chemistry and Physics C.', img: 'classroom', tint: '#0a1428' },
   { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606' },
   { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', anchor: 'cx-life' },
@@ -590,7 +590,7 @@ function Finale() {
   const top = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const site = [
     { l: 'About', id: 'cx-about' },
-    { l: 'Trading app', id: 'cx-finance' },
+    { l: 'Stock trading app', id: 'cx-finance' },
     { l: 'Awards', id: 'cx-honors' },
     { l: 'His work', id: 'sd-work' },
     { l: 'Goals', id: 'cx-goals' },

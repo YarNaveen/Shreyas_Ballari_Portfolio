@@ -7,7 +7,7 @@ import { oncure, stockApp } from '@/content/portfolio';
 export function Component() {
   return (
     <>
-      <Seo title="Projects" description="Projects by Shreyas Ballari: an AI trading app concept and the Oncure research concept." />
+      <Seo title="Projects" description="Projects by Shreyas Ballari: a stock trading application and the Oncure research concept." />
       <div className="dt dt--page is-static">
         <div className="dt-body">
           <header className="dt-head">
@@ -16,7 +16,7 @@ export function Component() {
           </header>
           <Link to="/projects/stock-trading-app" className="dt-end dt-link">
             <span className="dt-kicker">FinTech · {stockApp.status.toLowerCase()}</span>
-            <b className="dt-h">AI trading app</b>
+            <b className="dt-h">Stock Trading Application</b>
             <p>{stockApp.summary}</p>
             <span className="dt-note">Hypothetical concept. Not financial advice.</span>
             <span className="dt-go">See the full concept →</span>

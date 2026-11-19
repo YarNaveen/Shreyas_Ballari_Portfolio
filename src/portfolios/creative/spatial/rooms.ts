@@ -32,7 +32,7 @@ export const ROOMS: Room[] = [
   { id: 'living', name: 'Living Room', line: "Welcome to Shreyas's world", built: true, pose: LIVING, voice: ['living room', 'living', 'about me', 'about', 'home', 'welcome', 'start'] },
   { id: 'study', name: 'Study Room', line: 'Education and academics', built: false, pose: HALL, voice: ['study room', 'study', 'education', 'academics', 'courses', 'school'] },
   { id: 'lab', name: 'Innovation Lab', line: 'Research interests', built: false, pose: HALL, voice: ['innovation lab', 'innovation', 'laboratory', 'lab', 'research interests', 'research'] },
-  { id: 'fintech', name: 'FinTech Room', line: 'AI stock trading app (concept)', built: false, pose: HALL, voice: ['fintech room', 'fintech', 'trading', 'stock', 'finance', 'stock trading app'] },
+  { id: 'fintech', name: 'FinTech Room', line: 'Stock Trading Application (concept)', built: false, pose: HALL, voice: ['fintech room', 'fintech', 'trading', 'stock', 'finance', 'stock trading app'] },
   { id: 'oncology', name: 'Oncology Research', line: 'AI in cancer research', built: false, pose: HALL, voice: ['oncology research', 'oncology', 'cancer', 'biomedical'] },
   { id: 'music', name: 'Music Room', line: 'Guitar since 2021', built: false, pose: HALL, voice: ['music room', 'music', 'guitar', 'guitar room', 'play guitar room'] },
   { id: 'recreation', name: 'Recreation Room', line: 'Swimming, Muay Thai, Science Olympiad, DECA', built: false, pose: HALL, voice: ['recreation room', 'recreation', 'activities', 'my activities', 'sports', 'swimming', 'muay thai'] },

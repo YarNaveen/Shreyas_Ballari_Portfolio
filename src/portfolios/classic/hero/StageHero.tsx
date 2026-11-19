@@ -102,7 +102,7 @@ export function StageHero({ mini = false }: { mini?: boolean }) {
         <p className="sh-hey">Hey, I’m {profile.firstName}</p>
         <p className="sh-intro">
           A <b>student researcher</b> and <b>peer tutor</b>, a junior at {profile.school}. Exploring how <b>AI</b> could make cancer treatment more precise, and building an{' '}
-          <b>AI trading app</b>.
+          <b>stock trading application</b>.
         </p>
       </aside>
       <h1 id={mini ? undefined : 'sh-name'} className="sh-name" ref={name}>

@@ -12,7 +12,7 @@ import { RESUME } from './timeline';
 export const NAV_ITEMS = [
   { id: 'work', label: 'Work' },
   { id: 'oncure', label: 'Oncure' },
-  { id: 'finance', label: 'Trading app' },
+  { id: 'finance', label: 'Stock trading app' },
   { id: 'wall', label: 'Awards' },
   { id: 'life', label: 'Activities' },
   { id: 'goals', label: 'Goals' },
