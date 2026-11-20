@@ -19,11 +19,11 @@ export interface VoiceState {
 
 /** What can be said, grouped for the guide. Every phrase here is handled in commands.ts. */
 export const VOICE_GUIDE: { title: string; items: string[] }[] = [
-  { title: 'Open an app', items: ['“Open his profile”', '“Open Oncure”', '“Show the trading app”', '“Show his awards”', '“Open games”', '“Activities”'] },
-  { title: 'Move around', items: ['“Next” / “Previous”', '“Go back”', '“Close”', '“Scroll down” / “Scroll up”', '“Home view”'] },
-  { title: 'The house', items: ['“Start the house tour”', '“Next room”', '“Walk freely”', '“360 view”', '“Night mode” / “Daylight”'] },
-  { title: 'Ask and click', items: ['“Ask who is Shreyas”', '“Click play”', '“Click card 2”', '“Watch the video”'] },
-  { title: 'Voice', items: ['“Voice on” (reads apps aloud)', '“What can I say”', '“Stop listening”'] },
+  { title: 'Open', items: ['“Open profile”', '“Open the Oncure project”', '“Show the trading app”', '“Show his awards”', '“Open games”', '“Dashboard”'] },
+  { title: 'Click anything', items: ['“Click on profile card”', '“Click on games card”', '“Click on explore button”', '“Click play”', '“Click card 2”', '“Download resume”'] },
+  { title: 'Move around', items: ['“Next / Show me the next one”', '“Previous project”', '“Go back”', '“Close”', '“Scroll down / Scroll up”', '“Scroll to the top”'] },
+  { title: 'The house', items: ['“Start the house tour”', '“Next room”', '“360 view / Done”', '“Night mode / Daylight”', '“Squeeze / Bring back”', '“Full screen”'] },
+  { title: 'Ask and more', items: ['“Ask who is Shreyas”', '“Watch the video”', '“Next award / Shuffle”', '“Hand control on”', '“What can I say”', '“Stop listening”'] },
 ];
 
 export function VoiceControl({ on, voice, result, onOff }: { on: boolean; voice: VoiceState; result: string; onOff: () => void }) {
@@ -122,7 +122,7 @@ export function VoiceControl({ on, voice, result, onOff }: { on: boolean; voice:
         <span className="sp-orb" aria-hidden="true" />
         <span className="sp-voice-text">
           <b>{voice.error ? 'Microphone off' : voice.listening ? (voice.heard ? `“${voice.heard}”` : 'Listening…') : 'Starting the microphone…'}</b>
-          <small>{voice.error || result || 'Try “open awards” or “next”'}</small>
+          <small>{voice.error || result || 'Try “click on profile card”, “scroll down” or “go back”'}</small>
         </span>
         <button type="button" className="os-round is-sm" aria-label="Voice commands list" data-voice="what can i say" onClick={() => setGuide(!guide)}>
           <Question weight="bold" />

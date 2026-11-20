@@ -4,6 +4,7 @@ import type { FrameResult } from '@/features/gestures/recognizer';
 import { CHAPTERS } from '../story/chapters';
 import { TOUR } from '../story/tour';
 import { playUi, spatial } from '../store';
+import { mainScroller } from './commands';
 
 /**
  * Hand mode: real browser hand tracking (MediaPipe Tasks Vision), started only after the visitor
@@ -17,7 +18,9 @@ import { playUi, spatial } from '../store';
  *   backup for when a pinch is hard to read.
  * - Pinch and move: drag a card, scroll a list, turn the 360° view, or walk the house tour.
  * - Swipe left / right: next / previous (room in the tour, award in Awards, otherwise app).
- * - Hold an open palm: show or hide the app rail.
+ * - Swipe up / down: scroll the page or list in front (in the tour: the next or previous room).
+ * - Make a fist and hold it: the apps squeeze into the corner like rubber.
+ * - Hold an open palm: bring squeezed apps back (otherwise show or hide the app rail).
  * Mouse, touch and keyboard keep working throughout.
  */
 
@@ -42,6 +45,8 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
   const engine = useRef<HandTrackingEngine | null>(null);
   const [consent, setConsent] = useState(false);
   const [st, setSt] = useState<TrackingState>(INITIAL_STATE);
+  /** The gesture guide beside the status, shown while hand control runs (can be hidden). */
+  const [guide, setGuide] = useState(true);
 
   useEffect(() => {
     if (!on) {
@@ -58,6 +63,8 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
 
     /** Last pointing position (before any pinch), in pixels. */
     const aim = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    /** When a closed fist began (held long enough, it squeezes the apps away). */
+    let fistAt = 0;
     let hover: Element | null = null;
     let dwell: { el: Element; t0: number; x: number; y: number; done: boolean } | null = null;
     let pinch: null | {
@@ -104,6 +111,16 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
       onFrame: (r: FrameResult) => {
         const c = cursor.current;
         if (!c) return;
+        // A fist held for a moment squeezes the apps into the corner.
+        if (r.present && r.gesture === 'fist' && !pinch) {
+          const now = performance.now();
+          if (!fistAt) fistAt = now;
+          const s = spatial.get();
+          if (now - fistAt > 700 && !s.squeezed && !s.tour) {
+            spatial.set({ squeezed: true, homeView: false, control: false });
+            spatial.toast('Fist: apps squeezed away · hold an open palm to bring them back');
+          }
+        } else fistAt = 0;
         const raw = r.pinching && pinch ? (r.grip ?? r.cursor) : r.cursor;
         c.style.opacity = r.present && raw ? '1' : '0';
         if (!raw) {
@@ -200,7 +217,8 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
           if (el?.matches('[data-drag]')) mode = 'drag';
           else if (!el && s.tour) mode = 'tour';
           dwell = null;
-          pinch = { el, x, y, gx: NaN, gy: NaN, lx: x, ly: y, moved: false, mode, box: el ? null : scroller(hit ?? null) };
+          // Pinching empty space and moving scrolls the list under it, or the page in front.
+          pinch = { el, x, y, gx: NaN, gy: NaN, lx: x, ly: y, moved: false, mode, box: el ? null : (scroller(hit ?? null) ?? mainScroller()) };
           if (mode === 'drag' && el) fire('pointerdown', el, x, y);
           return;
         }
@@ -210,6 +228,13 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
             const d = e.dir === 'left' || e.dir === 'up' ? 1 : -1;
             spatial.tourStep(d as 1 | -1, TOUR.length);
             spatial.toast(d > 0 ? 'Swipe: next room' : 'Swipe: previous room');
+          } else if (e.dir === 'up' || e.dir === 'down') {
+            // Push the page up to read further down, pull it down to go back up.
+            const box = mainScroller();
+            if (box) {
+              box.scrollBy({ top: (e.dir === 'up' ? 0.7 : -0.7) * box.clientHeight, behavior: 'smooth' });
+              spatial.toast(e.dir === 'up' ? 'Swipe up: scrolled down' : 'Swipe down: scrolled up');
+            } else spatial.toast('Nothing to scroll here');
           } else if (e.dir === 'left' || e.dir === 'right') {
             if (CHAPTERS[s.chapter]?.id === 'awards') {
               window.dispatchEvent(new CustomEvent('os-awards', { detail: e.dir === 'left' ? 'next' : 'prev' }));
@@ -221,7 +246,12 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
           }
           return;
         }
-        if (e.type === 'palm-hold' && !s.tour) spatial.set({ dock: !s.dock });
+        if (e.type === 'palm-hold' && !s.tour) {
+          if (s.squeezed) {
+            spatial.set({ squeezed: false });
+            spatial.toast('Open palm: apps are back');
+          } else spatial.set({ dock: !s.dock });
+        }
       },
     });
     engine.current = eng;
@@ -249,7 +279,9 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
               <li><b>Pinch</b> (thumb to index) to select, or <b>hold still</b> on a button for a second</li>
               <li><b>Pinch and move</b> to drag a card, scroll, turn the 360° view or walk the tour</li>
               <li><b>Swipe</b> left or right for the next or previous room, award or app</li>
-              <li><b>Hold an open palm</b> to show or hide the apps</li>
+              <li><b>Swipe up or down</b>, or <b>pinch and move</b> on empty space, to scroll</li>
+              <li><b>Make a fist and hold it</b> to squeeze the apps into the corner</li>
+              <li><b>Hold an open palm</b> to bring them back (or show and hide the app rail)</li>
             </ul>
             <p className="sp-modal-tip">Tip: sit about an arm’s length from the camera, in good light, with your hand in the middle of the picture.</p>
             <div className="sp-modal-actions">
@@ -263,9 +295,28 @@ export function Hands({ on, onOff }: { on: boolean; onOff: () => void }) {
           </div>
         </div>
       ) : (
-        <p className={`sp-hands-status is-${st.status}`} role="status">
-          {st.status === 'ready' ? (st.present ? (st.pinching ? 'Pinch' : 'Hand found · point, pinch or hold still') : 'Show your hand to the camera') : (st.message ?? 'Starting the camera…')}
-        </p>
+        <>
+          <p className={`sp-hands-status is-${st.status}`} role="status">
+            {st.status === 'ready' ? (st.present ? (st.pinching ? 'Pinch' : 'Hand found · point, pinch or hold still') : 'Show your hand to the camera') : (st.message ?? 'Starting the camera…')}
+            <button type="button" className="sp-hands-guide-btn" onClick={() => setGuide(!guide)} aria-expanded={guide}>
+              {guide ? 'Hide guide' : 'Gestures'}
+            </button>
+          </p>
+          {guide && (
+            <aside className="sp-hands-guide" aria-label="Hand gestures">
+              <b>Hand gestures</b>
+              <ul>
+                <li><span>☝️</span> Point: move the cursor</li>
+                <li><span>🤏</span> Pinch: click (or hold still 1 s)</li>
+                <li><span>✊</span> Hold a fist: squeeze the apps away</li>
+                <li><span>🖐️</span> Hold an open palm: bring them back</li>
+                <li><span>↕️</span> Swipe up / down: scroll</li>
+                <li><span>↔️</span> Swipe left / right: next / previous</li>
+                <li><span>🤏↕️</span> Pinch and move: drag or scroll</li>
+              </ul>
+            </aside>
+          )}
+        </>
       )}
     </>
   );

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from 
 import {
   ArrowClockwise,
   CornersOut,
+  Cube,
   SquaresFour,
   Brain,
   Briefcase,
@@ -369,11 +370,23 @@ export function ControlCenter({ voice, hands, setHands, replayIntro }: { voice: 
   const narrate = useSpatial((s) => s.narrate);
   const sound = useSpatial((s) => s.sound);
   const auto = useSpatial((s) => s.auto);
+  const look360 = useSpatial((s) => s.look360);
   const tiles = [
     { k: 'Narrator', on: narrate, icon: ClosedCaptioning, act: () => spatial.setNarrate(!narrate) },
     { k: 'Sound', on: sound, icon: sound ? SpeakerHigh : SpeakerSimpleSlash, act: () => spatial.set({ sound: !sound }) },
-    { k: 'Voice', on: voice.listening, icon: Microphone, act: () => (spatial.set({ control: false }), voice.listening ? voice.stop() : voice.start()) },
-    { k: 'Hands', on: hands, icon: HandWaving, act: () => setHands(!hands) },
+    { k: 'Voice control', on: voice.listening, icon: Microphone, act: () => (spatial.set({ control: false }), voice.listening ? voice.stop() : voice.start()) },
+    { k: 'Hand control', on: hands, icon: HandWaving, act: () => setHands(!hands) },
+    {
+      k: '360° view',
+      on: look360,
+      icon: Cube,
+      act: async () => {
+        // iPhone and iPad ask before sharing the motion sensors.
+        const DOE = (window as Window & { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
+        if (!look360 && DOE && typeof DOE.requestPermission === 'function') await DOE.requestPermission().catch(() => 'denied');
+        spatial.set({ control: false, homeView: false, look360: !look360 });
+      },
+    },
     { k: 'Profile', on: false, icon: UserCircle, act: () => (spatial.set({ control: false }), spatial.openWindow('profile')) },
     { k: 'Contact', on: false, icon: EnvelopeSimple, act: () => (spatial.set({ control: false }), spatial.openWindow('contact')) },
     { k: 'House tour', on: false, icon: MapTrifold, act: () => (spatial.set({ control: false }), replayIntro()) },

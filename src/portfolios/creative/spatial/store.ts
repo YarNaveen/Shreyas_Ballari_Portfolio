@@ -49,13 +49,15 @@ export interface SpatialState {
   video: boolean;
   /** 360° view: the apps step aside and dragging turns the camera all the way round the room. */
   look360: boolean;
+  /** The apps squeezed into the corner like rubber (a fist, or "squeeze"); an open palm brings them back. */
+  squeezed: boolean;
   /** Cards pinned on the dashboard's pinboard (ids). */
   pinned: string[];
   /** A question waiting for the AI chat (set by "Ask AI" buttons). */
   pendingAsk: string | null;
 }
 
-let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, look360: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null };
+let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, look360: false, squeezed: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null };
 const subs = new Set<() => void>();
 let autoTimer = 0;
 

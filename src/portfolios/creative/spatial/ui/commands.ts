@@ -17,9 +17,22 @@ function visible(el: Element) {
   return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight;
 }
 
+/** Press a control: a dashboard card opens on a tap (pointer down and up), anything else on a click. */
+function press(el: HTMLElement) {
+  if (el.matches('[data-widget], [data-drag]')) {
+    const r = el.getBoundingClientRect();
+    const opts = { clientX: r.left + r.width / 2, clientY: r.top + 24, bubbles: true, cancelable: true, pointerId: 78, pointerType: 'mouse', isPrimary: true, button: 0 };
+    el.dispatchEvent(new PointerEvent('pointerdown', { ...opts, buttons: 1 }));
+    el.dispatchEvent(new PointerEvent('pointerup', { ...opts, buttons: 0 }));
+    window.dispatchEvent(new PointerEvent('pointerup', { ...opts, buttons: 0 }));
+    return;
+  }
+  el.click();
+}
+
 /** Click the on-screen control whose name best matches the words. */
 function clickByName(words: string): string | null {
-  const want = norm(words).replace(/ (the|on|this|that|button|card|please) /g, ' ').trim();
+  const want = norm(words).replace(/ (the|on|this|that|button|card|cards|please|me|page|app|project|tile|link) /g, ' ').replace(/ (the|on|button|card|please) /g, ' ').trim();
   if (!want) return null;
   const els = [...document.querySelectorAll<HTMLElement>('.sp-ui button, .sp-ui a, .sp-ui [data-voice]')].filter((e) => visible(e) && !(e as HTMLButtonElement).disabled);
   // "card 3": the third card on screen.
@@ -28,7 +41,7 @@ function clickByName(words: string): string | null {
     const cards = els.filter((e) => e.matches('.os-story, .os-post, .aw-card, .os-act, .os-hv-app, .os-strip-card, .sc-big-card, .fun-card, [data-card]'));
     const el = cards[Number(num) - 1];
     if (el) {
-      el.click();
+      press(el);
       return `Clicked card ${num}`;
     }
   }
@@ -49,14 +62,14 @@ function clickByName(words: string): string | null {
     }
   }
   if (best && best.score >= 15) {
-    best.el.click();
+    press(best.el);
     return `Clicked “${(best.el.dataset.voice ?? best.el.textContent ?? '').trim().slice(0, 40)}”`;
   }
   return null;
 }
 
 /** The scrollable area the visitor is most likely looking at: the front window's content first. */
-function mainScroller(): HTMLElement | null {
+export function mainScroller(): HTMLElement | null {
   const all = [...document.querySelectorAll<HTMLElement>('.sp-ui *')].filter((el) => {
     if (!visible(el)) return false;
     const cs = getComputedStyle(el);
@@ -67,8 +80,36 @@ function mainScroller(): HTMLElement | null {
 }
 
 export function runCommand(raw: string, actions: { replayIntro: () => void; sound: (on: boolean) => void; voiceOff?: () => void }): string | null {
-  const t = norm(raw);
+  const t = norm(raw).replace(/^ (please|can you|could you|hey|ok|okay|now) /, ' ').replace(/ please $/, ' ');
   const has = (...w: string[]) => w.some((x) => t.includes(` ${x} `));
+  // Squeeze the apps into the corner, and bring them back.
+  if (has('squeeze', 'minimise', 'minimize', 'hide everything', 'tuck away', 'hide the apps')) {
+    spatial.set({ squeezed: true, homeView: false, control: false });
+    return 'Apps squeezed into the corner';
+  }
+  if (spatial.get().squeezed && has('bring back', 'bring them back', 'restore', 'show everything', 'show the apps', 'unsqueeze', 'come back')) {
+    spatial.set({ squeezed: false });
+    return 'Apps are back';
+  }
+  // The 360 degree view.
+  if (has('360', '360 view', '360 degree', 'look around', 'three sixty')) {
+    spatial.set({ look360: !spatial.get().look360 || has('look around'), homeView: false, control: false });
+    return spatial.get().look360 ? '360° view: drag or move your device to look around' : '360° view closed';
+  }
+  if (spatial.get().look360 && has('done', 'exit', 'stop looking', 'leave', 'close')) {
+    spatial.set({ look360: false });
+    return '360° view closed';
+  }
+  // Hand control by voice.
+  if (has('hand control', 'hands on', 'hands off', 'use my hands', 'gestures on', 'camera control')) {
+    const off = has('off', 'stop');
+    window.dispatchEvent(new CustomEvent('sp-hands', { detail: !off }));
+    return off ? 'Hand control off' : 'Hand control on';
+  }
+  // His resume.
+  if (has('view resume', 'download resume', 'open resume', 'show resume', 'his resume', 'the resume', 'open cv', 'his cv')) {
+    return clickByName(has('download') ? 'download resume' : 'view resume') ?? clickByName('resume') ?? 'Say “open profile”: the resume buttons are there';
+  }
   if (has('stop listening', 'stop voice control', 'microphone off', 'mic off', 'turn off voice control')) {
     actions.voiceOff?.();
     return 'Stopped listening';
@@ -125,6 +166,15 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
     spatial.set({ envAuto: true });
     return 'Light follows the time of day';
   }
+  if (has('dashboard', 'go home', 'home screen', 'main page')) {
+    if (spatial.get().tour) {
+      spatial.endTour('home');
+      return 'Opening the dashboard';
+    }
+    spatial.set({ homeView: false, control: false, squeezed: false });
+    spatial.goChapter('home');
+    return 'Opening the dashboard';
+  }
   if (has('home view', 'all apps', 'show apps')) {
     spatial.set({ homeView: !spatial.get().homeView, control: false });
     return 'Home View';
@@ -158,21 +208,33 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
     else spatial.goChapter('home');
     return 'Closed';
   }
-  if (has('next', 'next one', 'continue', 'forward', 'go on')) {
+  if (has('next', 'next one', 'next project', 'next page', 'show me the next', 'continue', 'forward', 'go on')) {
     spatial.next();
     return 'Next';
   }
   if (has('go back', 'back')) {
-    // A window's own back button first (e.g. from a certificate to the carousel).
-    const b = [...document.querySelectorAll<HTMLElement>('.os-main [data-voice="back"]')].find(visible);
+    // An open window or panel closes first, then a page's own back button, then the dashboard.
+    const st = spatial.get();
+    if (st.homeView || st.control) {
+      spatial.set({ homeView: false, control: false });
+      return 'Back';
+    }
+    if (st.windows.length) {
+      spatial.closeWindow(st.windows[st.windows.length - 1]!);
+      return 'Back';
+    }
+    const b = [...document.querySelectorAll<HTMLElement>('.os-main [data-voice="back"], .os-free > .os-back')].find(visible);
     if (b) {
       b.click();
       return 'Back';
     }
-    spatial.prev();
-    return 'Previous';
+    if (CHAPTERS[st.chapter]?.id !== 'home') {
+      spatial.goChapter('home');
+      return 'Back to the dashboard';
+    }
+    return 'Already on the dashboard';
   }
-  if (has('previous', 'last one')) {
+  if (has('previous', 'last one', 'previous project', 'previous one', 'go to previous')) {
     spatial.prev();
     return 'Previous';
   }
@@ -196,7 +258,7 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
     spatial.setNarrate(true);
     return 'Narrator on';
   }
-  if (has('house tour', 'take the tour', 'tour the house', 'replay intro', 'start tour')) {
+  if (has('house tour', 'take the tour', 'tour the house', 'replay intro', 'start tour', 'walk freely', 'walk around')) {
     actions.replayIntro();
     return 'Starting the house tour';
   }
@@ -217,6 +279,10 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
   if (has('watch video', 'watch the video', 'play video', 'play the video', 'oncure video')) {
     spatial.set({ video: true });
     return 'Playing the Oncure video';
+  }
+  if (has('exit full screen', 'leave full screen', 'small screen') && document.fullscreenElement) {
+    void document.exitFullscreen();
+    return 'Left full screen';
   }
   if (has('full view', 'full screen', 'fullscreen')) {
     if (document.fullscreenElement) void document.exitFullscreen();

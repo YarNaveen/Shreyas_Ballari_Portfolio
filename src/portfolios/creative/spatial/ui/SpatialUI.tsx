@@ -183,6 +183,55 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
       setGenie('idle');
     }, 760);
   };
+  // Squeezed into the corner (a held fist, or "squeeze"): coming back plays the genie in reverse.
+  const squeezed = useSpatial((s) => s.squeezed);
+  const wasSqueezed = useRef(squeezed);
+  useEffect(() => {
+    if (wasSqueezed.current && !squeezed) {
+      setGenie('releasing');
+      playUi('open');
+      const t = window.setTimeout(() => setGenie('idle'), 950);
+      wasSqueezed.current = squeezed;
+      return () => window.clearTimeout(t);
+    }
+    if (!wasSqueezed.current && squeezed) playUi('close');
+    wasSqueezed.current = squeezed;
+  }, [squeezed]);
+  // Full view: the first tap or click on the portfolio opens it full screen (browsers only allow
+  // full screen after a tap; iPhones do not offer it). Once per visit, so leaving it stays left.
+  useEffect(() => {
+    if (!document.fullscreenEnabled) return;
+    let asked = false;
+    try {
+      asked = sessionStorage.getItem('sp-full') === '1';
+    } catch {
+      /* storage blocked */
+    }
+    if (asked) return;
+    const go = (e: Event) => {
+      if (e.target instanceof Element && e.target.closest('[data-voice="full screen"]')) return;
+      try {
+        sessionStorage.setItem('sp-full', '1');
+      } catch {
+        /* storage blocked */
+      }
+      if (!document.fullscreenElement) void document.documentElement.requestFullscreen().catch(() => {});
+      off();
+    };
+    const off = () => {
+      window.removeEventListener('pointerup', go, true);
+      window.removeEventListener('keydown', go, true);
+    };
+    window.addEventListener('pointerup', go, true);
+    window.addEventListener('keydown', go, true);
+    return off;
+  }, []);
+  // Voice can turn hand control on or off.
+  useEffect(() => {
+    const on = (e: Event) => setHands((e as CustomEvent<boolean>).detail);
+    window.addEventListener('sp-hands', on);
+    return () => window.removeEventListener('sp-hands', on);
+  }, []);
   const ccRef = useRef<HTMLDivElement>(null);
   /** Voice mode (like hand mode): explained and agreed to first, then a live status panel. */
   const [voiceOn, setVoiceOn] = useState(false);
@@ -192,6 +241,12 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
     setVoiceResult(did ?? 'Not sure what to do. Try “what can I say”');
   });
   const voiceMode = { ...voice, listening: voiceOn, start: () => setVoiceOn(true), stop: () => setVoiceOn(false) };
+  // Testing aid: with ?voicetest in the address, typed phrases run exactly like spoken ones.
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).has('voicetest')) return;
+    (window as Window & { __spVoice?: (t: string) => string | null }).__spVoice = (text: string) => runCommand(text, { replayIntro, sound: (on) => spatial.set({ sound: on }), voiceOff: () => setVoiceOn(false) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Fetch the bigger apps quietly once the home is on screen.
   useEffect(() => {
     const w = window as Window & { requestIdleCallback?: (f: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (h: number) => void };
@@ -257,7 +312,7 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
   const c = CHAPTERS[chapter]!;
   const I = c.icon;
   return (
-    <div className={`sp-ui ${tour ? 'is-touring' : ''} ${look360 && !tour ? 'is-360' : ''} is-${genie}`}>
+    <div className={`sp-ui ${tour ? 'is-touring' : ''} ${look360 && !tour ? 'is-360' : ''} ${squeezed && !tour ? 'is-squeezed' : ''} is-${genie}`}>
       <div className="sp-apps">
       {/* Capsule */}
       <nav className="sp-capsule" aria-label="Apps">
@@ -414,6 +469,17 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
       )}
 
       {tour && <Tour />}
+      {squeezed && !tour && (
+        <div className="sp-360 sp-squeezed" role="status">
+          <span>
+            <b>Apps tucked away</b>
+            <small>Hold an open palm, say “bring back”, or tap</small>
+          </span>
+          <button type="button" className="sp-360-done" data-voice="bring back" onClick={() => spatial.set({ squeezed: false })}>
+            Bring back
+          </button>
+        </div>
+      )}
       {look360 && !tour && (
         <div className="sp-360" role="status">
           <span>
