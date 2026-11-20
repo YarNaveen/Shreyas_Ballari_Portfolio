@@ -49,7 +49,7 @@ import { Badges, Bars, CertWall, Columns, Donut, Flow, Orbit, Rings, Timeline, Y
 import { useSeen } from './ui';
 
 /**
- * The inner pages behind the "His work" cards, in the same style as the sections around them:
+ * The inner pages behind the "My work" cards, in the same style as the sections around them:
  * black with blue light, thin large type, bento cards that rise into focus. One font (Geist).
  */
 
@@ -635,7 +635,7 @@ export function InnerPage({ id, onClose }: { id: PageId; onClose: () => void }) 
       <div className="pg-body">
         <Body />
         <button type="button" className="sd-pill is-white pg-back" onClick={onClose}>
-          Back to his work
+          Back to my work
         </button>
       </div>
     </div>,

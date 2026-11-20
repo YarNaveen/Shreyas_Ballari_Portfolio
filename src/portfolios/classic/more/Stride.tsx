@@ -429,7 +429,7 @@ function Work() {
   return (
     <section ref={sec} id="sd-work" className="sd-work" style={{ '--tint': WORK[active]?.tint } as CSSProperties} aria-labelledby="sd-work-h">
       <div className="sd-work-sticky">
-        <Blur id="sd-work-h" text="His work" className="sd-work-h" />
+        <Blur id="sd-work-h" text="My work" className="sd-work-h" />
         <div className="sd-work-bar">
           <span className="sd-count" aria-live="polite">
             {String(active + 1).padStart(2, '0')} / {String(WORK.length).padStart(2, '0')}
@@ -592,7 +592,7 @@ function Finale() {
     { l: 'About', id: 'cx-about' },
     { l: 'Stock trading app', id: 'cx-finance' },
     { l: 'Awards', id: 'cx-honors' },
-    { l: 'His work', id: 'sd-work' },
+    { l: 'My work', id: 'sd-work' },
     { l: 'Goals', id: 'cx-goals' },
   ];
   return (
