@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { Reach } from '@/features/details/Reach';
-import { ArrowRight, ArrowsOutCardinal, EnvelopeSimple, Briefcase, ChatsCircle, Dna, Flask, GameController, Guitar, HandFist, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, SwimmingPool, Trophy, X } from '@phosphor-icons/react';
+import { ArrowRight, ArrowsOutCardinal, ChartLineUp, EnvelopeSimple, Briefcase, ChatsCircle, Dna, Flask, GameController, Guitar, HandFist, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, SwimmingPool, Trophy, X } from '@phosphor-icons/react';
 import { achievements, activities, profile } from '@/content/portfolio';
 import { spatial, useSpatial } from '../store';
 import { useDrag } from './dnd';
@@ -175,45 +175,42 @@ const FIN_ROWS = [
 function FinanceW() {
   const max = Math.max(...LINE);
   const min = Math.min(...LINE);
-  const pts = LINE.map((v, i) => [(i / (LINE.length - 1)) * 100, 36 - ((v - min) / (max - min)) * 30] as const);
+  const pts = LINE.map((v, i) => [(i / (LINE.length - 1)) * 100, 34 - ((v - min) / (max - min)) * 28] as const);
   const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
   const [lx, ly] = pts[pts.length - 1]!;
   return (
     <>
-      <Head icon={<span className="w-ico-txt">$</span>} title="Stock Trading Application" sub="Concept design" />
-      <div className="w-fin">
-        <div className="w-fin-chart">
-          <div className="w-fin-val">
+      <Head icon={<ChartLineUp weight="bold" />} title="Stock Trading Application" sub="Concept · sample data, not financial advice" />
+      <div className="w-tr">
+        <div className="w-tr-top">
+          <span>
             <small>Sample portfolio</small>
             <b>$12,480.36</b>
-            <em>▲ 2.4% today</em>
-          </div>
+          </span>
+          <em>▲ 2.4% today</em>
+        </div>
+        <div className="w-tr-chart">
           <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
             <defs>
-              <linearGradient id="w-fin-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#2fd18b" stopOpacity="0.45" />
-                <stop offset="1" stopColor="#2fd18b" stopOpacity="0" />
+              <linearGradient id="w-tr-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#34e39c" stopOpacity="0.5" />
+                <stop offset="1" stopColor="#34e39c" stopOpacity="0" />
               </linearGradient>
             </defs>
-            <path d={`${line} L100 40 L0 40 Z`} fill="url(#w-fin-fill)" />
-            <path className="w-fin-line" d={line} pathLength={1} />
+            <path d={`${line} L100 40 L0 40 Z`} fill="url(#w-tr-fill)" />
+            <path className="w-tr-line" d={line} pathLength={1} />
           </svg>
-          <i className="w-fin-dot" style={{ left: `${lx}%`, top: `${(ly / 40) * 100}%` }} aria-hidden="true" />
-          <span className="w-fin-ai">
-            <Sparkle weight="fill" aria-hidden="true" /> AI: hold NOVA, review LUMA
-          </span>
+          <i className="w-tr-dot" style={{ left: `${lx}%`, top: `${(ly / 40) * 100}%` }} aria-hidden="true" />
         </div>
-        <ul className="w-fin-rows">
+        <ul className="w-tr-chips">
           {FIN_ROWS.map((r, i) => (
             <li key={r.t} style={st(i)}>
               <b>{r.t}</b>
-              <small>{r.stage}</small>
               <em className={r.up ? 'is-up' : 'is-down'}>{r.v}</em>
             </li>
           ))}
         </ul>
       </div>
-      <small className="w-note">Concept design · sample data · not financial advice</small>
     </>
   );
 }
@@ -293,9 +290,9 @@ function GamesW() {
   const img = STORIES.find((s) => s.id === 'games')!.image;
   return (
     <>
-      <img className="w-bg" src={img} alt="" draggable={false} />
-      <div className="w-over">
-        <Head icon={<GameController weight="fill" />} title="Games" sub="Four games from his story" />
+      <Head icon={<GameController weight="fill" />} title="Games" sub="Four games from his story" />
+      <div className="w-game-art">
+        <img src={img} alt="" draggable={false} />
         <button type="button" className="os-chip is-solid" data-voice="play games" onClick={() => spatial.goChapter('games')}>
           <Play weight="fill" aria-hidden="true" /> Play
         </button>
@@ -314,30 +311,23 @@ const ACT_ICON: [RegExp, typeof Guitar][] = [
 
 /** All his activities, with the guitar player one tap away. */
 function MusicW() {
-  const img = storyById('guitar')!.image;
   return (
     <>
-      <img className="w-bg is-faint" src={img} alt="" draggable={false} />
-      <div className="w-over is-acts">
-        <Head icon={<Guitar weight="fill" />} title="Activities" sub="Sport, music and competition" />
-        <ul className="w-acts">
-          {activities.map((a, i) => {
-            const I = ACT_ICON.find(([r]) => r.test(a.title))?.[1] ?? Guitar;
-            return (
-              <li key={a.title} style={st(i)}>
-                <I weight="duotone" aria-hidden="true" />
-                <span>
-                  <b>{a.title}</b>
-                  <small>{a.role}</small>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-        <button type="button" className="os-chip is-solid" data-voice="open activities" onClick={() => spatial.goChapter('activities')}>
-          <Play weight="fill" aria-hidden="true" /> Open activities
-        </button>
-      </div>
+      <Head icon={<Guitar weight="fill" />} title="Activities" sub="Sport, music and competition" />
+      <ul className="w-acts is-all">
+        {activities.map((a, i) => {
+          const I = ACT_ICON.find(([r]) => r.test(a.title))?.[1] ?? Guitar;
+          return (
+            <li key={a.title} style={st(i)}>
+              <I weight="fill" aria-hidden="true" />
+              <span>
+                <b>{a.title}</b>
+                <small>{a.role}</small>
+              </span>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }

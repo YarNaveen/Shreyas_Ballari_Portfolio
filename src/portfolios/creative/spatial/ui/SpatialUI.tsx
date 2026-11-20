@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
-import { CaretDown, CaretLeft, CaretRight, HandWaving, MapTrifold, Microphone, MicrophoneSlash, SlidersHorizontal, SpeakerHigh, SpeakerSlash, SquaresFour, VirtualReality } from '@phosphor-icons/react';
+import { CaretDown, CaretLeft, CaretRight, Check, CornersIn, CornersOut, Cube, HandWaving, MapTrifold, Microphone, MicrophoneSlash, SlidersHorizontal, SpeakerHigh, SpeakerSlash, SquaresFour, VirtualReality } from '@phosphor-icons/react';
 import { useVoice } from '@/features/voice/useVoice';
 import { CHAPTERS } from '../story/chapters';
 import { playUi, spatial, useSpatial } from '../store';
@@ -221,10 +221,43 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
     window.addEventListener('pointerdown', off);
     return () => window.removeEventListener('pointerdown', off);
   }, [control]);
+  // Full screen (where the browser allows it; iPhones do not).
+  const [full, setFull] = useState(false);
+  const canFull = typeof document !== 'undefined' && !!document.fullscreenEnabled;
+  useEffect(() => {
+    const on = () => setFull(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', on);
+    return () => document.removeEventListener('fullscreenchange', on);
+  }, []);
+  const toggleFull = () => {
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
+    else void document.documentElement.requestFullscreen().catch(() => spatial.toast('Full screen is not available here'));
+  };
+  // 360° view. On iPhone and iPad, motion sensors need the visitor's permission (asked on the tap).
+  const look360 = useSpatial((s) => s.look360);
+  const toggle360 = async () => {
+    if (!look360) {
+      const DOE = (window as Window & { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
+      if (DOE && typeof DOE.requestPermission === 'function') {
+        try {
+          await DOE.requestPermission();
+        } catch {
+          /* no motion: dragging still turns the view */
+        }
+      }
+    }
+    spatial.set({ look360: !look360, homeView: false, control: false });
+  };
+  useEffect(() => {
+    if (!look360) return;
+    const key = (e: KeyboardEvent) => e.key === 'Escape' && spatial.set({ look360: false });
+    window.addEventListener('keydown', key);
+    return () => window.removeEventListener('keydown', key);
+  }, [look360]);
   const c = CHAPTERS[chapter]!;
   const I = c.icon;
   return (
-    <div className={`sp-ui ${tour ? 'is-touring' : ''} is-${genie}`}>
+    <div className={`sp-ui ${tour ? 'is-touring' : ''} ${look360 && !tour ? 'is-360' : ''} is-${genie}`}>
       <div className="sp-apps">
       {/* Capsule */}
       <nav className="sp-capsule" aria-label="Apps">
@@ -345,12 +378,24 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
           onClick={() => setVoiceOn(!voiceOn)}
         >
           {voiceOn ? <Microphone weight="fill" /> : <MicrophoneSlash weight="bold" />}
-          <span className="sp-mode-label">Voice</span>
+          <span className="sp-mode-label">Voice control</span>
         </button>
-        <button type="button" className={`sp-icon-btn ${hands ? 'is-on' : ''}`} aria-pressed={hands} aria-label="Hand gestures" onClick={() => setHands(!hands)}>
+        {!tour && (
+          <button type="button" className={`sp-icon-btn ${look360 ? 'is-on' : ''}`} aria-pressed={look360} aria-label={look360 ? 'Leave the 360° view' : '360° view of the living room'} data-voice="360 view" onClick={() => void toggle360()}>
+            <Cube weight={look360 ? 'fill' : 'bold'} />
+            <span className="sp-mode-label">360°</span>
+          </button>
+        )}
+        <button type="button" className={`sp-icon-btn ${hands ? 'is-on' : ''}`} aria-pressed={hands} aria-label="Hand control (camera gestures)" title={hands ? 'Stop hand control' : 'Hand control'} onClick={() => setHands(!hands)}>
           <HandWaving weight={hands ? 'fill' : 'bold'} />
-          <span className="sp-mode-label">Hands</span>
+          <span className="sp-mode-label">Hand control</span>
         </button>
+        {canFull && (
+          <button type="button" className={`sp-icon-btn ${full ? 'is-on' : ''}`} aria-pressed={full} aria-label={full ? 'Leave full screen' : 'Full screen'} data-voice="full screen" onClick={toggleFull}>
+            {full ? <CornersIn weight="bold" /> : <CornersOut weight="bold" />}
+            <span className="sp-mode-label">{full ? 'Exit full' : 'Full screen'}</span>
+          </button>
+        )}
         <button type="button" data-cc-toggle="" className={`sp-icon-btn ${control ? 'is-on' : ''}`} aria-pressed={control} aria-label="Control Center" data-voice="control center" onClick={() => spatial.set({ control: !control, homeView: false })}>
           <SlidersHorizontal weight="bold" />
           <span className="sp-cc-label">Controls</span>
@@ -369,6 +414,17 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
       )}
 
       {tour && <Tour />}
+      {look360 && !tour && (
+        <div className="sp-360" role="status">
+          <span>
+            <b>360° view</b>
+            <small>Drag anywhere to look around the living room</small>
+          </span>
+          <button type="button" className="sp-360-done" data-voice="done" onClick={() => spatial.set({ look360: false })}>
+            <Check weight="bold" aria-hidden="true" /> Done
+          </button>
+        </div>
+      )}
       <VideoOverlay />
 
       <Hands on={hands} onOff={() => setHands(false)} />

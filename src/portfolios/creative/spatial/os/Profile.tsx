@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { Reach } from '@/features/details/Reach';
-import { Books, EnvelopeSimple, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, House, Rocket, SpeakerHigh, Sparkle, Trophy } from '@phosphor-icons/react';
+import { Books, EnvelopeSimple, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, Rocket, SpeakerHigh, Sparkle, X } from '@phosphor-icons/react';
 import { achievements, courses, goals, languages, profile, researchInterests, resume, subjects } from '@/content/portfolio';
 import { speak } from '../story/narrator';
 import { spatial } from '../store';
@@ -34,17 +34,9 @@ export function ProfileWindow() {
   return (
     <>
       <OSWindow id="profile" title="Profile" className="os-profile" onClose={close}>
-        <nav className="os-ornament" aria-label="Profile shortcuts">
-          <button type="button" aria-label="Dashboard" data-voice="dashboard" onClick={() => spatial.goChapter('home')}>
-            <House weight="bold" />
-          </button>
-          <button type="button" aria-label="Awards" data-voice="awards" onClick={() => spatial.goChapter('awards')}>
-            <Trophy weight="bold" />
-          </button>
-          <button type="button" aria-label="Ask the AI" data-voice="ask ai" onClick={() => askAI('Who is Shreyas?')}>
-            <ChatsCircle weight="bold" />
-          </button>
-        </nav>
+        <button type="button" className="os-inclose" aria-label="Close the profile" data-voice="close" onClick={close}>
+          <X weight="bold" />
+        </button>
         <div className="os-profile-grid">
           <figure className="os-hero">
             <img src={PORTRAIT_STUDIO} alt={`${profile.name}, in a dark suit and blue tie`} />

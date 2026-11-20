@@ -350,7 +350,8 @@
   border-top: 0;
 }
 .sd-cols article,
-.sd-cols article + article {
+.sd-cols article + article,
+.sd-cols article:nth-child(n) {
   position: relative;
   gap: 12px;
   padding: 24px;

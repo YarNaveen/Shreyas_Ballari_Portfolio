@@ -113,16 +113,21 @@ export function ArcIntro() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
     const html = document.documentElement;
-    const prev = html.style.overflow;
     html.style.overflow = 'hidden';
     const cv = canvas.current!;
     const gl = cv.getContext('webgl', { antialias: false, alpha: false });
     let raf = 0;
+    let ended = false;
+    // Always gives the page its scrolling back (never restores an old lock from another page).
     const finish = () => {
-      html.style.overflow = prev;
+      if (ended) return;
+      ended = true;
+      html.style.overflow = '';
       window.scrollTo(0, 0);
       setDone(true);
     };
+    // Phones can pause animation frames (low power, a background tab): never leave the page locked.
+    const safety = window.setTimeout(finish, (T.end + 2) * 1000);
     if (!gl) {
       finish();
       return;
@@ -203,8 +208,9 @@ export function ArcIntro() {
     raf = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(safety);
       window.removeEventListener('resize', resize);
-      html.style.overflow = prev;
+      html.style.overflow = '';
     };
   }, []);
 

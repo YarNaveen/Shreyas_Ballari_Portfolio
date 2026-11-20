@@ -64,6 +64,7 @@ export function AwardsFlow({ expanded, onExpand }: { expanded: string | null; on
   const [at, setAt] = useState(0);
   const [shuffling, setShuffling] = useState(false);
   const drag = useRef<{ x: number; moved: number } | null>(null);
+  const wheelAt = useRef(0);
   const n = order.length;
   const go = (i: number) => {
     setAt(((i % n) + n) % n);
@@ -75,8 +76,8 @@ export function AwardsFlow({ expanded, onExpand }: { expanded: string | null; on
     window.setTimeout(() => {
       setOrder((o) => [...o].sort(() => Math.random() - 0.5));
       setAt(0);
-    }, 450);
-    window.setTimeout(() => setShuffling(false), 1100);
+    }, 700);
+    window.setTimeout(() => setShuffling(false), 1500);
   };
   // Voice / keyboard hooks: the story layer dispatches these.
   useEffect(() => {
@@ -123,7 +124,12 @@ export function AwardsFlow({ expanded, onExpand }: { expanded: string | null; on
         onPointerUp={() => (drag.current = null)}
         onPointerLeave={() => (drag.current = null)}
         onWheel={(e) => {
-          if (Math.abs(e.deltaX) > 30) go(at + (e.deltaX > 0 ? 1 : -1));
+          // Scroll (up / down or sideways) steps through the deck, one card per gesture.
+          const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+          const now = performance.now();
+          if (Math.abs(d) < 12 || now - wheelAt.current < 420) return;
+          wheelAt.current = now;
+          go(at + (d > 0 ? 1 : -1));
         }}
       >
         {order.map((id, k) => {

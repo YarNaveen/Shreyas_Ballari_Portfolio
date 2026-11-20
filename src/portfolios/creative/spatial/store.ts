@@ -47,13 +47,15 @@ export interface SpatialState {
   bubble: boolean;
   /** His Oncure video in full view. */
   video: boolean;
+  /** 360° view: the apps step aside and dragging turns the camera all the way round the room. */
+  look360: boolean;
   /** Cards pinned on the dashboard's pinboard (ids). */
   pinned: string[];
   /** A question waiting for the AI chat (set by "Ask AI" buttons). */
   pendingAsk: string | null;
 }
 
-let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null };
+let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, look360: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null };
 const subs = new Set<() => void>();
 let autoTimer = 0;
 
@@ -154,7 +156,7 @@ export const spatial = {
   startTour() {
     window.clearTimeout(autoTimer);
     stopSpeaking();
-    spatial.set({ tour: true, tourTarget: 0, tourIndex: 0, homeView: false, control: false, windows: [], caption: null, auto: false });
+    spatial.set({ tour: true, tourTarget: 0, tourIndex: 0, homeView: false, control: false, windows: [], caption: null, auto: false, look360: false });
   },
   /** Show one card of the tour (the scroll may sit between two; the nearest one shows). */
   tourTo(target: number, rooms: number) {

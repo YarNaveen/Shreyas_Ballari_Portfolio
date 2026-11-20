@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { ChalkboardTeacher, ChartLineUp, CheckCircle, Dna, PaperPlaneTilt, Sparkle } from '@phosphor-icons/react';
-import { profile } from '@/content/portfolio';
+import { contact, profile } from '@/content/portfolio';
 import { env } from '@/lib/env';
 import { Reach } from './Reach';
 
@@ -24,7 +24,7 @@ const TOPICS = [
 export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'light' | 'auto' }) {
   const [topic, setTopic] = useState('Oncure');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'offline' | 'failed' | 'busy'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'offline' | 'failed' | 'busy' | 'activate'>('idle');
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,8 +58,13 @@ export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'lig
       };
       const res = await fetch(env.VITE_CONTACT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
       if (!res.ok) throw new Error(String(res.status));
-      const reply = (await res.json().catch(() => ({ ok: true }))) as { ok?: boolean; success?: boolean | string; error?: string; fields?: Record<string, string> };
-      if (reply.success === false || reply.success === 'false') throw new Error('not sent');
+      const reply = (await res.json().catch(() => ({ ok: true }))) as { ok?: boolean; success?: boolean | string; error?: string; message?: string; fields?: Record<string, string> };
+      if (reply.success === false || reply.success === 'false') {
+        // FormSubmit holds the very first message for a new address until its inbox owner clicks
+        // the one-time "Activate Form" link; say so plainly instead of reporting a failure.
+        setState(/activat/i.test(reply.message ?? '') ? 'activate' : 'failed');
+        return;
+      }
       if (reply.ok === false) {
         if (reply.fields) {
           setErrors(reply.fields);
@@ -151,9 +156,14 @@ export function ContactPanel({ reachTone = 'auto' }: { reachTone?: 'dark' | 'lig
               Too many messages were sent just now. Please try again in an hour.
             </p>
           )}
+          {state === 'activate' && (
+            <p className="dt-status" role="status">
+              Thank you. This contact form is being switched on, so your message is waiting to be delivered. To be sure it arrives, you can also email <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+            </p>
+          )}
           {state === 'failed' && (
             <p className="dt-status" role="alert">
-              Sending failed. Please check your connection and try again.
+              Sending failed. Please check your connection and try again, or email <a href={`mailto:${contact.email}`}>{contact.email}</a>.
             </p>
           )}
         </form>

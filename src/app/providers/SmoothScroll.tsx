@@ -26,7 +26,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const resolverRef = useRef<AnchorResolver | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    // Touch screens scroll natively (smoothly already); smooth-scroll libraries can block
+    // finger scrolling on some phones, so they are only used with a mouse or trackpad.
+    if (prefersReducedMotion() || window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
     const lenis = new Lenis({ autoRaf: true, duration: 1.3, wheelMultiplier: 0.9 });
     lenisRef.current = lenis;
     return () => {

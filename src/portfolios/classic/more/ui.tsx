@@ -18,12 +18,13 @@ export function useSeen<T extends HTMLElement>() {
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e) return;
-        if (e.intersectionRatio >= 0.12) {
+        // Any part on screen starts the entrance (tall headings on phones never reach a share).
+        if (e.isIntersecting) {
           el.classList.add('is-in');
           if (still) io.disconnect();
-        } else if (!e.isIntersecting) el.classList.remove('is-in');
+        } else el.classList.remove('is-in');
       },
-      { threshold: [0, 0.12] },
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' },
     );
     io.observe(el);
     return () => io.disconnect();

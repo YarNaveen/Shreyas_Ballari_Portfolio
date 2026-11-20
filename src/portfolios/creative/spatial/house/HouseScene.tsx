@@ -164,10 +164,11 @@ function CameraRig() {
   useEffect(() => {
     const doc = gl.domElement.ownerDocument;
     const down = (e: PointerEvent) => {
-      if (!spatial.get().tour) return;
-      // On touch screens a swipe walks from room to room (see SpatialPortfolio); turning is on
-      // the arrow pad. Dragging to look round is for the mouse (and hand mode).
-      if (e.pointerType === 'touch' && e.isTrusted) return;
+      const s = spatial.get();
+      if (!s.tour && !s.look360) return;
+      // In the tour on touch screens a swipe walks from room to room (see SpatialPortfolio);
+      // turning is on the joystick. In the 360° view a finger turns the camera too.
+      if (s.tour && e.pointerType === 'touch' && e.isTrusted) return;
       if (e.target instanceof Element && e.target.closest('button, a, input, [role="toolbar"], nav, .tour-card, .tour-mini, .cb, .sp-voiceask')) return;
       turn.current.drag = { x: e.clientX, y: e.clientY };
     };
@@ -186,6 +187,26 @@ function CameraRig() {
       const by = (e as CustomEvent<number>).detail ?? 0;
       turn.current.vyaw += by * 0.05;
     };
+    // Phones and tablets in the 360° view: turning or tilting the device turns the view.
+    let base: { a: number; b: number; yaw: number; pitch: number } | null = null;
+    const orient = (e: DeviceOrientationEvent) => {
+      if (!spatial.get().look360 || e.alpha == null || e.beta == null) {
+        base = null;
+        return;
+      }
+      if (turn.current.drag) {
+        base = null; // a finger drag takes over; motion picks up again from here
+        return;
+      }
+      if (!base) base = { a: e.alpha, b: e.beta, yaw: turn.current.yaw, pitch: turn.current.pitch };
+      let da = e.alpha - base.a;
+      if (da > 180) da -= 360;
+      if (da < -180) da += 360;
+      turn.current.yaw = base.yaw + MathUtils.degToRad(da);
+      turn.current.pitch = MathUtils.clamp(base.pitch + MathUtils.degToRad(e.beta - base.b), -0.6, 0.55);
+      turn.current.vyaw = 0;
+    };
+    window.addEventListener('deviceorientation', orient);
     window.addEventListener('sp-look', look);
     doc.addEventListener('pointerdown', down);
     doc.addEventListener('pointermove', move);
@@ -197,6 +218,7 @@ function CameraRig() {
       doc.removeEventListener('pointerup', up);
       doc.removeEventListener('pointercancel', up);
       window.removeEventListener('sp-look', look);
+      window.removeEventListener('deviceorientation', orient);
     };
   }, [gl]);
 
@@ -276,7 +298,19 @@ function CameraRig() {
       cur.current.eye.lerp(HOME_EYE, 1 - Math.exp(-dtr * 3));
       cur.current.look.lerp(HOME_LOOK, 1 - Math.exp(-dtr * 3));
     }
+    if (s.look360) {
+      // 360° view: the visitor turns the camera all the way round; it glides on a little after a drag.
+      if (!T.drag) {
+        T.vyaw *= Math.exp(-dt * 3);
+        T.yaw += T.vyaw;
+      }
+      camera.position.copy(cur.current.eye);
+      aim(camera, cur.current.eye, cur.current.look, T.yaw, T.pitch);
+      camState.moving = !!w || !!T.drag || Math.abs(T.vyaw) > 1e-4;
+      return;
+    }
     // Turn back to the room's view if the visitor had looked around.
+    T.drag = null;
     T.yaw = Math.atan2(Math.sin(T.yaw), Math.cos(T.yaw)) * Math.exp(-dtr * 3);
     T.pitch *= Math.exp(-dtr * 3);
     T.vyaw = 0;
@@ -424,7 +458,8 @@ function RenderPacer() {
     const loop = () => {
       raf = 0;
       // Every frame in the tour and while the camera walks; otherwise only for a short burst.
-      if (performance.now() > until && !camState.moving && !spatial.get().tour) return;
+      const st = spatial.get();
+      if (performance.now() > until && !camState.moving && !st.tour && !st.look360) return;
       get().invalidate();
       raf = requestAnimationFrame(loop);
     };
@@ -437,7 +472,7 @@ function RenderPacer() {
     const unsub = spatial.subscribe(() => {
       const s = spatial.get();
       if (s.env !== prev.env) burst(4000);
-      else if (s.tour !== prev.tour || s.tourIndex !== prev.tourIndex || s.phase !== prev.phase) burst(250);
+      else if (s.tour !== prev.tour || s.tourIndex !== prev.tourIndex || s.phase !== prev.phase || s.look360 !== prev.look360) burst(800);
       prev = s;
     });
     const points = () => burst(250);
