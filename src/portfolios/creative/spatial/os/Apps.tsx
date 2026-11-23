@@ -235,6 +235,40 @@ function Visualizer({ analyser, on }: { analyser: () => AnalyserNode | null; on:
   );
 }
 
+/** A compact player for his original guitar pieces (inside the Guitar entry of Activities & Experience). */
+export function GuitarMini() {
+  const g = useGuitar();
+  const playing = g.state.playing && !g.state.paused;
+  const current = TRACKS.find((t) => t.id === g.state.current) ?? TRACKS[0]!;
+  return (
+    <div className="xa-guitar">
+      <button
+        type="button"
+        className="xa-guitar-play"
+        aria-label={playing ? 'Pause the guitar piece' : 'Play a guitar piece'}
+        data-voice={playing ? 'pause' : 'play'}
+        onClick={() => {
+          const e = g.get();
+          if (!g.state.current) void e.play(current.id);
+          else void e.toggle();
+        }}
+      >
+        {playing ? <Pause weight="fill" /> : <Play weight="fill" />}
+      </button>
+      <span className="xa-guitar-text">
+        <b>{current.title}</b>
+        <small>Original piece, generated live in your browser · not a recording of him</small>
+        <span className="xa-guitar-bar">
+          <i style={{ transform: `scaleX(${g.frac})` }} />
+        </span>
+      </span>
+      <button type="button" className="os-round is-sm" aria-label="Next piece" data-voice="next track" onClick={() => void g.get().next()}>
+        <SkipForward weight="fill" />
+      </button>
+    </div>
+  );
+}
+
 export function ActivitiesApp() {
   const g = useGuitar();
   const [sel, setSel] = useState<TrackId>(TRACKS[0]!.id);

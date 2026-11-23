@@ -12,8 +12,10 @@ import { PHOTOS } from './photos';
 const BASE = import.meta.env.BASE_URL;
 const local = (n: string) => `${BASE}assets/photos/${n}.jpg`;
 const still = (n: string) => `${BASE}assets/house/stills/${n}`;
+const video = (n: string) => `${BASE}assets/videos/${n}`;
+const art = (n: string) => `${BASE}assets/illustrations/${n}`;
 
-export type Motion = 'pulse' | 'lamps' | 'chalk' | 'water' | 'rings' | 'notes' | 'atom' | 'chart';
+export type Motion = 'pulse' | 'lamps' | 'chalk' | 'water' | 'rings' | 'notes' | 'atom' | 'chart' | 'snow' | 'speed';
 
 export interface Experience {
   id: string;
@@ -32,8 +34,13 @@ export interface Experience {
   /** The picture is an illustration or a photo of the topic, not of Shreyas. */
   imageNote: string;
   motion: Motion;
-  /** A real video (MP4), once provided. */
+  /** A real video (MP4), once provided, with an optional portrait version for phones. */
   video: string | null;
+  videoMobile?: string;
+  /** What the video shows, on its label ("Video", or "Video of Shreyas" when it is him). */
+  videoNote?: string;
+  /** A short name for small buttons. */
+  short: string;
   tint: string;
   /** More details are still to come from the family. */
   pending?: boolean;
@@ -43,7 +50,42 @@ export const EXPERIENCE_TITLE = 'Activities and Experience';
 
 export const EXPERIENCE: Experience[] = [
   {
+    id: 'swim',
+    short: 'Swim Atlanta',
+    group: 'activity',
+    title: 'Swim Atlanta',
+    line: 'Member · Swim Atlanta Senior Team',
+    role: 'Member · Senior Team',
+    org: 'Swim Atlanta',
+    when: '',
+    detail: 'A member of the Swim Atlanta Senior Team.',
+    image: still('pavilion-pool.jpg'),
+    imageNote: '3D render',
+    motion: 'water',
+    video: video('swimming.mp4'),
+    videoNote: 'Video of Shreyas',
+    tint: '#4cc9f0',
+  },
+  {
+    id: 'muaythai',
+    short: 'Muay Thai',
+    group: 'activity',
+    title: 'Muay Thai',
+    line: 'Muay Thai Martial Arts · Since 2025',
+    role: 'Martial arts · since 2025',
+    org: 'Martial arts',
+    when: 'Since 2025',
+    detail: 'He has trained in Muay Thai martial arts since 2025.',
+    image: still('pavilion-muaythai.jpg'),
+    imageNote: '3D render',
+    motion: 'rings',
+    video: video('muay-thai-shreyas.mp4'),
+    videoNote: 'Video of Shreyas training',
+    tint: '#ff5a5f',
+  },
+  {
     id: 'tama',
+    short: 'TAMA Camp',
     group: 'volunteering',
     title: 'TAMA Medical Camp',
     line: 'Student volunteer at TAMA Medical Camp',
@@ -60,6 +102,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'temple',
+    short: 'Sai Temple',
     group: 'volunteering',
     title: 'Sri Shirdi Sai Temple',
     line: 'Operations Volunteer at Sri Shirdi Sai Temple',
@@ -76,6 +119,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'tutoring',
+    short: 'Peer tutoring',
     group: 'volunteering',
     title: 'Peer tutoring',
     line: 'Tutored 7th and 8th grade students in Math & Science',
@@ -90,37 +134,8 @@ export const EXPERIENCE: Experience[] = [
     tint: '#7ee0a1',
   },
   {
-    id: 'swim',
-    group: 'activity',
-    title: 'Swim Atlanta',
-    line: 'Member · Swim Atlanta Senior Team',
-    role: 'Member · Senior Team',
-    org: 'Swim Atlanta',
-    when: '',
-    detail: 'A member of the Swim Atlanta Senior Team.',
-    image: still('pavilion-pool.jpg'),
-    imageNote: '3D render',
-    motion: 'water',
-    video: null,
-    tint: '#4cc9f0',
-  },
-  {
-    id: 'muaythai',
-    group: 'activity',
-    title: 'Muay Thai',
-    line: 'Muay Thai Martial Arts · Since 2025',
-    role: 'Martial arts · since 2025',
-    org: 'Martial arts',
-    when: 'Since 2025',
-    detail: 'He has trained in Muay Thai martial arts since 2025.',
-    image: still('pavilion-muaythai.jpg'),
-    imageNote: '3D render',
-    motion: 'rings',
-    video: null,
-    tint: '#ff5a5f',
-  },
-  {
     id: 'guitar',
+    short: 'Guitar',
     group: 'activity',
     title: 'Guitar',
     line: 'Guitar · Since 2021 (Atlanta Piano Fortissimo)',
@@ -136,6 +151,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'olympiad',
+    short: 'Olympiad',
     group: 'activity',
     title: 'Science Olympiad',
     line: 'Science Olympiad · FSA 2024, 2025',
@@ -151,6 +167,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 'deca',
+    short: 'DECA',
     group: 'activity',
     title: 'DECA',
     line: 'DECA · FSA 2026',
@@ -164,11 +181,67 @@ export const EXPERIENCE: Experience[] = [
     video: null,
     tint: '#f4d68a',
   },
+  {
+    id: 'iceskating',
+    short: 'Ice Skating',
+    group: 'activity',
+    title: 'Ice Skating',
+    line: 'Ice Skating',
+    role: '',
+    org: 'On the ice',
+    when: '',
+    detail: 'Ice skating is one of his activities.',
+    image: art('ice-skating.svg'),
+    imageNote: 'Illustration',
+    motion: 'snow',
+    video: video('ice-skating.mp4'),
+    videoMobile: video('ice-skating-mobile.mp4'),
+    videoNote: 'Video of Shreyas',
+    tint: '#7fd3ff',
+    pending: true,
+  },
+  {
+    id: 'icehockey',
+    short: 'Ice Hockey',
+    group: 'activity',
+    title: 'Ice Hockey',
+    line: 'Ice Hockey',
+    role: '',
+    org: 'On the ice',
+    when: '',
+    detail: 'Ice hockey is one of his activities.',
+    image: art('ice-hockey.svg'),
+    imageNote: 'Illustration',
+    motion: 'snow',
+    video: video('ice-hockey.mp4'),
+    videoNote: 'Video of Shreyas',
+    tint: '#5b8cff',
+    pending: true,
+  },
+  {
+    id: 'rollerblades',
+    short: 'Roller Blades',
+    group: 'activity',
+    title: 'Roller Blades',
+    line: 'Roller Blades',
+    role: '',
+    org: 'Inline skating',
+    when: '',
+    detail: 'Roller blading (inline skating) is one of his activities.',
+    image: art('roller-blades.svg'),
+    imageNote: 'Illustration',
+    motion: 'speed',
+    video: video('roller-blades-shreyas.mp4'),
+    videoNote: 'Video of Shreyas',
+    tint: '#ffb020',
+    pending: true,
+  },
 ];
 
+/** Other activities first (Swim Atlanta and Muay Thai lead), then volunteering. */
 export const EXPERIENCE_GROUPS = [
-  { id: 'volunteering' as const, title: 'Volunteering', items: EXPERIENCE.filter((x) => x.group === 'volunteering') },
   { id: 'activity' as const, title: 'Other Activities', items: EXPERIENCE.filter((x) => x.group === 'activity') },
+  { id: 'volunteering' as const, title: 'Volunteering', items: EXPERIENCE.filter((x) => x.group === 'volunteering') },
 ];
 
 export const experienceById = (id: string) => EXPERIENCE.find((x) => x.id === id);

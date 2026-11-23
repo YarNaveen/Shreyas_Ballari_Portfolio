@@ -3,7 +3,8 @@ import { CaretDown, CaretLeft, CaretRight, Check, CornersIn, CornersOut, Cube, H
 import { useVoice } from '@/features/voice/useVoice';
 import { CHAPTERS } from '../story/chapters';
 import { playUi, spatial, useSpatial } from '../store';
-import { ActivitiesApp, ControlCenter, FinanceApp, GamesApp, HomeView } from '../os/Apps';
+import { ControlCenter, FinanceApp, GamesApp, HomeView } from '../os/Apps';
+import { ExperienceApp } from '../os/Experience';
 import { Dashboard } from '../os/Dashboard';
 import { ProfileWindow } from '../os/Profile';
 import { ContactWindow } from '../os/ContactWindow';
@@ -66,7 +67,7 @@ function AppBody({ id, expanded, setExpanded }: { id: string; expanded: string |
     awards: () => <AwardsFlow expanded={expanded} onExpand={setExpanded} />,
     chat: () => <Chat />,
     games: () => <GamesApp />,
-    activities: () => <ActivitiesApp />,
+    activities: () => <ExperienceApp />,
   };
   return <Suspense fallback={<AppLoading />}>{apps[id]?.()}</Suspense>;
 }

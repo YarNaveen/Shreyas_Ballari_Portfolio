@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- Original illustration: an inline skate (roller blade) on a park path at sunset. No people or logos. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a5a"/>
+      <stop offset="0.55" stop-color="#ffcf7a"/>
+      <stop offset="1" stop-color="#ffe7b8"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a5f6b"/>
+      <stop offset="1" stop-color="#2e323a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <circle cx="930" cy="250" r="90" fill="#fff3d6" opacity="0.9"/>
+  <path d="M0 470 Q300 410 600 460 T1200 440 L1200 800 L0 800 Z" fill="#7fb069"/>
+  <path d="M0 560 Q600 500 1200 560 L1200 800 L0 800 Z" fill="url(#path)"/>
+  <g stroke="#ffffff" stroke-width="8" stroke-dasharray="60 50" opacity="0.6">
+    <path d="M0 680 Q600 620 1200 680" fill="none"/>
+  </g>
+  <g transform="translate(330 300)">
+    <path d="M40 0 Q40 -40 90 -40 L230 -40 Q270 -40 270 0 L270 150 Q270 190 330 200 L430 214 Q470 220 470 262 L470 290 L20 290 Q0 290 0 270 L0 120 Q0 70 40 60 Z" fill="#1f4fb5"/>
+    <path d="M40 0 L270 0 L270 60 L40 60 Z" fill="#163a86"/>
+    <g stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.85">
+      <line x1="120" y1="80" x2="230" y2="96"/><line x1="120" y1="130" x2="236" y2="146"/><line x1="130" y1="180" x2="250" y2="196"/>
+    </g>
+    <rect x="10" y="290" width="470" height="34" rx="10" fill="#2b2b2b"/>
+    <g fill="#ffcf3a" stroke="#2b2b2b" stroke-width="10">
+      <circle cx="70" cy="364" r="40"/><circle cx="180" cy="364" r="40"/><circle cx="290" cy="364" r="40"/><circle cx="400" cy="364" r="40"/>
+    </g>
+    <g fill="#2b2b2b"><circle cx="70" cy="364" r="10"/><circle cx="180" cy="364" r="10"/><circle cx="290" cy="364" r="10"/><circle cx="400" cy="364" r="10"/></g>
+  </g>
+  <g stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.7">
+    <line x1="120" y1="600" x2="280" y2="600"/><line x1="60" y1="640" x2="250" y2="640"/><line x1="150" y1="560" x2="290" y2="560"/>
+  </g>
+</svg>

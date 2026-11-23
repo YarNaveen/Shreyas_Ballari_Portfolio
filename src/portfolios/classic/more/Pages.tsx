@@ -479,7 +479,7 @@ function LifePage() {
         />
       </Block>
       <Block label="Activities and Experience" lead="Watch and read" rest="about each one." lede="Volunteering first, then his other activities.">
-        <ExperienceGrid tone="dark" />
+        <ExperienceGrid tone="classic" />
       </Block>
       <Block label="Volunteering" lead="Giving" rest="back.">
         <Badges items={volunteering.map((v) => ({ title: v.title, line: v.title === 'Peer tutoring' ? v.role : `${v.role} at ${v.title}`, icon: /medical|camp/i.test(v.title) ? FirstAid : /tutor/i.test(v.title) ? ChalkboardTeacher : HandHeart }))} />

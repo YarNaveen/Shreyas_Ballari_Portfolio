@@ -5,7 +5,7 @@ import { CHAPTERS } from '../story/chapters';
 import { speak, stopSpeaking } from '../story/narrator';
 import { TOUR } from '../story/tour';
 import { playUi, spatial, useSpatial } from '../store';
-import { openPavilion } from '../ui/commands';
+import { openExperience, openPavilion } from '../ui/commands';
 
 /**
  * The house tour overlay. Left: the rooms (tap one to walk there). Right: a glass card that tells
@@ -55,6 +55,7 @@ export function goSpot(h: Hotspot) {
   if (h.ask) spatial.set({ bubble: true });
   else if (h.video) spatial.set({ video: true });
   else if (h.app?.id.startsWith('pavilion')) openPavilion(h.app.id.split(':')[1] ?? null);
+  else if (h.app?.id.startsWith('experience')) openExperience(h.app.id.split(':')[1] ?? null);
   else if (h.app) spatial.endTour(h.app.id);
 }
 
@@ -250,6 +251,10 @@ export function Tour() {
             {last ? (
               <button type="button" className="tour-go is-primary" data-voice="open dashboard" onClick={() => spatial.endTour('home')}>
                 <SquaresFour weight="fill" aria-hidden="true" /> Open his dashboard
+              </button>
+            ) : stop.app?.startsWith('experience') ? (
+              <button type="button" className="tour-go is-primary" data-voice="open activities and experience" onClick={() => openExperience(stop.app!.split(':')[1] ?? null)}>
+                Watch and read more <ArrowRight weight="bold" aria-hidden="true" />
               </button>
             ) : stop.app === 'pavilion' ? (
               <button type="button" className="tour-go is-primary" data-voice="enter the pavilion" onClick={() => openPavilion()}>

@@ -409,7 +409,7 @@ function LifeSec(_: Props) {
     <section className="sx-sec is-white" data-sec="life">
       <Head kicker="Activities and Experience" title="Volunteering, sport, music and competitions." soft={1} center />
       <Rise className="sx-xp">
-        <ExperienceGrid tone="light" />
+        <ExperienceGrid tone="studio" />
       </Rise>
     </section>
   );

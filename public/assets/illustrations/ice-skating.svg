@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- Original illustration: an ice rink with skate marks and a pair of figure skates. No people or logos. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d2a4a"/>
+      <stop offset="1" stop-color="#2c6fa3"/>
+    </linearGradient>
+    <linearGradient id="ice" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dff4ff"/>
+      <stop offset="1" stop-color="#a9d8f2"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="0%" r="70%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <g fill="#ffffff" opacity="0.6">
+    <circle cx="120" cy="90" r="3"/><circle cx="300" cy="160" r="2"/><circle cx="520" cy="70" r="3"/><circle cx="760" cy="130" r="2"/>
+    <circle cx="980" cy="80" r="3"/><circle cx="1110" cy="190" r="2"/><circle cx="420" cy="220" r="2"/><circle cx="860" cy="240" r="3"/>
+  </g>
+  <path d="M0 360 Q600 300 1200 360 L1200 800 L0 800 Z" fill="url(#ice)"/>
+  <ellipse cx="600" cy="360" rx="700" ry="120" fill="url(#glow)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.85">
+    <path d="M120 690 C320 520 640 760 880 560 S1120 470 1180 520"/>
+    <path d="M60 560 C300 470 520 640 760 520"/>
+    <path d="M520 760 C640 640 820 700 1000 640"/>
+  </g>
+  <g fill="none" stroke="#6fb3dc" stroke-width="3" opacity="0.6">
+    <path d="M200 740 C400 600 600 720 820 610"/>
+  </g>
+  <!-- a figure skate -->
+  <g transform="translate(700 380) rotate(-8)">
+    <path d="M0 0 L0 -150 Q0 -200 50 -200 L110 -200 Q140 -200 140 -170 L140 -60 Q140 -20 200 -10 L260 0 Q290 6 290 40 L290 60 L0 60 Z" fill="#ffffff" stroke="#c9dce8" stroke-width="4"/>
+    <g stroke="#8fb9d4" stroke-width="5" stroke-linecap="round">
+      <line x1="60" y1="-180" x2="120" y2="-170"/><line x1="60" y1="-150" x2="125" y2="-140"/><line x1="60" y1="-120" x2="128" y2="-110"/><line x1="60" y1="-90" x2="132" y2="-80"/>
+    </g>
+    <rect x="-10" y="60" width="300" height="22" rx="6" fill="#d8dde3"/>
+    <path d="M-30 110 L320 110 Q336 110 330 96 Q326 86 314 88 L-20 88" fill="none" stroke="#a9b2bc" stroke-width="10" stroke-linecap="round"/>
+    <rect x="20" y="82" width="16" height="28" fill="#a9b2bc"/><rect x="230" y="82" width="16" height="28" fill="#a9b2bc"/>
+  </g>
+</svg>

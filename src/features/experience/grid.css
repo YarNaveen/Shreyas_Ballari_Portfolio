@@ -117,6 +117,9 @@ button.xg-card {
   padding: 16px;
 }
 .xg-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 2px 10px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--tint) 18%, transparent);
@@ -173,6 +176,168 @@ button.xg-card {
     line-height: 28px;
   }
 }
+/* --- Classic: full-bleed photo cards, text over the picture, minimal labels and the blue accent. */
+.xg.is-classic {
+  gap: 56px;
+}
+.xg.is-classic .xg-h {
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a7f90;
+}
+.xg.is-classic .xg-h::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1f4dff;
+}
+.xg.is-classic .xg-h small {
+  min-width: 24px;
+  height: 24px;
+  background: #eef1fb;
+  color: #1f4dff;
+  font-size: 12px;
+}
+.xg.is-classic .is-volunteering .xg-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.xg.is-classic .is-activity .xg-cards {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.xg.is-classic .xg-card {
+  aspect-ratio: 3 / 4;
+  border: 0;
+  border-radius: 24px;
+  background: #0b0b10;
+  box-shadow: none;
+}
+.xg.is-classic .is-volunteering .xg-card {
+  aspect-ratio: 4 / 5;
+}
+.xg.is-classic .xg-card::before {
+  display: none;
+}
+.xg.is-classic .xg-media {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  height: 100%;
+}
+.xg.is-classic .xg-media .xm-img {
+  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.xg.is-classic .xg-body {
+  position: absolute;
+  inset: auto 0 0;
+  gap: 6px;
+  padding: 64px 20px 20px;
+  background: linear-gradient(180deg, transparent, rgba(5, 6, 12, 0.88) 55%);
+  color: #fff;
+}
+.xg.is-classic .xg-tag {
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: 500 12px/16px 'Geist Variable', 'Geist', system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.xg.is-classic .xg-tag svg {
+  color: var(--tint);
+}
+.xg.is-classic .xg-title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}
+.xg.is-classic .is-activity .xg-title {
+  font-size: 20px;
+  line-height: 28px;
+}
+.xg.is-classic .xg-line {
+  color: rgba(255, 255, 255, 0.82);
+}
+.xg.is-classic .xg-pending {
+  border-color: rgba(255, 214, 120, 0.7);
+  color: #ffd678;
+}
+.xg.is-classic.is-seen .xg-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--tint) 70%, #000);
+}
+@container (max-width: 1000px) {
+  .xg.is-classic .is-activity .xg-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@container (max-width: 560px) {
+  .xg.is-classic .xg-cards {
+    display: flex;
+  }
+  .xg.is-classic .xg-card {
+    flex: 0 0 74%;
+  }
+}
+
+/* --- Studio: white tiles with an inset picture and black icon badges. */
+.xg.is-studio .xg-card {
+  padding: 8px;
+  border: 0;
+  border-radius: var(--sx-r, 20px);
+  background: var(--sx-card, #fff);
+  box-shadow: 0 0 0 1px var(--sx-line, rgba(11, 11, 12, 0.08));
+}
+.xg.is-studio .xg-card::before {
+  display: none;
+}
+.xg.is-studio .xg-media {
+  border-radius: calc(var(--sx-r, 20px) - 8px);
+}
+.xg.is-studio .xg-body {
+  padding: 14px 8px 8px;
+}
+.xg.is-studio .xg-tag {
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 10px;
+  background: #0b0b0c;
+  color: #fff;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.xg.is-studio .xg-tag svg {
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 7px;
+  background: var(--tint);
+  color: #0b0b0c;
+}
+.xg.is-studio .xg-title {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.xg.is-studio .xg-line {
+  color: var(--sx-soft, #74747a);
+}
+.xg.is-studio .xg-h {
+  font-size: 20px;
+  line-height: 28px;
+}
+.xg.is-studio.is-seen .xg-card:hover {
+  box-shadow:
+    0 0 0 1px var(--sx-line, rgba(11, 11, 12, 0.08)),
+    0 24px 40px -24px rgba(0, 0, 0, 0.3);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .xg-card {
     transform: none;

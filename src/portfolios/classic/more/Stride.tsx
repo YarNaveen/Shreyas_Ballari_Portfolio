@@ -570,7 +570,7 @@ function Experience() {
       <Blur id="sd-xp-h" text={EXPERIENCE_TITLE} className="sd-goals-h" />
       <p className="sd-goals-lede">Volunteering in his community, and the sport, music and competitions he does outside class.</p>
       <div className="sd-xp-grid">
-        <ExperienceGrid tone="light" onOpen={() => openPage('life')} />
+        <ExperienceGrid tone="classic" />
       </div>
     </section>
   );

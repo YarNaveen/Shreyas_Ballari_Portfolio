@@ -14,8 +14,8 @@ import { OSWindow } from './Window';
 
 const st = (i: number) => ({ '--i': i }) as CSSProperties;
 
-function Pending({ what }: { what: string }) {
-  return <span className="in-pending">{what} · to be added</span>;
+function Pending({ what = '' }: { what?: string }) {
+  return <span className="in-pending">{what ? `${what} · to be added` : 'To be added'}</span>;
 }
 
 function Field({ icon, k, v, i }: { icon: ReactNode; k: string; v: ReactNode; i: number }) {
@@ -75,10 +75,10 @@ export function InternshipWindow() {
           </button>
 
           <div className="in-fields">
-            <Field i={0} icon={<Buildings weight="duotone" />} k="Company" v={x.company ? (x.companyUrl ? <a href={x.companyUrl} target="_blank" rel="noreferrer">{x.company}</a> : x.company) : <Pending what="Company name" />} />
-            <Field i={1} icon={<Lightbulb weight="duotone" />} k="Product" v={x.productName ? `${x.productName} · ${x.product}` : <>{x.product} <Pending what="name" /></>} />
-            <Field i={2} icon={<CalendarBlank weight="duotone" />} k="Period" v={x.period ?? <>Summer <Pending what="dates" /></>} />
-            <Field i={3} icon={<IdentificationBadge weight="duotone" />} k="Role" v={x.role ?? <Pending what="Role" />} />
+            <Field i={0} icon={<Buildings weight="duotone" />} k="Company" v={x.company ? (x.companyUrl ? <a href={x.companyUrl} target="_blank" rel="noreferrer">{x.company}</a> : x.company) : <Pending />} />
+            <Field i={1} icon={<Lightbulb weight="duotone" />} k="Product" v={x.productName ? `${x.productName} · ${x.product}` : <>{x.product} <Pending what="Name" /></>} />
+            <Field i={2} icon={<CalendarBlank weight="duotone" />} k="Period" v={x.period ?? <>Summer <Pending what="Dates" /></>} />
+            <Field i={3} icon={<IdentificationBadge weight="duotone" />} k="Role" v={x.role ?? <Pending />} />
           </div>
 
           <div className="in-block">

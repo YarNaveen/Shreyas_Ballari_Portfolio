@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- Original illustration: ice hockey sticks, a puck and the rink's lines. No people, teams or logos. -->
+  <defs>
+    <linearGradient id="ice" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef8ff"/>
+      <stop offset="1" stop-color="#b9def3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#ice)"/>
+  <rect x="0" y="0" width="1200" height="120" fill="#123a63"/>
+  <rect x="0" y="120" width="1200" height="10" fill="#d7263d"/>
+  <line x1="600" y1="130" x2="600" y2="800" stroke="#d7263d" stroke-width="14" opacity="0.75"/>
+  <line x1="300" y1="130" x2="300" y2="800" stroke="#1f4fb5" stroke-width="12" opacity="0.6"/>
+  <line x1="900" y1="130" x2="900" y2="800" stroke="#1f4fb5" stroke-width="12" opacity="0.6"/>
+  <circle cx="600" cy="470" r="150" fill="none" stroke="#1f4fb5" stroke-width="8" opacity="0.55"/>
+  <circle cx="600" cy="470" r="14" fill="#1f4fb5" opacity="0.7"/>
+  <g stroke-linecap="round">
+    <line x1="200" y1="220" x2="560" y2="640" stroke="#2b2b2b" stroke-width="30"/>
+    <path d="M560 640 Q600 690 700 684 L720 640 Q640 650 600 610 Z" fill="#2b2b2b"/>
+    <line x1="1010" y1="210" x2="700" y2="650" stroke="#7a4a22" stroke-width="30"/>
+    <path d="M700 650 Q660 700 560 690 L548 646 Q630 652 668 612 Z" fill="#7a4a22"/>
+    <line x1="260" y1="290" x2="300" y2="336" stroke="#ffffff" stroke-width="30" opacity="0.6"/>
+    <line x1="956" y1="286" x2="922" y2="334" stroke="#ffffff" stroke-width="30" opacity="0.6"/>
+  </g>
+  <ellipse cx="640" cy="736" rx="74" ry="22" fill="#111111"/>
+  <rect x="566" y="714" width="148" height="22" fill="#111111"/>
+  <ellipse cx="640" cy="714" rx="74" ry="22" fill="#2a2a2a"/>
+  <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.7">
+    <line x1="760" y1="730" x2="860" y2="724"/><line x1="770" y1="752" x2="900" y2="748"/>
+  </g>
+</svg>

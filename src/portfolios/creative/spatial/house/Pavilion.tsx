@@ -4,6 +4,7 @@ import { Color, DoubleSide, InstancedMesh, MeshPhysicalMaterial, MeshStandardMat
 import { pavilion } from '@/content/portfolio';
 import { B, Slab, canvasTexture, rng, useMats } from './kit';
 import { POOL } from './poolPlan';
+import { LOOKS, POSES, Person } from './People';
 
 /**
  * The Sports & Fitness Pavilion: an open, roofed pavilion in the garden, east of the hedge (reached
@@ -298,22 +299,24 @@ function HeavyBag({ x, z, leather }: { x: number; z: number; leather: MeshStanda
   const m = useMats();
   return (
     <group position={[x, 0, z]}>
-      <mesh position={[0, 1.22, 0]} material={leather} castShadow>
-        <cylinderGeometry args={[0.2, 0.2, 1.15, 24]} />
+      {/* A long Thai-style "banana" bag, for kicks and knees as well as punches. */}
+      <mesh position={[0, 1.05, 0]} material={leather} castShadow>
+        <cylinderGeometry args={[0.17, 0.17, 1.55, 24]} />
       </mesh>
-      <mesh position={[0, 1.8, 0]} material={m.black}>
-        <cylinderGeometry args={[0.15, 0.2, 0.06, 24]} />
+      <mesh position={[0, 1.84, 0]} material={m.black}>
+        <cylinderGeometry args={[0.13, 0.17, 0.06, 24]} />
       </mesh>
-      <mesh position={[0, 0.63, 0]} material={m.black}>
-        <cylinderGeometry args={[0.2, 0.17, 0.05, 24]} />
+      <mesh position={[0, 0.27, 0]} material={m.black}>
+        <cylinderGeometry args={[0.17, 0.14, 0.05, 24]} />
       </mesh>
-      {/* A band round the middle. */}
-      <mesh position={[0, 1.22, 0]} material={m.offWhite}>
-        <cylinderGeometry args={[0.203, 0.203, 0.08, 24]} />
-      </mesh>
+      {[0.75, 1.45].map((y) => (
+        <mesh key={y} position={[0, y, 0]} material={m.offWhite}>
+          <cylinderGeometry args={[0.173, 0.173, 0.06, 24]} />
+        </mesh>
+      ))}
       {/* Chain to the beam. */}
-      <mesh position={[0, (1.83 + 3.1) / 2, 0]} material={m.steel}>
-        <cylinderGeometry args={[0.012, 0.012, 3.1 - 1.83, 6]} />
+      <mesh position={[0, (1.87 + 3.1) / 2, 0]} material={m.steel}>
+        <cylinderGeometry args={[0.012, 0.012, 3.1 - 1.87, 6]} />
       </mesh>
     </group>
   );
@@ -363,6 +366,29 @@ function MuayThai({ mats }: { mats: MeshStandardMaterial }) {
       {/* Kick shields leaning on the post. */}
       <RoundedBox args={[0.42, 0.7, 0.14]} radius={0.05} position={[27.2, 0.52, 2.05]} rotation={[0.18, 0.2, 0]} material={red} castShadow />
       <RoundedBox args={[0.42, 0.7, 0.14]} radius={0.05} position={[27.7, 0.52, 2.1]} rotation={[0.18, -0.15, 0]} material={blue} castShadow />
+      {/* Training: a round kick at the middle bag (mongkhon headband, pra jiad armbands), and a
+          partner in the guard stance. Illustrations of the sport, not Shreyas. */}
+      <Person position={[25.55, 0.16, 0.95]} rotation={Math.PI} look={LOOKS.fighter} pose={POSES.kick} />
+      <Person position={[22.3, 0.16, -1.5]} rotation={Math.PI + 0.75} look={LOOKS.partner} pose={POSES.guard} />
+      {/* A ring corner: a padded post and three ropes along two edges of the mats. */}
+      {(
+        [
+          [29.3, -2.65],
+          [26.6, -2.65],
+          [29.3, 0.1],
+        ] as [number, number][]
+      ).map(([x, z]) => (
+        <group key={`${x}${z}`}>
+          <B p={[x, 0.75, z]} s={[0.1, 1.3, 0.1]} m={m.black} />
+          <B p={[x, 1.05, z]} s={[0.16, 0.7, 0.16]} m={x === 29.3 && z < 0 ? red : m.offWhite} />
+        </group>
+      ))}
+      {[0.6, 0.9, 1.2].map((y, i) => (
+        <group key={y}>
+          <B p={[(29.3 + 26.6) / 2, y, -2.65]} s={[2.7, 0.035, 0.035]} m={[red, m.white, blue][i]!} cast={false} />
+          <B p={[29.3, y, (-2.65 + 0.1) / 2]} s={[0.035, 0.035, 2.75]} m={[red, m.white, blue][i]!} cast={false} />
+        </group>
+      ))}
     </group>
   );
 }
@@ -410,7 +436,7 @@ export function Pavilion() {
     const muay = pavilion.zones[1];
     const banners = [
       bannerTexture(swim.org.toUpperCase(), `${swim.title} · ${swim.role}`, '#0c3d63', '#ffffff'),
-      bannerTexture(muay.title.toUpperCase(), `Training ${muay.when.toLowerCase()}`, '#2a0d10', '#ffffff'),
+      bannerTexture(muay.title.toUpperCase(), `The art of eight limbs · training ${muay.when.toLowerCase()}`, '#2a0d10', '#ffffff'),
     ].map((map) => new MeshStandardMaterial({ map, roughness: 0.8, side: DoubleSide }));
     const canopy = new MeshPhysicalMaterial({ color: '#f4f8ff', transparent: true, opacity: 0.22, roughness: 0.35, metalness: 0, side: DoubleSide, depthWrite: false });
     return { tiles, water, mats, signMat, boards, banners, canopy };

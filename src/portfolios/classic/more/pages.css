@@ -1479,3 +1479,17 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+/* Phones: less empty space around the work cards, and room under the footer for the design switcher. */
+@media (max-width: 760px) {
+  .sd-cards {
+    padding-top: 20svh;
+    gap: 6vh;
+  }
+  .sd-work {
+    padding-bottom: 4vh;
+  }
+  .sd-foot {
+    padding-bottom: 96px;
+  }
+}

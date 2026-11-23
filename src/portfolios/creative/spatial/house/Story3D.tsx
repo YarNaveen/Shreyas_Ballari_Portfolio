@@ -1,6 +1,7 @@
+import { CommunityExtras } from './Community';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { DoubleSide, MeshBasicMaterial, MeshStandardMaterial, SRGBColorSpace, VideoTexture, type Group, type Mesh } from 'three';
+import { DoubleSide, MeshBasicMaterial, SRGBColorSpace, VideoTexture, type Group, type Mesh } from 'three';
 import { activities, courses, goals, languages, oncure, percentiles, resume, volunteering } from '@/content/portfolio';
 import { TOUR } from '../story/tour';
 import { spatial } from '../store';
@@ -666,45 +667,6 @@ export function thanksTexture() {
 
 // --- 3D pieces ----------------------------------------------------------------------------------
 
-/** A simple gallery-style figure (no face), standing or seated. */
-function Figure({ position, rotation = 0, seated = false, color = '#d8d2c8' }: { position: [number, number, number]; rotation?: number; seated?: boolean; color?: string }) {
-  const mat = useMemo(() => new MeshStandardMaterial({ color, roughness: 0.55 }), [color]);
-  const hipY = seated ? 0.5 : 0.92;
-  return (
-    <group position={position} rotation={[0, rotation, 0]}>
-      {/* Legs */}
-      {[-0.09, 0.09].map((x) =>
-        seated ? (
-          <group key={x}>
-            <mesh material={mat} position={[x, hipY, 0.2]} rotation={[Math.PI / 2, 0, 0]} castShadow>
-              <capsuleGeometry args={[0.065, 0.32, 4, 10]} />
-            </mesh>
-            <mesh material={mat} position={[x, hipY / 2, 0.4]} castShadow>
-              <capsuleGeometry args={[0.06, hipY - 0.12, 4, 10]} />
-            </mesh>
-          </group>
-        ) : (
-          <mesh key={x} material={mat} position={[x, hipY / 2, 0]} castShadow>
-            <capsuleGeometry args={[0.07, hipY - 0.14, 4, 10]} />
-          </mesh>
-        ),
-      )}
-      {/* Body, arms, head */}
-      <mesh material={mat} position={[0, hipY + 0.32, 0]} castShadow>
-        <capsuleGeometry args={[0.17, 0.36, 6, 14]} />
-      </mesh>
-      {[-0.23, 0.23].map((x) => (
-        <mesh key={x} material={mat} position={[x, hipY + 0.28, seated ? 0.12 : 0]} rotation={[seated ? -0.9 : 0, 0, x > 0 ? 0.12 : -0.12]} castShadow>
-          <capsuleGeometry args={[0.05, 0.42, 4, 10]} />
-        </mesh>
-      ))}
-      <mesh material={mat} position={[0, hipY + 0.78, 0]} castShadow>
-        <sphereGeometry args={[0.12, 20, 16]} />
-      </mesh>
-    </group>
-  );
-}
-
 /** The community room (where the kitchen was): tutoring and volunteering. */
 export function CommunityRoom() {
   const m = useMats();
@@ -732,13 +694,7 @@ export function CommunityRoom() {
       <Model id="dining_chair_02" position={[T.x + 0.6, 0, T.z - 0.62]} />
       <Model id="dining_chair_02" position={[T.x - 0.6, 0, T.z + 0.62]} rotation={Math.PI} />
       <Model id="dining_chair_02" position={[T.x + 0.6, 0, T.z + 0.62]} rotation={Math.PI} />
-      <Figure position={[T.x - 0.6, 0, T.z - 0.78]} seated color="#cfd8e6" />
-      <Figure position={[T.x + 0.6, 0, T.z - 0.78]} seated color="#e6d6cf" />
-      <Figure position={[T.x + 0.6, 0, T.z + 0.78]} rotation={Math.PI} seated color="#d6e6cf" />
-      <Figure position={[-0.35, 0, Z0 + 0.75]} rotation={-0.5} color="#e8e2d6" />
-      {[[-2.0, -0.05], [-1.2, 0.1], [-1.75, 0.22], [-0.9, -0.2]].map(([x, z], i) => (
-        <B key={i} p={[x!, 0.785, T.z + z!]} s={[0.26, 0.03, 0.2]} m={i % 2 ? m.white : m.walnut} cast={false} />
-      ))}
+      <CommunityExtras />
       <Pendant position={[T.x, 3.2, T.z]} drop={1.15} />
     </group>
   );

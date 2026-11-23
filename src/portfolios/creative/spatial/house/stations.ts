@@ -12,9 +12,9 @@ export interface Station {
   via?: [number, number, number][];
 }
 
-export type StationName = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'pavilion' | 'return';
+export type StationName = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'volunteer' | 'music' | 'garden' | 'pavilion' | 'return';
 
-export const STATION_ORDER: StationName[] = ['entry', 'living', 'sofa', 'bedroom', 'study', 'lab', 'gallery', 'kitchen', 'music', 'garden', 'pavilion', 'return'];
+export const STATION_ORDER: StationName[] = ['entry', 'living', 'sofa', 'bedroom', 'study', 'lab', 'gallery', 'kitchen', 'volunteer', 'music', 'garden', 'pavilion', 'return'];
 
 /** From the garden back in through the open slider in the living room's glass wall. */
 export const SLIDER: [number, number, number][] = [[6.0, 1.66, -4.6], [1.25, 1.64, -4.4], [1.25, 1.64, -3.6]];
@@ -54,7 +54,9 @@ export const STATIONS: Record<StationName, Station> = {
     look: [-0.9, 1.45, -13.9],
     via: [[-7.3, 1.6, -11.5], [-6.25, 1.6, -11.3], [-5.1, 1.6, -11.3]],
   },
-  music: { eye: [5.65, 1.62, -9.75], look: [3.3, 1.4, -12.1], via: [[-2.0, 1.62, -9.75], [1.0, 1.62, -9.7], [2.6, 1.62, -9.65]] },
+  // The same room, turned to its east side: the volunteering corner.
+  volunteer: { eye: [1.05, 1.6, -10.0], look: [2.05, 0.95, -13.6], via: [[-2.2, 1.62, -9.8], [-0.6, 1.62, -9.85]] },
+  music: { eye: [5.65, 1.62, -9.75], look: [3.3, 1.4, -12.1], via: [[1.0, 1.62, -9.7], [2.6, 1.62, -9.65]] },
   // Out through the music room's slider, across the lawn.
   garden: {
     eye: [12.4, 1.7, -3.2],

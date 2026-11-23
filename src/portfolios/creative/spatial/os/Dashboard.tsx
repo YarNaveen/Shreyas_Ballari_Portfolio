@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { EXPERIENCE_GROUPS } from '@/content/experience';
+import { EXPERIENCE } from '@/content/experience';
 import { XP_ICON } from './Experience';
 import { openExperience } from '../ui/commands';
 import { Reach } from '@/features/details/Reach';
@@ -28,10 +28,11 @@ export function askAI(q: string) {
 }
 
 type WidgetId = 'profile' | 'oncure' | 'clock' | 'finance' | 'awards' | 'pinboard' | 'chat' | 'games' | 'music';
-const DEFAULT: WidgetId[] = ['profile', 'oncure', 'clock', 'finance', 'awards', 'pinboard', 'chat', 'games', 'music'];
+const DEFAULT: WidgetId[] = ['profile', 'oncure', 'clock', 'finance', 'awards', 'music', 'chat', 'games', 'pinboard'];
 /** Slot shapes, in order: tall, wide, small, small, small, tall, small, small, small. */
 const SLOT = ['tall', 'wide', 'small', 'small', 'small', 'tall', 'small', 'small', 'small'] as const;
-const KEY = 'shreyas-spatial-board';
+/** v2: Activities & Experience moved to the tall right column, the Pinboard to the bottom. */
+const KEY = 'shreyas-spatial-board-v2';
 const TAP: Record<WidgetId, string> = { profile: 'profile', oncure: 'oncure', clock: '', finance: 'finance', awards: 'awards', pinboard: '', chat: 'chat', games: 'games', music: 'activities' };
 const PIN_AS: Partial<Record<WidgetId, string>> = { profile: 'profile', oncure: 'oncure', finance: 'finance', awards: 'awards', games: 'games', music: 'guitar' };
 
@@ -306,40 +307,22 @@ function GamesW() {
 }
 
 
-/** Short names that fit a dashboard tile (the full line is the tooltip and in the window). */
-const SHORT: Record<string, string> = { tama: 'TAMA Camp', temple: 'Sai Temple', tutoring: 'Peer tutoring', swim: 'Swim Atlanta', muaythai: 'Muay Thai', guitar: 'Guitar', olympiad: 'Science Olympiad', deca: 'DECA' };
-
-/** Activities and Experience: every activity is a button that opens its video and story. */
+/** Activities & Experience: every activity as a named tile, two columns. Opens the Activities app. */
 function MusicW() {
-  let k = 0;
   return (
     <>
-      <Head icon={<Guitar weight="fill" />} title="Activities & Experience" sub="3 volunteering · 5 activities · tap one" />
-      <div className="w-xp">
-        {EXPERIENCE_GROUPS.map((g) => (
-          <div key={g.id} className={`w-xp-group is-${g.id}`}>
-            <span className="w-xp-h">{g.title}</span>
-            <div className="w-xp-row">
-              {g.items.map((it) => {
-                const I = XP_ICON[it.id] ?? Guitar;
-                return (
-                  <button
-                    key={it.id}
-                    type="button"
-                    className="w-xp-btn"
-                    style={{ ...st(k++), '--tint': it.tint } as CSSProperties}
-                    data-voice={it.title}
-                    title={it.line}
-                    onClick={() => openExperience(it.id)}
-                  >
-                    <I weight="fill" aria-hidden="true" />
-                    <span>{SHORT[it.id] ?? it.title}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      <Head icon={<Guitar weight="fill" />} title="Activities & Experience" sub={`${EXPERIENCE.length} activities · tap one`} />
+      <div className="w-xp2">
+        {EXPERIENCE.map((x, k) => {
+          const I = XP_ICON[x.id] ?? Guitar;
+          return (
+            <button key={x.id} type="button" className="w-xp2-btn" style={{ ...st(k), '--tint': x.tint } as CSSProperties} data-voice={x.title} title={x.line} onClick={() => openExperience(x.id)}>
+              <I weight="fill" aria-hidden="true" />
+              <span>{x.short}</span>
+              {x.video && <i className="w-xp2-vid" aria-label="has a video" />}
+            </button>
+          );
+        })}
       </div>
     </>
   );

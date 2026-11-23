@@ -554,7 +554,7 @@
 .in-pending {
   display: inline-block;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: 8px;
   border: 1px dashed rgba(255, 214, 120, 0.6);
   font-size: 12px;
   line-height: 20px;
@@ -933,85 +933,202 @@
   }
 }
 
-/* Dashboard card: every activity is a tile (volunteering first, then other activities). */
-.w-xp {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(24px, 1fr);
-  align-content: stretch;
-  gap: 4px;
-  margin-top: 8px;
-}
-.w-xp-group,
-.w-xp-row {
-  display: contents;
-}
-.w-xp-h {
-  display: none;
-}
-.w-xp-btn {
+/* Dashboard card: Activities & Experience. A featured activity, then every activity as a tile. */
+.w-music .w-xp-feature {
   --tint: #4cc9f0;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  min-height: 0;
-  padding: 4px 8px 4px 4px;
-  border: 1px solid color-mix(in srgb, var(--tint) 40%, transparent);
-  border-radius: 12px;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--tint) 24%, transparent), rgba(255, 255, 255, 0.04));
+  flex: 1 1 80px;
+  min-height: 60px;
+  max-height: 150px;
+  margin-top: 4px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background: #0b0d14;
   color: #fff;
   font: inherit;
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 600;
   text-align: left;
   cursor: pointer;
-  animation: os-rise 600ms var(--ease) both;
-  animation-delay: calc(var(--i) * 50ms + 200ms);
-  transition:
-    background-color 300ms var(--ease),
-    transform 300ms var(--ease);
 }
-.w-xp-btn > svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  padding: 4px;
-  border-radius: 7px;
-  background: var(--tint);
-  color: #0b0d14;
+.w-xp-media {
+  position: absolute;
+  inset: 0;
 }
-.w-xp-btn > span {
-  min-width: 0;
+.w-xp-media .xm-shade {
+  background: linear-gradient(180deg, rgba(6, 8, 14, 0) 30%, rgba(6, 8, 14, 0.85));
+}
+.w-xp-cap {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.w-xp-cap small {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tint);
+}
+.w-xp-cap b {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.w-xp-group.is-volunteering .w-xp-btn::after {
-  content: '';
+.w-xp-dots {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 6px;
-  height: 6px;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 3px;
+}
+.w-xp-dots i {
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: #ffd678;
-  box-shadow: 0 0 8px #ffd678;
+  background: rgba(255, 255, 255, 0.4);
+  transition: width 300ms var(--ease);
+}
+.w-xp-dots i.is-on {
+  width: 12px;
+  border-radius: 4px;
+  background: #fff;
+}
+.w-music .w-xp-feature:hover .xm-img {
+  animation-duration: 6s;
+}
+.w-xp {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+.w-xp-group {
+  display: grid;
+  gap: 4px;
+}
+.w-xp-h {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.w-xp-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+}
+.w-xp-btn {
+  --tint: #4cc9f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 4px 2px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  animation: os-rise 600ms var(--ease) both;
+  animation-delay: calc(var(--i) * 40ms + 200ms);
+  transition:
+    background-color 300ms var(--ease),
+    border-color 300ms var(--ease),
+    transform 300ms var(--ease);
+}
+.w-xp-btn > svg {
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--tint);
+  color: #0b0d14;
+}
+.w-xp-btn > span {
+  max-width: 100%;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .w-xp-btn:hover {
+  background: color-mix(in srgb, var(--tint) 22%, transparent);
+  border-color: color-mix(in srgb, var(--tint) 45%, transparent);
   transform: translateY(-2px);
-  background: color-mix(in srgb, var(--tint) 34%, transparent);
 }
 .w-xp-btn:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 .w-xp-btn:focus-visible {
   outline: 2px solid var(--tint);
   outline-offset: 2px;
+}
+/* In a small slot: just the tiles (icons), no feature. */
+.os-w.is-small .w-xp-feature,
+.os-w.is-small .w-xp-h {
+  display: none;
+}
+.os-w.is-small .w-xp {
+  gap: 4px;
+  margin-top: 8px;
+}
+.os-w.is-small .w-xp-row {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.os-w.is-small .w-xp-btn > span {
+  display: none;
+}
+/* Phones: the card grows to fit its tiles. */
+@media (max-width: 760px) {
+  .os-w.w-music {
+    height: auto;
+    min-height: 0;
+    container-type: inline-size;
+  }
+  .w-music .w-xp-feature {
+    flex: none;
+    height: 150px;
+    max-height: none;
+  }
+}
+
+/* The Pinboard in a small slot: two columns of compact pins. */
+.os-w.is-small .w-pins {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.os-w.is-small .w-pin img {
+  width: 34px;
+  height: 34px;
+}
+.os-w.is-small .w-pin small {
+  display: none;
+}
+.os-w.is-small .w-pin b {
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.os-w.is-small .w-pin > button:first-child > span {
+  min-width: 0;
 }
 
 /* Activities app: the list rows are buttons now. */
@@ -1025,4 +1142,562 @@ button.ac-act {
 }
 button.ac-act > span:last-child {
   min-width: 0;
+}
+
+/* --- The Activities app: Activities & Experience --------------------------------------------- */
+.xa {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  gap: 16px;
+}
+.xa-main {
+  --tint: #4cc9f0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px;
+  background: rgba(14, 16, 24, 0.9);
+}
+.xa-media {
+  flex: 1 1 auto;
+  min-height: 180px;
+  border-radius: 22px;
+}
+.xa-info {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 8px 4px;
+  animation: os-rise 600ms var(--ease) both;
+}
+.xa-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.xa-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--tint) 24%, transparent);
+  color: var(--tint);
+  font-size: 22px;
+}
+.xa-k {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tint);
+}
+.xa-head h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+}
+.xa-line {
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--tint) 45%, transparent);
+  background: color-mix(in srgb, var(--tint) 12%, transparent);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.xa-detail {
+  margin: 0;
+  max-width: 720px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.xa-chips,
+.xa-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.xa-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tint) 55%, transparent);
+  color: var(--tint);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.xa-chip.is-pending {
+  border-style: dashed;
+  border-color: rgba(255, 214, 120, 0.6);
+  color: #ffd678;
+  font-weight: 500;
+}
+.xa-guitar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.xa-guitar-play {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  font-size: 16px;
+  cursor: pointer;
+}
+.xa-guitar-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.xa-guitar-text b {
+  font-size: 14px;
+  line-height: 20px;
+}
+.xa-guitar-text small {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.xa-guitar-bar {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+.xa-guitar-bar i {
+  display: block;
+  height: 100%;
+  background: var(--tint);
+  transform-origin: left;
+}
+.xa-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  padding: 16px;
+  overflow: auto;
+  background: rgba(14, 16, 24, 0.86);
+}
+.xa-side > * {
+  flex: none;
+}
+.xa-group {
+  display: grid;
+  gap: 8px;
+}
+.xa-group-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+.xa-group-h small {
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  letter-spacing: 0;
+}
+.xa-list {
+  display: grid;
+  gap: 4px;
+}
+.xa-item {
+  --tint: #4cc9f0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 10px 6px 6px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: os-rise 600ms var(--ease) both;
+  animation-delay: calc(var(--i) * 30ms + 150ms);
+  transition:
+    background-color 300ms var(--ease),
+    border-color 300ms var(--ease);
+}
+.xa-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.xa-item.is-on {
+  border-color: color-mix(in srgb, var(--tint) 55%, transparent);
+  background: color-mix(in srgb, var(--tint) 16%, transparent);
+}
+.xa-item:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+.xa-thumb {
+  position: relative;
+  display: grid;
+  place-items: end start;
+  flex: none;
+  width: 64px;
+  height: 44px;
+  padding: 4px;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #1b1e28;
+  background-size: cover;
+  background-position: center;
+}
+.xa-thumb > svg {
+  width: 20px;
+  height: 20px;
+  padding: 3px;
+  border-radius: 6px;
+  background: var(--tint);
+  color: #0b0d14;
+}
+.xa-thumb.is-intern {
+  place-items: center;
+  background: radial-gradient(circle at 40% 35%, #4b3d8f, #1b1636);
+  color: #d9ccff;
+  font-size: 22px;
+}
+.xa-item-t {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.xa-item-t b,
+.xa-item-t small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.xa-item-t b {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.xa-item-t small {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.xa-vid {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 77, 94, 0.18);
+  color: #ff8a95;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.xa-item.is-more > svg {
+  flex: none;
+  opacity: 0.6;
+}
+@media (max-width: 1100px) {
+  .xa {
+    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 1fr);
+  }
+  .xa-head h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+@media (max-width: 1100px) {
+  .os-free.is-activities > .os-scene.xa,
+  .xa {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    min-height: 100%;
+  }
+  .xa-main {
+    flex: none;
+    overflow: visible;
+  }
+  .xa-media {
+    flex: none;
+    aspect-ratio: 16 / 10;
+    min-height: 0;
+  }
+  /* Portrait clips (made for phones) get a portrait frame. */
+  .xa-media.is-portrait {
+    aspect-ratio: 4 / 5;
+  }
+  /* Room for the back button above the video. */
+  .xa {
+    padding-top: 44px;
+  }
+  .xa-side {
+    flex: none;
+    overflow: visible;
+  }
+  .xa-head h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+/* Internship on tablets and phones: one column, a shorter product panel. */
+@media (max-width: 1100px) {
+  .in {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .in-product {
+    min-height: 0;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .in-mat {
+    width: min(100%, 220px);
+  }
+}
+@media (max-width: 760px) {
+  .in-mat {
+    width: min(100%, 180px);
+  }
+}
+/* National Merit card on the small phone deck: just the seal and the number. */
+@media (max-width: 760px) {
+  .aw-merit-art {
+    inset: 0 0 52% 0;
+  }
+  .aw-merit-k,
+  .aw-merit-s {
+    display: none;
+  }
+  .aw-merit-seal {
+    width: 32px;
+    height: 32px;
+    margin: 6px 0 0;
+    font-size: 16px;
+  }
+  .aw-merit-v {
+    font-size: 24px;
+  }
+}
+
+/* Awards deck: a proper card size on tablets and phones (the desktop rule uses a share of the width). */
+@media (max-width: 1100px) {
+  .aw-card {
+    --w: min(380px, 36vh, 46vw);
+  }
+}
+@media (max-width: 760px) {
+  .aw-card {
+    --w: min(270px, 40dvh, 64vw);
+  }
+}
+@media (max-width: 760px) and (max-height: 720px) {
+  .aw-card {
+    --w: min(240px, 34dvh, 60vw);
+  }
+}
+
+/* --- Dashboard: Activities & Experience as two columns of named tiles -------------------------- */
+.w-xp2 {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(30px, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+.w-xp2-btn {
+  --tint: #4cc9f0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 6px 4px 4px;
+  border: 1px solid color-mix(in srgb, var(--tint) 35%, transparent);
+  border-radius: 12px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tint) 22%, transparent), rgba(255, 255, 255, 0.04));
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: os-rise 600ms var(--ease) both;
+  animation-delay: calc(var(--i) * 40ms + 200ms);
+  transition:
+    background-color 300ms var(--ease),
+    transform 300ms var(--ease);
+}
+.w-xp2-btn > svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: #0b0d14;
+}
+.w-xp2-btn > span {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.w-xp2-vid {
+  position: absolute;
+  top: 3px;
+  left: 21px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff4d5e;
+  box-shadow: 0 0 6px #ff4d5e;
+}
+.w-xp2-btn:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--tint) 32%, transparent);
+}
+.w-xp2-btn:active {
+  transform: scale(0.97);
+}
+.w-xp2-btn:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+.os-w.is-small .w-xp2 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+.os-w.is-small .w-xp2-btn > span {
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  .w-music .w-xp2 {
+    flex: none;
+    grid-auto-rows: 40px;
+  }
+}
+
+/* --- Activities app: the video shows its whole picture, as large as the pane allows ------------- */
+.xa-main {
+  padding: 10px;
+}
+.xa-media {
+  flex: 1 1 62%;
+  min-height: 240px;
+  background: #05060a;
+}
+.xa-media > video,
+.xa-media.is-video > video {
+  object-fit: contain;
+}
+.xa-media .xm-shade {
+  display: none;
+}
+.xa-info {
+  gap: 6px;
+  padding: 12px 6px 2px;
+}
+.xa-ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+.xa-head h2 {
+  font-size: 24px;
+  line-height: 32px;
+}
+@media (max-width: 1100px) {
+  .xa-media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+}
+@media (max-width: 760px) {
+  .xa-media.is-portrait {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* --- Awards: bigger cards on phones --------------------------------------------------------- */
+@media (max-width: 760px) {
+  .aw-card {
+    --w: min(300px, 46dvh, 74vw);
+  }
+}
+@media (max-width: 760px) and (max-height: 720px) {
+  .aw-card {
+    --w: min(260px, 40dvh, 68vw);
+  }
+}
+
+/* Tablets: the stacked Activities screen scrolls, with room for the back button above it. */
+@media (max-width: 1100px) {
+  .os-free.is-activities {
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .xa {
+    padding-top: 48px;
+  }
+}
+
+/* Tablets: the Activities card is tall and narrow, so one column of full names. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .os-w.is-tall .w-xp2 {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+
+/* Phones: the award card is sized from the height left between the bar and the name strip. */
+@media (max-width: 760px) {
+  .aw-card {
+    --w: min(300px, 74vw, calc((100dvh - 440px) / 1.45));
+  }
+}
+/* Short phones hide the name strip, so the card can use that space. */
+@media (max-width: 760px) and (max-height: 720px) {
+  .aw-card {
+    --w: min(260px, 70vw, calc((100dvh - 360px) / 1.45));
+  }
 }

@@ -102,7 +102,12 @@ export function openPavilion(zone: string | null = null) {
 /** Open Activities and Experience, on one activity (tama, temple, tutoring, swim, muaythai, guitar, olympiad, deca). */
 export function openExperience(item: string | null = null) {
   spatial.set({ experienceItem: item, homeView: false, control: false });
-  spatial.openWindow('experience');
+  // In the house tour it opens as a window over the room; otherwise the Activities app shows it.
+  if (spatial.get().tour) spatial.openWindow('experience');
+  else {
+    spatial.set({ windows: spatial.get().windows.filter((w) => w !== 'experience' && w !== 'pavilion') });
+    spatial.goChapter('activities');
+  }
 }
 export const openInternship = () => {
   spatial.set({ homeView: false, control: false });
@@ -242,6 +247,18 @@ export function runCommand(raw: string, actions: { replayIntro: () => void; soun
     if (r) return r;
   }
   // Activities and Experience: volunteering first.
+  if (has('ice skating', 'skating', 'skate')) {
+    openExperience('iceskating');
+    return 'Ice Skating';
+  }
+  if (has('ice hockey', 'hockey')) {
+    openExperience('icehockey');
+    return 'Ice Hockey';
+  }
+  if (has('roller blades', 'rollerblades', 'roller blading', 'rollerblading', 'inline skating', 'blades')) {
+    openExperience('rollerblades');
+    return 'Roller Blades';
+  }
   if (has('tama', 'medical camp', 'tama medical camp')) {
     openExperience('tama');
     return 'TAMA Medical Camp';

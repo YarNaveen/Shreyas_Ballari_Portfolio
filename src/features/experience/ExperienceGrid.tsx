@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from 'react';
+import { Briefcase, ChalkboardTeacher, FirstAid, Flask, Flower, Guitar, HandFist, SwimmingPool, type IconProps } from '@phosphor-icons/react';
 import { EXPERIENCE_GROUPS, type Experience } from '@/content/experience';
 import { MotionMedia } from './MotionMedia';
 import './grid.css';
@@ -9,7 +10,15 @@ import './grid.css';
  * (Creative has its own spatial window). The previews pause while the grid is off screen.
  * On narrow screens each group becomes a swipeable row.
  */
-export function ExperienceGrid({ tone = 'light', onOpen }: { tone?: 'light' | 'dark'; onOpen?: (x: Experience) => void }) {
+const ICON: Record<string, ComponentType<IconProps>> = { tama: FirstAid, temple: Flower, tutoring: ChalkboardTeacher, swim: SwimmingPool, muaythai: HandFist, guitar: Guitar, olympiad: Flask, deca: Briefcase };
+
+/** `classic`: full-bleed photo cards with the text over them; `studio`: white tiles with black icon badges. */
+function Icon({ id }: { id: string }) {
+  const I = ICON[id] ?? Guitar;
+  return <I weight="bold" aria-hidden="true" />;
+}
+
+export function ExperienceGrid({ tone = 'light', onOpen }: { tone?: 'light' | 'dark' | 'classic' | 'studio'; onOpen?: (x: Experience) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [on, setOn] = useState(false);
   const [seen, setSeen] = useState(false);
@@ -48,10 +57,12 @@ export function ExperienceGrid({ tone = 'light', onOpen }: { tone?: 'light' | 'd
                 >
                   <MotionMedia item={x} className="xg-media" controls={false} />
                   <span className="xg-body">
-                    <span className="xg-tag">{g.id === 'volunteering' ? 'Volunteering' : 'Activity'}</span>
+                    <span className="xg-tag">
+                      <Icon id={x.id} />
+                      {g.id === 'volunteering' ? 'Volunteering' : 'Activity'}
+                    </span>
                     <b className="xg-title">{x.title}</b>
-                    <span className="xg-line">{x.line}</span>
-                    {x.pending && <span className="xg-pending">More details · to be added</span>}
+                    {x.line !== x.title && <span className="xg-line">{x.line}</span>}
                   </span>
                 </Tag>
               );

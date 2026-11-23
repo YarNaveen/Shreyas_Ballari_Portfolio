@@ -384,3 +384,67 @@
     opacity: 1;
   }
 }
+
+/* Real videos */
+.xm.is-video > video {
+  background: #0b0d14;
+}
+.xm-progress.is-live i {
+  animation: none;
+  transition: transform 250ms linear;
+}
+.xm-badge.is-video i {
+  background: #ff4d5e;
+  box-shadow: 0 0 8px #ff4d5e;
+}
+/* Ice: falling snow */
+.xm-fx.is-snow i {
+  position: absolute;
+  left: var(--x);
+  top: -10px;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  animation: xm-snow 6s linear infinite;
+  animation-delay: var(--d);
+}
+/* Roller blades: speed lines */
+.xm-fx.is-speed i {
+  position: absolute;
+  left: -30%;
+  top: var(--y);
+  width: 30%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9));
+  animation: xm-speed 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--d);
+}
+@keyframes xm-snow {
+  to {
+    transform: translate3d(30px, 720px, 0);
+  }
+}
+@keyframes xm-speed {
+  from {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(480%);
+    opacity: 0;
+  }
+}
+
+/* A plain picture (no video yet): no movement. */
+.xm.is-still .xm-img {
+  animation: none;
+}
+.xm-badge.is-still {
+  font-size: 12px;
+  opacity: 0.85;
+}

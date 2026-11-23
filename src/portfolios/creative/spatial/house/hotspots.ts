@@ -328,6 +328,29 @@ export const HOTSPOTS: Hotspot[] = [
     items: goals.career,
     tint: '#ffd166',
   },
+  // --- Volunteering (the community room's east side) -----------------------------------------
+  {
+    id: 'vol-tama',
+    station: 'volunteer' as const,
+    pos: [0.8, 1.05, -13.4] as [number, number, number],
+    label: 'TAMA Medical Camp',
+    kicker: 'Volunteering',
+    title: 'TAMA Medical Camp',
+    text: 'Student volunteer at TAMA Medical Camp.',
+    app: { id: 'experience:tama', label: 'Watch and read' },
+    tint: '#ff6b8a',
+  },
+  {
+    id: 'vol-temple',
+    station: 'volunteer' as const,
+    pos: [2.35, 0.55, -13.55] as [number, number, number],
+    label: 'Sri Shirdi Sai Temple',
+    kicker: 'Volunteering',
+    title: 'Sri Shirdi Sai Temple',
+    text: 'Operations Volunteer at Sri Shirdi Sai Temple.',
+    app: { id: 'experience:temple', label: 'Watch and read' },
+    tint: '#ffb347',
+  },
   // --- Sports & Fitness Pavilion --------------------------------------------------------------
   ...pavilion.zones.map((z, i) => ({
     id: `pv-${z.id}`,

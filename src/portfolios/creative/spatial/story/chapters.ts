@@ -7,7 +7,7 @@ import { ChartLineUp, ChatsCircle, Dna, GameController, Guitar, SquaresFour, Tro
  * and what the narrator says when you open it. Every fact comes from the family's brief (content/portfolio.ts).
  */
 
-export type StationId = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'pavilion' | 'return';
+export type StationId = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'volunteer' | 'music' | 'garden' | 'pavilion' | 'return';
 
 export interface Chapter {
   id: string;
@@ -86,11 +86,11 @@ export const CHAPTERS: Chapter[] = [
   {
     id: 'activities',
     title: 'Activities',
-    line: 'Guitar, songs, sports and giving back',
+    line: 'Activities and experience: volunteering, sport, music',
     station: 'music',
     icon: Guitar,
     tint: '#3bb2d6',
-    say: 'Beyond class. Shreyas has played guitar since 2021, at Atlanta Piano Fortissimo, so press play for an original guitar piece generated in your browser. He swims with the Swim Atlanta Senior Team, has trained in Muay Thai since 2025, competed in Science Olympiad in 2024 and 2025, and joined DECA in 2026. You can see all of them in the Sports and Fitness Pavilion. He is an operations volunteer at the Sri Shirdi Sai Temple, a student volunteer at the TAMA Medical Camp, and tutors seventh and eighth graders in math and science.',
+    say: 'Beyond class. Shreyas has played guitar since 2021, at Atlanta Piano Fortissimo, so press play for an original guitar piece generated in your browser. He swims with the Swim Atlanta Senior Team, has trained in Muay Thai since 2025, also does ice skating, ice hockey and roller blades, competed in Science Olympiad in 2024 and 2025, and joined DECA in 2026. You can see all of them in the Sports and Fitness Pavilion. He is an operations volunteer at the Sri Shirdi Sai Temple, a student volunteer at the TAMA Medical Camp, and tutors seventh and eighth graders in math and science.',
     voice: ['activities', 'other activities', 'his activities', 'guitar', 'music', 'songs', 'song', 'sports', 'swimming', 'muay thai', 'volunteering', 'community', 'play music'],
   },
 ];

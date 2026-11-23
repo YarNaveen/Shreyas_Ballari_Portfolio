@@ -218,6 +218,9 @@ export const activities = [
   { title: 'Guitar', role: 'Since 2021 · Atlanta Piano Fortissimo' },
   { title: 'Science Olympiad', role: 'FSA, 2024 and 2025' },
   { title: 'DECA', role: 'FSA, 2026' },
+  { title: 'Ice Skating', role: 'Activity' },
+  { title: 'Ice Hockey', role: 'Activity' },
+  { title: 'Roller Blades', role: 'Activity' },
 ];
 
 /** Areas of interest (from his resume). */
