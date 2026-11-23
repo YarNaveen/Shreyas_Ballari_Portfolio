@@ -456,8 +456,10 @@ export function DetailSheet({ id, origin, onClose, contained = false, theme }: {
   // While open: the page behind stays still, and Escape closes.
   useEffect(() => {
     if (!shown) return;
+    // Remember the page's own setting BEFORE locking (saving it after would save "hidden" and
+    // leave the page unable to scroll once the details close).
+    const prev = document.documentElement.style.overflow === 'hidden' ? '' : document.documentElement.style.overflow;
     smooth?.setLocked(true);
-    const prev = document.documentElement.style.overflow;
     document.documentElement.style.overflow = 'hidden';
     const key = (e: KeyboardEvent) => e.key === 'Escape' && close();
     window.addEventListener('keydown', key);
