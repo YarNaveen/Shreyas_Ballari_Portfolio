@@ -41,7 +41,8 @@ import { appCalcTexture, appDashboardTexture, appStockTexture } from '../house/S
 import { playUi, spatial, useSpatial } from '../store';
 import { askAI } from './Dashboard';
 import { envNow } from './localTime';
-import { storyById } from './media';
+import { STILL, storyById } from './media';
+import { openExperience, openInternship, openPavilion } from '../ui/commands';
 
 
 /** The app screens (Oncure, Finance, Games, Activities), the Home View and the Control Center. */
@@ -175,6 +176,8 @@ const ACT_ICONS: [RegExp, typeof Flask][] = [
   [/tutor/i, ChalkboardTeacher],
 ];
 const iconFor = (t: string) => ACT_ICONS.find(([r]) => r.test(t))?.[1] ?? Sparkle;
+/** The Activities and Experience card for an activity or volunteering title. */
+const XP_FOR = (t: string) => (/swim/i.test(t) ? 'swim' : /muay/i.test(t) ? 'muaythai' : /guitar/i.test(t) ? 'guitar' : /olympiad/i.test(t) ? 'olympiad' : /deca/i.test(t) ? 'deca' : /tama|medical/i.test(t) ? 'tama' : /temple/i.test(t) ? 'temple' : 'tutoring');
 const ACTS = [
   ...activities.map((a) => ({ t: a.title, s: a.role, kind: 'Activity' })),
   ...volunteering.map((v) => ({ t: v.title, s: v.role, kind: 'Giving back' })),
@@ -305,12 +308,33 @@ export function ActivitiesApp() {
             </span>
           </button>
         ))}
+        <p className="os-label">Explore more</p>
+        <div className="ac-feats">
+          <button type="button" className="ac-feat is-pavilion" style={st(1)} data-voice="sports and fitness pavilion" onClick={() => openPavilion()}>
+            <img src={STILL('pavilion.jpg')} alt="" loading="lazy" />
+            <span>
+              <small>In the garden of his home</small>
+              <b>Sports &amp; Fitness Pavilion</b>
+              <em>Swimming · Muay Thai · Science Olympiad · DECA</em>
+            </span>
+          </button>
+          <button type="button" className="ac-feat is-intern" style={st(2)} data-voice="internship" onClick={openInternship}>
+            <span className="ac-feat-ico" aria-hidden="true">
+              <Briefcase weight="duotone" />
+            </span>
+            <span>
+              <small>Summer internship</small>
+              <b>Internship &amp; Industry Experience</b>
+              <em>AI-enabled play mat, now on the App Store</em>
+            </span>
+          </button>
+        </div>
         <p className="os-label">Beyond class</p>
         <div className="ac-acts">
-          {ACTS.map((a, i) => {
+          {ACTS.filter((a) => a.kind === 'Activity').map((a, i) => {
             const I = iconFor(a.t);
             return (
-              <article key={a.t} className="ac-act" style={st(i + 2)} tabIndex={0} title={`${a.t}: ${a.s}`}>
+              <button type="button" key={a.t} className="ac-act" style={st(i + 2)} data-voice={a.t} title={`${a.t}: ${a.s}`} onClick={() => openExperience(XP_FOR(a.t))}>
                 <span className="ac-act-ico">
                   <I weight="duotone" aria-hidden="true" />
                 </span>
@@ -318,7 +342,24 @@ export function ActivitiesApp() {
                   <b>{a.t}</b>
                   <small>{a.s}</small>
                 </span>
-              </article>
+              </button>
+            );
+          })}
+        </div>
+        <p className="os-label">Volunteering &amp; community</p>
+        <div className="ac-acts is-give">
+          {ACTS.filter((a) => a.kind === 'Giving back').map((a, i) => {
+            const I = iconFor(a.t);
+            return (
+              <button type="button" key={a.t} className="ac-act" style={st(i + 2)} data-voice={a.t} title={`${a.t}: ${a.s}`} onClick={() => openExperience(XP_FOR(a.t))}>
+                <span className="ac-act-ico">
+                  <I weight="duotone" aria-hidden="true" />
+                </span>
+                <span>
+                  <b>{a.t}</b>
+                  <small>{a.s}</small>
+                </span>
+              </button>
             );
           })}
         </div>

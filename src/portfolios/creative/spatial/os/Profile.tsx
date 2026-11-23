@@ -1,7 +1,8 @@
 import type { CSSProperties } from 'react';
 import { Reach } from '@/features/details/Reach';
-import { Books, EnvelopeSimple, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, Rocket, SpeakerHigh, Sparkle, X } from '@phosphor-icons/react';
-import { achievements, courses, goals, languages, profile, researchInterests, resume, subjects } from '@/content/portfolio';
+import { ArrowRight, Books, Briefcase, EnvelopeSimple, Brain, ChalkboardTeacher, ChatsCircle, Code, Flag, GraduationCap, Medal, Rocket, SpeakerHigh, Sparkle, X } from '@phosphor-icons/react';
+import { achievements, courses, goals, internship, languages, nationalMerit, profile, researchInterests, resume, subjects } from '@/content/portfolio';
+import { openInternship } from '../ui/commands';
 import { speak } from '../story/narrator';
 import { spatial } from '../store';
 import { askAI } from './Dashboard';
@@ -17,13 +18,19 @@ import { OSWindow } from './Window';
 
 const st = (i: number) => ({ '--i': i }) as CSSProperties;
 
-const ROWS = [
+const ROWS: { icon: typeof Sparkle; k: string; v: string; open?: () => void }[] = [
   { icon: Sparkle, k: 'About him', v: resume.summary },
+  { icon: Medal, k: nationalMerit.title, v: `${nationalMerit.test}: ${nationalMerit.result}. ${nationalMerit.status}.`, open: () => {
+    spatial.closeWindow('profile');
+    spatial.goChapter('awards');
+    window.setTimeout(() => window.dispatchEvent(new CustomEvent('os-awards', { detail: 'nmsc' })), 700);
+  } },
   { icon: GraduationCap, k: 'School', v: `${profile.grade} at ${profile.school}, ${profile.schoolTown}` },
   { icon: Brain, k: 'Interests', v: subjects.join(', ') },
   { icon: Code, k: 'Writes code in', v: languages.join(', ') },
   { icon: Books, k: 'Courses', v: courses.join(', ') },
   { icon: Flag, k: 'Research interests', v: researchInterests.map((r) => r.title).join(' · ') },
+  { icon: Briefcase, k: internship.heading, v: internship.summary, open: openInternship },
   { icon: ChalkboardTeacher, k: 'Experience', v: `Peer tutor: ${resume.tutoring.slice(0, 3).join(' ')}` },
   { icon: Rocket, k: 'Goals', v: [goals.education, ...goals.career].join(' ') },
   { icon: Brain, k: 'Skills', v: resume.skills.join(', ') },
@@ -54,7 +61,7 @@ export function ProfileWindow() {
           </figure>
           <div className="os-profile-list os-scroll">
             <p className="os-label">About ({ROWS.length})</p>
-            {ROWS.map(({ icon: I, k, v }, i) => (
+            {ROWS.map(({ icon: I, k, v, open }, i) => (
               <article key={k} className="os-row" style={st(i)}>
                 <span className="os-row-ico">
                   <I weight="duotone" aria-hidden="true" />
@@ -66,6 +73,11 @@ export function ProfileWindow() {
                     <button type="button" className="os-round is-sm" aria-label={`Listen: ${k}`} data-voice={`listen ${k}`} onClick={() => speak(`${k}. ${v}`)}>
                       <SpeakerHigh weight="bold" />
                     </button>
+                    {open && (
+                      <button type="button" className="os-chip is-sm" data-voice={`open ${k}`} onClick={open}>
+                        Open <ArrowRight weight="bold" aria-hidden="true" />
+                      </button>
+                    )}
                     <button type="button" className="os-round is-sm" aria-label={`Ask about ${k}`} data-voice={`ask ${k}`} onClick={() => askAI(`What about his ${k.toLowerCase()}?`)}>
                       <ChatsCircle weight="bold" />
                     </button>
@@ -76,7 +88,7 @@ export function ProfileWindow() {
           </div>
           <div className="os-statbar" aria-label="Highlights">
             {[
-              ['Top 99%', 'PSAT'],
+              ['99th+', 'Grade 11 PSAT'],
               ['Top 99%', 'MAP'],
               [String(courses.length), 'Courses'],
               [String(languages.length), 'Languages'],

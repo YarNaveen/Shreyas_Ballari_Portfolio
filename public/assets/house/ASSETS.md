@@ -38,3 +38,7 @@ The second batch (the rooms around the living room and the garden, ~21.6 MB, all
 chess set, trophies, certificates, hologram, trees and shrubs, outdoor sofas) is built in code.
 
 The headset in the intro is an original design built in code (no third-party model or brand).
+
+## Stills
+
+`stills/pavilion.jpg`, `stills/pavilion-pool.jpg` and `stills/pavilion-muaythai.jpg` are original renders of the Sports & Fitness Pavilion in this site's own 3D house (2026-11-23). They show no real person and no team or brand logo.

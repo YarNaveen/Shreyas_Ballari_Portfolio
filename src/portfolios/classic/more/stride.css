@@ -1309,3 +1309,14 @@ html.sd-locked body {
     animation: none;
   }
 }
+
+/* Activities and Experience (after the awards). */
+.sd-xp {
+  background: linear-gradient(180deg, #fff, #f4f6fb);
+}
+.sd-xp-grid {
+  width: 100%;
+  max-width: 1180px;
+  margin-top: 32px;
+  text-align: left;
+}

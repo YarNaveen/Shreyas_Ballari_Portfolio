@@ -1,0 +1,1028 @@
+/*
+ * New for the 2026-11-23 feedback: the Sports & Fitness Pavilion window, the Internship & Industry
+ * Experience window, the National Merit card in Awards, and the entry tiles in Activities.
+ * Same dark Liquid Glass as the rest; each zone of the pavilion has its own look.
+ */
+
+/* --- Windows over the apps and the tour --------------------------------------------------------- */
+.os-scrim.is-top {
+  z-index: 59;
+}
+.os-win.os-pavilion,
+.os-win.os-internship {
+  position: fixed;
+  inset: 80px max(64px, calc(50vw - 580px)) 104px;
+  z-index: 60;
+}
+.sp .os-pavilion .os-win-glass,
+.sp .os-internship .os-win-glass {
+  overflow: hidden;
+  background: rgba(14, 16, 24, 0.95);
+}
+@media (max-width: 760px) {
+  .os-win.os-pavilion,
+  .os-win.os-internship {
+    inset: 56px 8px 92px;
+  }
+}
+
+/* --- Sports & Fitness Pavilion ------------------------------------------------------------------- */
+.pv {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 0 24px;
+  border-radius: inherit;
+}
+/* Sections keep their size; the window scrolls instead of squeezing them. */
+.pv > * {
+  flex: none;
+}
+.pv-hero {
+  position: relative;
+  flex: none;
+  height: clamp(220px, 34vh, 320px);
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background: radial-gradient(120% 120% at 20% 10%, #1d6f93 0%, #0b2233 60%, #070b12 100%);
+}
+.pv-hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: pv-settle 1400ms var(--ease) both;
+}
+.pv-hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 10, 18, 0) 30%, rgba(6, 10, 18, 0.92) 100%), linear-gradient(90deg, rgba(6, 10, 18, 0.7), rgba(6, 10, 18, 0) 70%);
+}
+.pv-hero-text {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  max-width: 640px;
+  animation: os-rise 800ms var(--ease) 200ms both;
+}
+.pv-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9fe3ff;
+}
+.pv-hero h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.pv-hero-text > p:not(.pv-kicker) {
+  margin: 8px 0 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.82);
+  text-wrap: pretty;
+}
+.pv-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pv-zones {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 24px;
+}
+.pv-zone {
+  --tint: #4cc9f0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: os-deal 700ms var(--ease) both;
+  animation-delay: calc(var(--i) * 80ms + 250ms);
+  transition:
+    background-color 300ms var(--ease),
+    border-color 300ms var(--ease),
+    transform 300ms var(--ease);
+}
+.pv-zone.is-muaythai {
+  --tint: #ff5a5f;
+}
+.pv-zone.is-olympiad {
+  --tint: #8fd0ff;
+}
+.pv-zone.is-deca {
+  --tint: #f4d68a;
+}
+.pv-zone > svg {
+  flex: none;
+  font-size: 24px;
+  color: var(--tint);
+}
+.pv-zone b {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.pv-zone small {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.64);
+}
+.pv-zone:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+.pv-zone:active {
+  transform: scale(0.98);
+}
+.pv-zone.is-on {
+  border-color: var(--tint);
+  background: color-mix(in srgb, var(--tint) 18%, transparent);
+  box-shadow: 0 0 0 1px var(--tint) inset, 0 12px 32px -16px var(--tint);
+}
+.pv-zone:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+.pv-pick {
+  margin: 0 24px;
+  padding: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+/* A zone card: picture and story side by side, swinging in from depth. */
+.pv-card {
+  --tint: #4cc9f0;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  margin: 0 24px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #0c1b2a;
+  transform-origin: 50% 100%;
+  animation: pv-swing 800ms var(--ease) both;
+}
+.pv-card-art {
+  position: relative;
+  min-height: 260px;
+  margin: 0;
+  overflow: hidden;
+}
+.pv-card-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: pv-settle 1200ms var(--ease) both;
+}
+.pv-card-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pv-card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 24px;
+}
+.pv-card-body > * {
+  animation: os-rise 700ms var(--ease) both;
+}
+.pv-card-body > :nth-child(2) {
+  animation-delay: 120ms;
+}
+.pv-card-body > :nth-child(3) {
+  animation-delay: 180ms;
+}
+.pv-card-body > :nth-child(n + 4) {
+  animation-delay: 260ms;
+}
+.pv-card-ico {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tint) 22%, transparent);
+  color: var(--tint);
+  font-size: 24px;
+}
+.pv-card-k {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tint);
+}
+.pv-card h3 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+}
+.pv-card-role {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+.pv-card-line {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.76);
+  text-wrap: pretty;
+}
+.pv-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.pv-years span {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tint) 60%, transparent);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--tint);
+  animation: os-rise 600ms var(--ease) both;
+  animation-delay: calc(var(--i) * 90ms + 320ms);
+}
+.pv-card-actions {
+  margin-top: auto;
+  padding-top: 16px;
+}
+/* Swimming: water light. */
+.pv-card.is-swim {
+  background: linear-gradient(160deg, #0d3a57, #07202f);
+}
+.pv-card.is-swim .pv-card-fx {
+  background:
+    radial-gradient(40% 18% at 30% 30%, rgba(190, 245, 255, 0.22), transparent 70%),
+    radial-gradient(30% 14% at 70% 60%, rgba(190, 245, 255, 0.16), transparent 70%),
+    linear-gradient(180deg, rgba(10, 60, 90, 0) 40%, rgba(7, 32, 47, 0.65));
+  animation: pv-caustics 9s ease-in-out infinite alternate;
+}
+/* Muay Thai: the training mats, red and deep blue. */
+.pv-card.is-muaythai {
+  --tint: #ff5a5f;
+  background: linear-gradient(160deg, #2a0d10, #120708);
+}
+.pv-card.is-muaythai .pv-card-fx {
+  background: linear-gradient(180deg, rgba(42, 13, 16, 0) 45%, rgba(18, 7, 8, 0.7)), repeating-linear-gradient(90deg, rgba(255, 90, 95, 0.12) 0 2px, transparent 2px 64px);
+}
+/* Science Olympiad: a lab grid. */
+.pv-card.is-olympiad {
+  --tint: #8fd0ff;
+  background-color: #0d2346;
+  background-image: linear-gradient(rgba(140, 190, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(140, 190, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.pv-card.is-olympiad .pv-card-fx {
+  background: linear-gradient(90deg, rgba(13, 35, 70, 0.2), rgba(13, 35, 70, 0.85));
+}
+/* DECA: navy and gold. */
+.pv-card.is-deca {
+  --tint: #f4d68a;
+  background: linear-gradient(160deg, #0b1530, #050a18);
+  border-color: rgba(244, 214, 138, 0.4);
+}
+.pv-card.is-deca .pv-card-fx {
+  background: linear-gradient(90deg, rgba(11, 21, 48, 0.25), rgba(11, 21, 48, 0.88));
+}
+@media (max-width: 760px) {
+  .pv-hero-text {
+    left: 16px;
+    right: 16px;
+  }
+  .pv-hero h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .pv-zones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 16px;
+  }
+  .pv-card {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0 16px;
+  }
+  .pv-card-art {
+    min-height: 180px;
+  }
+  .pv-card-body {
+    padding: 16px;
+  }
+  .pv-card h3 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .pv-pick {
+    margin: 0 16px;
+  }
+}
+@keyframes pv-swing {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) translateZ(-160px) rotateX(10deg) rotateY(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pv-settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes pv-caustics {
+  from {
+    transform: translate3d(-3%, -2%, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.1);
+  }
+}
+
+/* --- Internship & Industry Experience ------------------------------------------------------------ */
+.in {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  padding: 24px;
+}
+.in-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 320px;
+  padding: 24px;
+  border-radius: 24px;
+  background: radial-gradient(90% 80% at 50% 30%, #2b2350 0%, #141226 70%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: pv-swing 800ms var(--ease) both;
+}
+.in-product > img {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: 16px;
+}
+/* The illustrated play mat: a soft mat with touch pads that light up in turn. */
+.in-mat {
+  display: grid;
+  place-items: center;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  transform: perspective(900px) rotateX(48deg) rotateZ(-18deg);
+}
+.in-mat-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  border-radius: 32px;
+  background: linear-gradient(145deg, #f4efe6, #d9d1c3);
+  box-shadow:
+    0 40px 60px -20px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+.in-mat-pad i {
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff, #c9c0f2 60%, #a99be8);
+  box-shadow: 0 0 0 4px rgba(155, 107, 255, 0.12);
+  animation: in-pad 3.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 400ms);
+}
+.in-product-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.in-store {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.in-store.is-pending {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  border: 1px dashed rgba(255, 214, 120, 0.6);
+}
+.in-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+.in-main > * {
+  animation: os-rise 700ms var(--ease) both;
+}
+.in-main > :nth-child(n + 3) {
+  animation-delay: 140ms;
+}
+.in-main > :nth-child(n + 5) {
+  animation-delay: 240ms;
+}
+.in-kicker {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9b6ff;
+}
+.in-main h2 {
+  margin: 0;
+  padding-right: 48px;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.in-summary {
+  margin: 0 0 4px;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.84);
+  text-wrap: pretty;
+}
+.in-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+.in-field {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.in-field-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(155, 107, 255, 0.22);
+  color: #d9ccff;
+  font-size: 20px;
+}
+.in-field small {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.in-field b {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.in-field a {
+  color: #c9b6ff;
+}
+.in-pending {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px dashed rgba(255, 214, 120, 0.6);
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #ffd678;
+}
+.in-block {
+  width: 100%;
+  margin-top: 8px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.in-block-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.in-block ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.in-empty {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.in-cert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 215, 112, 0.1);
+  border: 1px solid rgba(255, 215, 112, 0.4);
+  font-size: 14px;
+  line-height: 20px;
+}
+.in-cert > svg {
+  flex: none;
+  font-size: 24px;
+  color: #ffd770;
+}
+.in-cert.is-pending {
+  border-style: dashed;
+  color: rgba(255, 255, 255, 0.72);
+}
+.in-cert a {
+  color: #ffd770;
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .in {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .in-product {
+    min-height: 240px;
+  }
+  .in-main h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .in-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@keyframes in-pad {
+  0%,
+  70%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(155, 107, 255, 0.12);
+  }
+  20% {
+    box-shadow:
+      0 0 0 6px rgba(155, 107, 255, 0.35),
+      0 0 24px rgba(155, 107, 255, 0.6);
+  }
+}
+
+/* --- National Merit: the gold card at the front of the awards deck ------------------------------- */
+.aw-card.is-merit {
+  background: radial-gradient(120% 90% at 50% 20%, #2a2f5c 0%, #10132b 60%, #07081a 100%);
+  box-shadow:
+    0 0 0 1px rgba(244, 214, 138, 0.6),
+    0 30px 60px rgba(0, 0, 0, 0.45);
+}
+.aw-card.is-merit.is-focus {
+  box-shadow:
+    0 0 0 2px #f4d68a,
+    0 40px 90px rgba(201, 154, 60, 0.35);
+}
+.aw-merit-art {
+  position: absolute;
+  inset: 0 0 46% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #fff;
+  text-align: center;
+  pointer-events: none;
+}
+.aw-merit-seal {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 24px 0 4px;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #f4d68a, #c99a3c, #fbe7b0, #b8862f, #f4d68a);
+  color: #3a2a08;
+  font-size: 28px;
+  box-shadow:
+    0 0 0 6px rgba(244, 214, 138, 0.16),
+    0 12px 30px rgba(201, 154, 60, 0.4);
+  animation: aw-seal 900ms var(--ease) both;
+}
+.aw-merit-k {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f4d68a;
+}
+.aw-merit-v {
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 600;
+  background: linear-gradient(90deg, #fbe7b0, #f4d68a, #c99a3c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.aw-merit-s {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.aw-card.is-merit .aw-card-shade {
+  background: linear-gradient(180deg, transparent 55%, rgba(7, 8, 26, 0.92));
+}
+.aw-detail.is-merit .aw-cert {
+  background: linear-gradient(180deg, #fffaf0, #f7eed6);
+}
+@keyframes aw-seal {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-30deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Activities: the pavilion and internship tiles --------------------------------------------- */
+/* The side list scrolls; its rows keep their height. */
+.ac-side > * {
+  flex: none;
+}
+.ac-feats {
+  display: grid;
+  gap: 8px;
+}
+.ac-feat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: os-deal 700ms var(--ease) both;
+  animation-delay: calc(var(--i) * 80ms + 200ms);
+  transition:
+    background-color 300ms var(--ease),
+    transform 300ms var(--ease);
+}
+.ac-feat:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+.ac-feat:active {
+  transform: scale(0.98);
+}
+.ac-feat > img,
+.ac-feat-ico {
+  flex: none;
+  width: 88px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: linear-gradient(145deg, #1d6f93, #0b2233);
+}
+.ac-feat-ico {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 40% 35%, #4b3d8f, #1b1636);
+  color: #d9ccff;
+  font-size: 24px;
+}
+.ac-feat small {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-faint, rgba(255, 255, 255, 0.6));
+}
+.ac-feat b {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.ac-feat em {
+  display: block;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.72);
+}
+.ac-feat.is-pavilion {
+  border-color: rgba(76, 201, 240, 0.4);
+}
+.ac-feat.is-intern {
+  border-color: rgba(155, 107, 255, 0.4);
+}
+.ac-acts.is-give .ac-act-ico {
+  background: rgba(255, 183, 77, 0.26);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-card,
+  .pv-card-art img,
+  .pv-hero > img,
+  .pv-card.is-swim .pv-card-fx,
+  .in-product,
+  .in-mat-pad i,
+  .aw-merit-seal {
+    animation: none;
+  }
+}
+
+/* --- Activities and Experience ---------------------------------------------------------------- */
+/* The card's video fills the left half. */
+.pv-card > .xm.pv-card-art {
+  min-height: 280px;
+  height: 100%;
+}
+/* A card in any activity's colour (the four pavilion zones keep their own looks above). */
+.pv-card:is(.is-tama, .is-temple, .is-tutoring, .is-guitar) {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tint) 26%, #0c1220), #080b12);
+  border-color: color-mix(in srgb, var(--tint) 40%, transparent);
+}
+.xp-line {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--tint) 45%, transparent);
+  background: color-mix(in srgb, var(--tint) 12%, transparent);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+.xp-pending {
+  border-style: dashed !important;
+  border-color: rgba(255, 214, 120, 0.6) !important;
+  color: #ffd678 !important;
+  font-weight: 500 !important;
+}
+.pv-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.xp-head {
+  padding: 32px 24px 0;
+  animation: os-rise 700ms var(--ease) both;
+}
+.xp-head .pv-kicker {
+  color: #c9b6ff;
+}
+.xp-head h2 {
+  margin: 0;
+  padding-right: 48px;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+}
+.xp-head > p:not(.pv-kicker) {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.72);
+}
+.xp-group {
+  display: grid;
+  gap: 8px;
+}
+.xp-group-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 24px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+.xp-group-h small {
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.pv-zones.is-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.pv-zones.is-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.pv-zone small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pv-zone > span {
+  min-width: 0;
+}
+@media (max-width: 1100px) {
+  .pv-zones.is-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .xp-head {
+    padding: 24px 16px 0;
+  }
+  .xp-head h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .xp-group-h {
+    padding: 0 16px;
+  }
+  .pv-zones.is-3,
+  .pv-zones.is-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pv-card > .xm.pv-card-art {
+    min-height: 200px;
+  }
+}
+
+/* Dashboard card: every activity is a tile (volunteering first, then other activities). */
+.w-xp {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(24px, 1fr);
+  align-content: stretch;
+  gap: 4px;
+  margin-top: 8px;
+}
+.w-xp-group,
+.w-xp-row {
+  display: contents;
+}
+.w-xp-h {
+  display: none;
+}
+.w-xp-btn {
+  --tint: #4cc9f0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 8px 4px 4px;
+  border: 1px solid color-mix(in srgb, var(--tint) 40%, transparent);
+  border-radius: 12px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tint) 24%, transparent), rgba(255, 255, 255, 0.04));
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  animation: os-rise 600ms var(--ease) both;
+  animation-delay: calc(var(--i) * 50ms + 200ms);
+  transition:
+    background-color 300ms var(--ease),
+    transform 300ms var(--ease);
+}
+.w-xp-btn > svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  border-radius: 7px;
+  background: var(--tint);
+  color: #0b0d14;
+}
+.w-xp-btn > span {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.w-xp-group.is-volunteering .w-xp-btn::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffd678;
+  box-shadow: 0 0 8px #ffd678;
+}
+.w-xp-btn:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--tint) 34%, transparent);
+}
+.w-xp-btn:active {
+  transform: scale(0.97);
+}
+.w-xp-btn:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+
+/* Activities app: the list rows are buttons now. */
+button.ac-act {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.ac-act > span:last-child {
+  min-width: 0;
+}

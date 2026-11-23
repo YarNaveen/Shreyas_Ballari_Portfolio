@@ -1,4 +1,4 @@
-import { achievements, activities, courses, goals, languages, oncure, percentiles, profile, resume, stockApp, volunteering } from '@/content/portfolio';
+import { achievements, activities, courses, goals, internship, languages, nationalMerit, oncure, pavilion, percentiles, profile, resume, stockApp, volunteering } from '@/content/portfolio';
 import { STORIES, type Card } from './media';
 
 /**
@@ -33,7 +33,8 @@ const TIMELINE = [
   '2023: won the Young Authors Contest (District 204)',
   '2024: Science Olympiad at FSA',
   '2025: Science Olympiad again; Principal’s Honors List at FSA; started Muay Thai',
-  '2026: Principal’s Honors List again; DECA at FSA',
+  '2026: Principal’s Honors List again; DECA at FSA; a summer internship with a company developing an AI-enabled play mat',
+  '11th grade: Grade 11 PSAT in the 99th percentile and above; qualified for National Merit Scholarship recognition',
   'Now: a junior at Fulton Science Academy, researching AI in oncology and building a stock trading application',
 ];
 
@@ -166,10 +167,38 @@ const TOPICS: Topic[] = [
     }),
   },
   {
+    id: 'merit',
+    words: ['national merit', 'merit', 'nmsc', 'scholarship', 'grade 11', '11th grade', 'junior psat', 'psat 11', 'nmsqt'],
+    answer: () => ({
+      text: `${nationalMerit.title}: on the ${nationalMerit.test} he placed in the ${nationalMerit.result}. ${nationalMerit.status}. (This is recognition he qualified for; the portfolio does not say a scholarship has been awarded.) Earlier PSAT results: top 99% in 8th grade, top 98% in 9th and top 99% in 10th.`,
+      cards: story('awards'),
+      chips: ['What are his other awards?', 'What are his test scores?'],
+      open: { app: 'awards', label: 'Open Awards' },
+    }),
+  },
+  {
+    id: 'internship',
+    words: ['internship', 'intern', 'interned', 'play mat', 'playmat', 'industry', 'job', 'work experience', 'company', 'app store', 'summer'],
+    answer: () => ({
+      text: `${internship.summary}${internship.company ? ` The company: ${internship.company}.` : ' The company name, his role and his contributions will be added once confirmed.'}`,
+      chips: ['What are his projects?', 'What are his goals?'],
+      open: { app: 'internship', label: 'Open the internship' },
+    }),
+  },
+  {
+    id: 'pavilion',
+    words: ['pavilion', 'sports pavilion', 'fitness', 'gym', 'pool', 'swim atlanta', 'senior team', 'training'],
+    answer: () => ({
+      text: `${pavilion.intro} ${pavilion.zones.map((z) => z.line).join(' ')}`,
+      chips: ['Does he volunteer?', 'What are his goals?'],
+      open: { app: 'pavilion', label: 'Open the Sports & Fitness Pavilion' },
+    }),
+  },
+  {
     id: 'scores',
     words: ['psat', 'map', 'percentile', 'score', 'scores', 'test', 'tests', 'sat', 'exam', 'exams', 'grades', 'gpa'],
     answer: () => ({
-      text: `${percentiles.map((p) => `${p.test} in ${p.grade}: top ${p.value}%`).join('. ')}. His PSAT 8/9 score was 1280 out of 1440. (The portfolio does not list a GPA.)`,
+      text: `${percentiles.map((p) => (p.test === 'PSAT' && p.grade === '11th grade' ? `PSAT in 11th grade: 99th percentile and above, qualifying for National Merit Scholarship recognition` : `${p.test} in ${p.grade}: top ${p.value}%`)).join('. ')}. His PSAT 8/9 score was 1280 out of 1440. (The portfolio does not list a GPA.)`,
       cards: story('awards'),
       chips: ['What are his awards?', 'What does he study?'],
     }),
@@ -178,7 +207,7 @@ const TOPICS: Topic[] = [
     id: 'activities',
     words: ['activities', 'hobby', 'hobbies', 'sport', 'sports', 'swim', 'swimming', 'muay thai', 'martial', 'guitar', 'music', 'instrument', 'olympiad', 'deca', 'free time', 'fun', 'extracurricular', 'extracurriculars', 'clubs'],
     answer: () => ({
-      text: `${activities.map((a) => `${a.title}: ${a.role}`).join('. ')}.`,
+      text: `${activities.map((a) => `${a.title}: ${a.role}`).join('. ')}. Swimming, Muay Thai, Science Olympiad and DECA are together in the Sports & Fitness Pavilion in his 3D home.`,
       cards: story('guitar', 'games'),
       chips: ['Play his guitar song', 'Does he volunteer?', 'What are his goals?'],
       open: { app: 'activities', label: 'Open Activities' },

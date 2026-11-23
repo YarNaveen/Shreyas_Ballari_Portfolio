@@ -1,4 +1,4 @@
-import { achievements, activities, courses, goals, languages, oncure, percentiles, stockApp } from '@/content/portfolio';
+import { achievements, activities, courses, goals, languages, oncure, pavilion, percentiles, stockApp } from '@/content/portfolio';
 import type { StationName } from './stations';
 
 /**
@@ -328,6 +328,23 @@ export const HOTSPOTS: Hotspot[] = [
     items: goals.career,
     tint: '#ffd166',
   },
+  // --- Sports & Fitness Pavilion --------------------------------------------------------------
+  ...pavilion.zones.map((z, i) => ({
+    id: `pv-${z.id}`,
+    station: 'pavilion' as const,
+    pos: ([
+      [24.0, 0.25, -6.6],
+      [24.7, 1.45, 0.7],
+      [31.25, 2.0, -3.2],
+      [31.25, 2.0, 0.8],
+    ] as [number, number, number][])[i]!,
+    label: z.title,
+    kicker: pavilion.title,
+    title: z.id === 'swim' ? `${z.org} · ${z.role}` : z.title,
+    text: z.line,
+    app: { id: `pavilion:${z.id}`, label: `Open ${z.title}` },
+    tint: ['#4cc9f0', '#e0464e', '#8fd0ff', '#f4d68a'][i],
+  })),
   // --- Thank you ------------------------------------------------------------------------------
   {
     id: 'thanks',

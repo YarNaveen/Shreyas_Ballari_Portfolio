@@ -2,6 +2,8 @@ import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNo
 import { ArrowUpRight, Atom, DownloadSimple, EnvelopeSimple, FileText, Phone, Brain, Calculator, ChalkboardTeacher, ChartLineUp, Code, Dna, GraduationCap, Medal, Sparkle } from '@phosphor-icons/react';
 import { achievements, activities, contact, courses, journey, languages, profile, researchInterests, schools, stockApp, subjects } from '@/content/portfolio';
 import { ContactPanel } from '@/features/details/Contact';
+import { ExperienceGrid } from '@/features/experience/ExperienceGrid';
+import { EXPERIENCE_TITLE } from '@/content/experience';
 import { AppMockup, GoalPath, InnerPage, type PageId } from './Pages';
 import { Film } from '../flow/sequel';
 import { Honors } from './Honors';
@@ -275,7 +277,7 @@ function Bento() {
         <img src={photo('classroom')} alt="" loading="lazy" />
         <div className="sd-b-over">
           <b>Top 99%</b>
-          <p>PSAT in 8th and 10th grade, and MAP in 10th grade.</p>
+          <p>PSAT in 8th, 10th and 11th grade (99th percentile and above, National Merit recognition), and MAP in 10th grade.</p>
         </div>
       </article>
       <article className="sd-b sd-b-mid" style={{ '--i': 1 } as CSSProperties}>
@@ -368,8 +370,9 @@ const WORK: { id: PageId; title: string; line: string; img: string; tint: string
   { id: 'oncure', title: 'Oncure', line: 'A conceptual research proposal, not an existing or clinically validated treatment.', img: 'microscope', tint: '#0b1030' },
   { id: 'trading', title: 'Stock Trading Application', line: 'Hypothetical sample data, not financial advice.', img: 'stock-charts', tint: '#061a1a' },
   { id: 'skills', title: 'Technical skills & courses', line: 'JavaScript, Python and Java, with AP Computer Science, Biology, Chemistry and Physics C.', img: 'classroom', tint: '#0a1428' },
-  { id: 'awards', title: 'Awards and honors', line: 'Seven awards, honors and certificates since 2nd grade.', img: 'trophy', tint: '#1d1606' },
-  { id: 'life', title: 'Activities', line: 'Swimming, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a', anchor: 'cx-life' },
+  { id: 'internship', title: 'Internship & industry experience', line: 'A summer internship with a company developing an AI-enabled play mat, now on the App Store.', img: 'writing', tint: '#140f26' },
+  { id: 'awards', title: 'Awards and honors', line: `${achievements.length} awards, honors and certificates, from 2nd grade to National Merit recognition.`, img: 'trophy', tint: '#1d1606' },
+  { id: 'life', title: 'Activities and Experience', line: 'Volunteering at TAMA Medical Camp and Sri Shirdi Sai Temple, tutoring, Swim Atlanta, Muay Thai, guitar, Science Olympiad and DECA.', img: 'guitar', tint: '#1a0d1a' },
   { id: 'tutoring', title: 'Peer tutoring', line: 'Math and Science, at lunch and after school.', img: 'chalkboard-math', tint: '#0d1a10', anchor: 'cx-tutoring' },
   { id: 'goals', title: 'Goals', line: 'From university to an AI-enabled oncology lab.', img: 'stethoscope', tint: '#0a1226' },
 ];
@@ -557,6 +560,22 @@ function OncureFilm() {
   );
 }
 
+/** Activities and Experience: volunteering and his other activities, each with a motion preview. */
+function Experience() {
+  return (
+    <section id="cx-life" className="sd-goals sd-xp" aria-labelledby="sd-xp-h">
+      <p className="sd-label">
+        <i aria-hidden="true" /> Beyond the classroom
+      </p>
+      <Blur id="sd-xp-h" text={EXPERIENCE_TITLE} className="sd-goals-h" />
+      <p className="sd-goals-lede">Volunteering in his community, and the sport, music and competitions he does outside class.</p>
+      <div className="sd-xp-grid">
+        <ExperienceGrid tone="light" onOpen={() => openPage('life')} />
+      </div>
+    </section>
+  );
+}
+
 function Goals() {
   return (
     <section id="cx-goals" className="sd-goals" aria-labelledby="sd-goals-h">
@@ -677,6 +696,7 @@ export const StrideBottom = () => (
     <OncureFilm />
     <Trading />
     <Honors />
+    <Experience />
     <Goals />
     <Contact />
     <Finale />

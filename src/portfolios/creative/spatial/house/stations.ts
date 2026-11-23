@@ -3,7 +3,7 @@
  * stands, `look` what it looks at. `via` lists the waypoints the camera passes through when it
  * comes from the PREVIOUS station in tour order, so the walk goes through doorways and never
  * through a wall: entry → living → sofa → bedroom → study → lab → gallery → kitchen → music →
- * garden → return. (Going backwards, reverse the via list of the station you are leaving.)
+ * garden → pavilion → return. (Going backwards, reverse the via list of the station you are leaving.)
  */
 
 export interface Station {
@@ -12,9 +12,14 @@ export interface Station {
   via?: [number, number, number][];
 }
 
-export type StationName = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'return';
+export type StationName = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'pavilion' | 'return';
 
-export const STATION_ORDER: StationName[] = ['entry', 'living', 'sofa', 'bedroom', 'study', 'lab', 'gallery', 'kitchen', 'music', 'garden', 'return'];
+export const STATION_ORDER: StationName[] = ['entry', 'living', 'sofa', 'bedroom', 'study', 'lab', 'gallery', 'kitchen', 'music', 'garden', 'pavilion', 'return'];
+
+/** From the garden back in through the open slider in the living room's glass wall. */
+export const SLIDER: [number, number, number][] = [[6.0, 1.66, -4.6], [1.25, 1.64, -4.4], [1.25, 1.64, -3.6]];
+/** From the pavilion back through the gap in the hedge to the garden. */
+export const PAVILION_BACK: [number, number, number][] = [[18.3, 1.85, -6.4], [17.0, 1.75, -3.25], [13.6, 1.72, -3.3]];
 
 export const STATIONS: Record<StationName, Station> = {
   // Outside the front door, looking in through the entrance.
@@ -56,10 +61,13 @@ export const STATIONS: Record<StationName, Station> = {
     look: [3.0, 0.9, -8.6],
     via: [[4.7, 1.62, -9.7], [4.7, 1.62, -8.4], [5.6, 1.65, -6.8], [8.0, 1.68, -3.8]],
   },
-  // Back in through the open slider in the living room's glass wall.
+  // Through the gap in the east hedge, along stepping stones, into the Sports & Fitness Pavilion:
+  // the pool on the left, the Muay Thai area on the right, the boards on the far wall.
+  pavilion: { eye: [19.0, 1.95, -9.3], look: [25.2, 0.75, -1.4], via: [[14.6, 1.72, -3.25], [17.0, 1.75, -3.25], [18.3, 1.85, -6.4]] },
+  // Back to the garden, then in through the open slider in the living room's glass wall.
   return: {
     eye: [2.2, 1.7, -2.5],
     look: [-3.2, 1.45, 1.6],
-    via: [[6.0, 1.66, -4.6], [1.25, 1.64, -4.4], [1.25, 1.64, -3.6]],
+    via: [...PAVILION_BACK, ...SLIDER],
   },
 };

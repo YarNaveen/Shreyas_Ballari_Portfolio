@@ -4,7 +4,6 @@ import {
   ArrowUpRight,
   Atom,
   BookOpenText,
-  Briefcase,
   ChalkboardTeacher,
   ChartLineUp,
   Code,
@@ -12,23 +11,19 @@ import {
   DownloadSimple,
   EnvelopeSimple,
   GraduationCap,
-  Guitar,
-  HandFist,
-  HandHeart,
   Medal,
   Microscope,
   NotePencil,
   Phone,
-  Stethoscope,
   Student,
-  SwimmingPool,
   Trophy,
   UsersThree,
   type Icon,
 } from '@phosphor-icons/react';
-import { achievements, activities, contact, goals, languages, profile, resume, schools, skillsCourses, subjects, volunteering } from '@/content/portfolio';
+import { achievements, contact, goals, languages, profile, resume, schools, skillsCourses, subjects } from '@/content/portfolio';
 import type { DetailId } from '@/features/details/Details';
 import './sections.css';
+import { ExperienceGrid } from '@/features/experience/ExperienceGrid';
 
 /**
  * Studio, from Education down, in a light gallery style: a soft grey page with white cards,
@@ -342,7 +337,7 @@ function AwardsSec({ live, onMore }: Props) {
   const btn = useRef<HTMLButtonElement>(null);
   return (
     <section className="sx-sec" data-sec="awards">
-      <Head kicker="Achievements" title={`${achievements.length} awards and honors since 2nd grade.`} soft={4} sub="Top 99% on the PSAT and MAP, the Principal’s Honors List and the College Board National Recognition Program." />
+      <Head kicker="Achievements" title={`${achievements.length} awards and honors since 2nd grade.`} soft={4} sub="Qualified for National Merit Scholarship recognition (Grade 11 PSAT, 99th percentile and above), top 99% on the PSAT and MAP, the Principal’s Honors List and the College Board National Recognition Program." />
       <div className="sx-split is-flip">
         <Deck count={achievements.length} active={k} onChange={setK} label="Awards">
           {(i) => {
@@ -408,52 +403,13 @@ function AwardsSec({ live, onMore }: Props) {
 
 // --- Activities and volunteering ------------------------------------------------------------------------
 
-const ACT_ICON: Record<string, Icon> = {
-  'Swim Atlanta': SwimmingPool,
-  'Muay Thai': HandFist,
-  Guitar,
-  'Science Olympiad': Atom,
-  DECA: Briefcase,
-  'TAMA Medical Camp': Stethoscope,
-  'Sri Shirdi Sai Temple': HandHeart,
-  'Peer tutoring': ChalkboardTeacher,
-};
 
 function LifeSec(_: Props) {
-  const all = [...activities.map((a) => ({ ...a, tag: 'Activity' })), ...volunteering.map((v) => ({ ...v, tag: 'Volunteering' }))];
-  const guitar = all.find((a) => a.title === 'Guitar');
-  const rest = all.filter((a) => a.title !== 'Guitar');
   return (
     <section className="sx-sec is-white" data-sec="life">
-      <Head kicker="Beyond the classroom" title="Sport, music, competitions and giving back." soft={3} center />
-      <Rise className="sx-bento">
-        {guitar && (
-          <article className="sx-tile is-photo" style={at(0)}>
-            <img src={photo('guitar')} alt="" loading="lazy" draggable={false} />
-            <div>
-              <Badge icon={Guitar}>{guitar.tag}</Badge>
-              <h4>{guitar.title}</h4>
-              <p>{guitar.role}</p>
-            </div>
-          </article>
-        )}
-        {rest.map((a, i) => {
-          const I = ACT_ICON[a.title] ?? Medal;
-          return (
-            <article key={a.title} className={`sx-tile ${a.tag === 'Volunteering' ? 'is-alt' : ''}`} style={at(i + 1)}>
-              <div className="sx-tile-top">
-                <span className="sx-tile-ico" aria-hidden="true">
-                  <I weight="duotone" />
-                </span>
-                <span className="sx-tile-tag">{a.tag}</span>
-              </div>
-              <div className="sx-tile-text">
-                <h4>{a.title}</h4>
-                <p>{a.role}</p>
-              </div>
-            </article>
-          );
-        })}
+      <Head kicker="Activities and Experience" title="Volunteering, sport, music and competitions." soft={1} center />
+      <Rise className="sx-xp">
+        <ExperienceGrid tone="light" />
       </Rise>
     </section>
   );

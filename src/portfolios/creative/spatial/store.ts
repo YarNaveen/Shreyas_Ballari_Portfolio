@@ -55,9 +55,15 @@ export interface SpatialState {
   pinned: string[];
   /** A question waiting for the AI chat (set by "Ask AI" buttons). */
   pendingAsk: string | null;
+  /** The zone the Sports & Fitness Pavilion window opens on (swim, muaythai, olympiad, deca). */
+  pavilionZone: string | null;
+  /** The activity the Activities and Experience window opens on. */
+  experienceItem: string | null;
+  /** A tour stop to walk to as soon as the rooms are ready. */
+  tourWant: number | null;
 }
 
-let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, look360: false, squeezed: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null };
+let state: SpatialState = { phase: 'intro', chapter: 0, dir: 1, room: 'living', narrate: false, auto: false, caption: null, sound: false, toast: null, dock: true, windows: [], homeView: false, control: false, env: envNow(), envAuto: true, tour: false, tourTarget: 0, tourIndex: 0, roomsReady: false, bubble: false, video: false, look360: false, squeezed: false, pinned: ['oncure', 'finance', 'awards', 'guitar'], pendingAsk: null, pavilionZone: null, experienceItem: null, tourWant: null };
 const subs = new Set<() => void>();
 let autoTimer = 0;
 
@@ -155,10 +161,10 @@ export const spatial = {
     spatial.set({ pinned: state.pinned.filter((p) => p !== id) });
   },
   /** Start the house tour from the front door. */
-  startTour() {
+  startTour(at: number | null = null) {
     window.clearTimeout(autoTimer);
     stopSpeaking();
-    spatial.set({ tour: true, tourTarget: 0, tourIndex: 0, homeView: false, control: false, windows: [], caption: null, auto: false, look360: false });
+    spatial.set({ tour: true, tourTarget: 0, tourIndex: 0, homeView: false, control: false, windows: [], caption: null, auto: false, look360: false, tourWant: at });
   },
   /** Show one card of the tour (the scroll may sit between two; the nearest one shows). */
   tourTo(target: number, rooms: number) {

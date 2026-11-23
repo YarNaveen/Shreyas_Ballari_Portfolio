@@ -41,6 +41,7 @@ export const storyById = (id: string) => STORIES.find((s) => s.id === id);
 
 /** Awards for the carousel: every achievement in the brief, with an image and where it is from. */
 const AWARD_IMAGES: Record<string, string> = {
+  nmsc: PHOTOS.notes.src,
   cbnrp: J('trophy'),
   honors: J('academy'),
   psat: PHOTOS.notes.src,
@@ -53,7 +54,9 @@ export const AWARDS = achievements.map((a) => ({
   ...a,
   image: AWARD_IMAGES[a.id] ?? J('trophy'),
   issuer:
-    a.id === 'cbnrp'
+    a.id === 'nmsc'
+      ? 'Grade 11 PSAT'
+      : a.id === 'cbnrp'
       ? 'College Board'
       : a.id === 'honors'
         ? 'Fulton Science Academy'

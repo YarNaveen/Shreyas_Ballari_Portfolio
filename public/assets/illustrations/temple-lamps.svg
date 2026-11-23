@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- An original illustration (not a photo): a row of lit clay oil lamps on a temple step, for
+       Shreyas's volunteering at the Sri Shirdi Sai Temple. No people, deities or logos. -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="70%" r="80%">
+      <stop offset="0" stop-color="#5a2a12"/>
+      <stop offset="0.45" stop-color="#2a120a"/>
+      <stop offset="1" stop-color="#0d0605"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd27a" stop-opacity="0.9"/>
+      <stop offset="0.35" stop-color="#ff9a3c" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ff7a1a"/>
+      <stop offset="0.5" stop-color="#ffc14d"/>
+      <stop offset="1" stop-color="#fff4c9"/>
+    </linearGradient>
+    <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c8743c"/>
+      <stop offset="1" stop-color="#6e3216"/>
+    </linearGradient>
+    <linearGradient id="step" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d2014"/>
+      <stop offset="1" stop-color="#1a0b07"/>
+    </linearGradient>
+    <g id="lamp">
+      <ellipse cx="0" cy="40" rx="70" ry="14" fill="#000" opacity="0.35"/>
+      <path d="M-62 0 Q-58 36 0 38 Q58 36 62 0 Q34 12 0 12 Q-34 12 -62 0 Z" fill="url(#clay)"/>
+      <path d="M-62 0 Q-34 12 0 12 Q34 12 62 0 Q40 -8 0 -8 Q-40 -8 -62 0 Z" fill="#8a4521"/>
+      <path d="M44 -2 Q70 -8 80 -18 Q66 2 48 6 Z" fill="url(#clay)"/>
+      <circle cx="0" cy="-70" r="120" fill="url(#glow)"/>
+      <path d="M78 -22 C66 -50 74 -78 80 -96 C88 -78 96 -50 82 -22 Z" fill="url(#flame)"/>
+      <path d="M79 -26 C74 -42 77 -58 80 -66 C84 -56 86 -42 81 -26 Z" fill="#fffbe6" opacity="0.85"/>
+    </g>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <!-- soft out-of-focus lights behind -->
+  <g opacity="0.5">
+    <circle cx="160" cy="180" r="46" fill="#ffb347" opacity="0.25"/>
+    <circle cx="330" cy="120" r="30" fill="#ffd27a" opacity="0.2"/>
+    <circle cx="560" cy="210" r="56" fill="#ff9a3c" opacity="0.18"/>
+    <circle cx="820" cy="140" r="40" fill="#ffd27a" opacity="0.22"/>
+    <circle cx="1040" cy="230" r="60" fill="#ffb347" opacity="0.2"/>
+    <circle cx="980" cy="90" r="22" fill="#fff0c2" opacity="0.25"/>
+  </g>
+  <!-- a marigold garland across the top -->
+  <g>
+    <path d="M0 40 Q300 170 600 60 Q900 170 1200 40" fill="none" stroke="#7a4a12" stroke-width="3" opacity="0.6"/>
+    <g fill="#ff9f1c">
+      <circle cx="60" cy="68" r="14"/><circle cx="140" cy="104" r="14"/><circle cx="220" cy="128" r="14"/><circle cx="300" cy="136" r="14"/>
+      <circle cx="380" cy="128" r="14"/><circle cx="460" cy="108" r="14"/><circle cx="540" cy="80" r="14"/>
+      <circle cx="660" cy="80" r="14"/><circle cx="740" cy="108" r="14"/><circle cx="820" cy="128" r="14"/><circle cx="900" cy="136" r="14"/>
+      <circle cx="980" cy="128" r="14"/><circle cx="1060" cy="104" r="14"/><circle cx="1140" cy="68" r="14"/>
+    </g>
+    <g fill="#ffd166" opacity="0.9">
+      <circle cx="100" cy="88" r="10"/><circle cx="260" cy="134" r="10"/><circle cx="420" cy="120" r="10"/><circle cx="500" cy="96" r="10"/>
+      <circle cx="700" cy="96" r="10"/><circle cx="780" cy="120" r="10"/><circle cx="940" cy="134" r="10"/><circle cx="1100" cy="88" r="10"/>
+    </g>
+  </g>
+  <!-- the step -->
+  <rect x="0" y="560" width="1200" height="240" fill="url(#step)"/>
+  <rect x="0" y="556" width="1200" height="8" fill="#6b3a22" opacity="0.7"/>
+  <!-- lamps -->
+  <use href="#lamp" transform="translate(170 560) scale(0.85)"/>
+  <use href="#lamp" transform="translate(410 585) scale(1.05)"/>
+  <use href="#lamp" transform="translate(640 560) scale(0.9)"/>
+  <use href="#lamp" transform="translate(880 590) scale(1.1)"/>
+  <use href="#lamp" transform="translate(1090 565) scale(0.82)"/>
+  <!-- reflections of the light on the step -->
+  <ellipse cx="600" cy="640" rx="560" ry="40" fill="#ff9a3c" opacity="0.08"/>
+</svg>

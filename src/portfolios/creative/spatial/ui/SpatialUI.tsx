@@ -35,6 +35,9 @@ const loadChat = () => import('../os/Chat');
 const OncureApp = lazy(() => loadOncure().then((m) => ({ default: m.OncureApp })));
 const AwardsFlow = lazy(() => loadAwards().then((m) => ({ default: m.AwardsFlow })));
 const Chat = lazy(() => loadChat().then((m) => ({ default: m.Chat })));
+const PavilionWindow = lazy(() => import('../os/Pavilion').then((m) => ({ default: m.PavilionWindow })));
+const InternshipWindow = lazy(() => import('../os/Internship').then((m) => ({ default: m.InternshipWindow })));
+const ExperienceWindow = lazy(() => import('../os/Experience').then((m) => ({ default: m.ExperienceWindow })));
 export function prefetchApps() {
   void loadOncure().catch(() => {});
   void loadAwards().catch(() => {});
@@ -469,6 +472,16 @@ export function SpatialUI({ replayIntro }: { replayIntro: () => void }) {
       )}
 
       {tour && <Tour />}
+      {/* The pavilion and the internship open over the apps and over the house tour. */}
+      {(['pavilion', 'internship', 'experience'] as const).map(
+        (w) =>
+          windows.includes(w) && (
+            <Suspense key={w} fallback={null}>
+              <div className="os-scrim is-top" aria-hidden="true" onClick={() => spatial.closeWindow(w)} />
+              {w === 'pavilion' ? <PavilionWindow /> : w === 'internship' ? <InternshipWindow /> : <ExperienceWindow />}
+            </Suspense>
+          ),
+      )}
       {squeezed && !tour && (
         <div className="sp-360 sp-squeezed" role="status">
           <span>

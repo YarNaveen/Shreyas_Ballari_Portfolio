@@ -1844,7 +1844,23 @@
 .fl-heromini .sh-name {
   animation: none;
 }
-/* Education cards. */
+/* Education cards: a clear photo across the top, fading into the card's colour under the text. */
+.fl-card.is-edu img {
+  inset: 0 0 auto;
+  height: 62%;
+  opacity: 0.95;
+  mix-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+}
+.fl-card.is-edu:hover img {
+  opacity: 1;
+}
+.fl-card.is-edu .fl-card-head .fl-pill {
+  background: rgba(10, 10, 14, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
 .fl-card.is-edu .fl-card-foot {
   gap: 8px;
 }

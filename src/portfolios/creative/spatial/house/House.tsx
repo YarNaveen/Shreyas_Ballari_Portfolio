@@ -10,6 +10,7 @@ import { Lab } from './Lab';
 import { MatsProvider } from './kit';
 import { preloadModels } from './Model';
 import { Music } from './Music';
+import { Pavilion } from './Pavilion';
 import { Projector } from './Projector';
 import { Shell } from './Shell';
 import { ActivityPosters, CommunityRoom, GalleryScores, GoalsSign, LabStory, ThanksScreen } from './Story3D';
@@ -17,7 +18,8 @@ import { Study } from './Study';
 
 /**
  * Everything around the living room: the building's shell, the projector and the garden are
- * always there. The other rooms (bedroom, study, lab, gallery, community room, music room) are
+ * always there. The other rooms (bedroom, study, lab, gallery, community room, music room, and the
+ * Sports & Fitness Pavilion in the garden) are
  * only needed for the house tour, so they are loaded the first time the tour opens, prepared
  * out of sight, and then shown. Vision mode never pays for them. Render inside the scene's Suspense.
  */
@@ -133,6 +135,9 @@ function Rooms({ low }: { low: boolean }) {
         <Room at={[4.5, -12]}>
           <ActivityPosters />
           <Music />
+        </Room>
+        <Room at={[25, -3.5]}>
+          <Pavilion />
         </Room>
       </group>
       <WarmRooms target={ref} low={low} />

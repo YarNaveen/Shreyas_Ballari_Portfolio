@@ -114,9 +114,17 @@ export interface Achievement {
 }
 
 export const achievements: Achievement[] = [
+  {
+    id: 'nmsc',
+    kind: 'Honor',
+    title: 'National Merit Recognition',
+    value: '99th percentile and above',
+    when: '11th grade PSAT',
+    detail: 'Grade 11 PSAT: 99th percentile and above. Qualified for National Merit Scholarship recognition.',
+  },
   { id: 'cbnrp', kind: 'Award', title: 'College Board National Recognition Program', value: 'Recipient', when: 'Award', detail: 'Recipient of the College Board National Recognition Program award.' },
   { id: 'honors', kind: 'Honor', title: 'Principal’s Honors List', value: '2025 · 2026', when: 'FSA', detail: 'Named to the Principal’s Honors List at Fulton Science Academy in 2025 and 2026.' },
-  { id: 'psat', kind: 'Score', title: 'PSAT', value: 'Top 99%', when: '8th to 10th grade', detail: 'PSAT: top 99% in 8th grade, top 98% in 9th grade, top 99% in 10th grade. PSAT 8/9 score: 1280 out of 1440.' },
+  { id: 'psat', kind: 'Score', title: 'PSAT', value: 'Top 99%', when: '8th to 11th grade', detail: 'PSAT: top 99% in 8th grade, top 98% in 9th grade, top 99% in 10th grade, and the 99th percentile and above in 11th grade. PSAT 8/9 score: 1280 out of 1440.' },
   { id: 'map', kind: 'Score', title: 'MAP', value: 'Top 99%', when: '9th and 10th grade', detail: 'MAP: top 98% in 9th grade, top 99% in 10th grade.' },
   { id: 'arrow', kind: 'Program', title: 'Project Arrow', value: 'Since 2nd grade', when: 'IPSD', detail: 'Placed in Project Arrow at Indian Prairie School District 204 (IPSD) since 2nd grade.' },
   { id: 'authors', kind: 'Award', title: 'Young Authors Contest', value: 'Winner', when: '2023', detail: 'Young Authors Contest winner in 2023, Indian Prairie School District 204.' },
@@ -127,15 +135,82 @@ export const percentiles = [
   { test: 'PSAT', grade: '8th grade', value: 99 },
   { test: 'PSAT', grade: '9th grade', value: 98 },
   { test: 'PSAT', grade: '10th grade', value: 99 },
+  { test: 'PSAT', grade: '11th grade', value: 99 },
   { test: 'MAP', grade: '9th grade', value: 98 },
   { test: 'MAP', grade: '10th grade', value: 99 },
 ];
 
-export const volunteering = [
+/**
+ * National Merit recognition from the Grade 11 PSAT (family update, 2026-11-23).
+ * Wording is the family's; replace `status` with the exact official term from the score report
+ * once verified, and set `certificate` to the image path when the certificate arrives.
+ * It is recognition he qualified for, not a scholarship awarded: never word it as one.
+ */
+export const nationalMerit = {
+  title: 'National Merit Recognition',
+  test: 'Grade 11 PSAT',
+  result: '99th percentile and above',
+  status: 'Qualified for National Merit Scholarship recognition',
+  /** Set to true once the official score report has been checked. */
+  verified: false,
+  /** Path of the certificate image under public/assets/certificates, once received. */
+  certificate: null as string | null,
+};
+
+export interface Volunteering {
+  title: string;
+  role: string;
+  /** Optional details, added as the family confirms them. */
+  detail?: string;
+  when?: string;
+}
+
+/** Volunteering and community work. Add new entries here (details and dates are optional). */
+export const volunteering: Volunteering[] = [
   { title: 'TAMA Medical Camp', role: 'Student volunteer' },
   { title: 'Sri Shirdi Sai Temple', role: 'Operations volunteer' },
-  { title: 'Peer tutoring', role: 'Tutored 7th and 8th grade students in Math and Science' },
+  { title: 'Peer tutoring', role: 'Tutored 7th and 8th grade students in Math & Science' },
 ];
+
+/**
+ * The summer internship (family update, 2026-11-23). Everything set to null is still to come from
+ * the family: fill it in and the site shows it; until then a clearly marked "to be added" label
+ * shows instead. Do not invent any of it, and never say he built the whole product.
+ */
+export const internship = {
+  heading: 'Internship & Industry Experience',
+  kind: 'Summer internship',
+  /** What is confirmed so far. */
+  summary: 'A summer internship with a company developing an AI-enabled play mat. The product is now available on the Apple App Store.',
+  product: 'AI-enabled play mat',
+  company: null as string | null,
+  companyUrl: null as string | null,
+  productName: null as string | null,
+  appStoreUrl: null as string | null,
+  period: null as string | null,
+  role: null as string | null,
+  /** His own contributions, in his words, once confirmed. */
+  contributions: [] as string[],
+  /** What he learned, once confirmed. */
+  learning: [] as string[],
+  /** Product image path (public/assets/...), once provided. */
+  image: null as string | null,
+  /** Certificate image path, once received. */
+  certificate: null as string | null,
+};
+
+/** The Sports & Fitness Pavilion in the Creative house: his sport and other activities. */
+export const pavilion = {
+  title: 'Sports & Fitness Pavilion',
+  line: 'Swimming, Muay Thai, Science Olympiad and DECA',
+  intro: 'Outside the classroom, Shreyas swims, trains in Muay Thai and competes with his school teams. This pavilion brings those activities together.',
+  zones: [
+    { id: 'swim', title: 'Swimming', org: 'Swim Atlanta', role: 'Senior Team', when: '', line: 'A member of the Swim Atlanta Senior Team. Swimming is one of his activities outside school.' },
+    { id: 'muaythai', title: 'Muay Thai', org: 'Martial arts', role: 'Training since 2025', when: 'Since 2025', line: 'He has trained in Muay Thai, a martial art, since 2025.' },
+    { id: 'olympiad', title: 'Science Olympiad', org: 'Fulton Science Academy', role: 'Team member', when: '2024 and 2025', line: 'He competed in Science Olympiad for Fulton Science Academy in 2024 and 2025.' },
+    { id: 'deca', title: 'DECA', org: 'Fulton Science Academy', role: 'Member', when: '2026', line: 'He joined DECA at Fulton Science Academy in 2026.' },
+  ],
+} as const;
 
 export const activities = [
   { title: 'Swim Atlanta', role: 'Senior Team member' },
@@ -157,7 +232,8 @@ export const journey = [
   { when: '2024', title: 'Science Olympiad', line: 'Competed for Fulton Science Academy.' },
   { when: '2025', title: 'Principal’s Honors List', line: 'Plus Science Olympiad again and starting Muay Thai.' },
   { when: '2026', title: 'Oncure and the trading app', line: 'Wrote the Oncure research proposal, started building his stock trading application, joined DECA and made the Principal’s Honors List again.' },
-  { when: 'Now', title: 'Junior at Fulton Science Academy', line: 'All Honors and AP courses, PSAT and MAP in the top 98 to 99%.' },
+  { when: '11th grade', title: 'National Merit recognition', line: 'Grade 11 PSAT: 99th percentile and above. Qualified for National Merit Scholarship recognition.' },
+  { when: 'Now', title: 'Junior at Fulton Science Academy', line: 'All Honors and AP courses, PSAT and MAP in the top 98 to 99%, and the 99th percentile and above on the Grade 11 PSAT.' },
 ];
 
 export const goals = {
@@ -178,7 +254,7 @@ export const intro = {
     'A junior at Fulton Science Academy exploring computer science, artificial intelligence and FinTech, with research interests in AI for cancer research and AI-enabled trading.',
   ),
   /** Proof line under the hero button. Confirmed facts only. */
-  proof: ['College Board National Recognition Program', 'PSAT top 99%', 'Principal’s Honors List 2025 · 2026'],
+  proof: ['National Merit recognition (Grade 11 PSAT)', 'College Board National Recognition Program', 'Principal’s Honors List 2025 · 2026'],
 };
 
 export interface Cluster {
@@ -248,7 +324,7 @@ export const clusters: Cluster[] = [
     body: [
       confirmed('College Board National Recognition Program award recipient.'),
       confirmed('Principal’s Honors List at Fulton Science Academy, 2025 and 2026.'),
-      confirmed('PSAT: top 99% (8th grade), top 98% (9th), top 99% (10th). PSAT 8/9: 1280 out of 1440.'),
+      confirmed('PSAT: top 99% (8th grade), top 98% (9th), top 99% (10th), and the 99th percentile and above in 11th grade, qualifying for National Merit Scholarship recognition. PSAT 8/9: 1280 out of 1440.'),
       confirmed('MAP: top 98% (9th grade), top 99% (10th).'),
       confirmed('Project Arrow at Indian Prairie School District 204 since 2nd grade.'),
     ],
@@ -359,11 +435,15 @@ export const faq = [
   },
   {
     q: 'What has he achieved?',
-    a: 'College Board National Recognition Program award, the Principal’s Honors List in 2025 and 2026, PSAT and MAP results in the top 98% to 99%, Project Arrow since 2nd grade, and the Young Authors Contest in 2023.',
+    a: 'He qualified for National Merit Scholarship recognition with his Grade 11 PSAT (99th percentile and above). He also has the College Board National Recognition Program award, the Principal’s Honors List in 2025 and 2026, PSAT and MAP results in the top 98% to 99%, Project Arrow since 2nd grade, and the Young Authors Contest in 2023.',
   },
   {
     q: 'What does he do outside class?',
-    a: 'He swims with the Swim Atlanta Senior Team, trains in Muay Thai, plays guitar, and competes in Science Olympiad and DECA. He volunteers at the TAMA Medical Camp and the Sri Shirdi Sai Temple.',
+    a: 'He swims with the Swim Atlanta Senior Team, trains in Muay Thai, plays guitar, and competes in Science Olympiad and DECA. He is an operations volunteer at the Sri Shirdi Sai Temple and a student volunteer at the TAMA Medical Camp.',
+  },
+  {
+    q: 'Has he done an internship?',
+    a: 'Yes. A summer internship with a company developing an AI-enabled play mat, which is now available on the Apple App Store. More details are coming soon.',
   },
   {
     q: 'Does Shreyas tutor other students?',

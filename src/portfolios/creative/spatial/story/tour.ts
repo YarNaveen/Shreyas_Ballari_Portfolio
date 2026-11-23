@@ -1,4 +1,4 @@
-import { achievements, activities, courses, goals, languages, oncure, profile, researchInterests, resume, stockApp, subjects, volunteering } from '@/content/portfolio';
+import { achievements, activities, courses, goals, languages, oncure, pavilion, profile, researchInterests, resume, stockApp, subjects, volunteering } from '@/content/portfolio';
 import { PHOTOS } from '@/content/photos';
 import type { StationName } from '../house/stations';
 
@@ -72,7 +72,7 @@ export const TOUR: TourStop[] = [
     station: 'gallery',
     room: 'The gallery',
     title: 'Awards and honours',
-    text: 'Certificates, honours and top scores, from Project Arrow in second grade to the College Board National Recognition Program. On the PSAT 8/9 he scored 1280 out of 1440 in 8th grade.',
+    text: 'Certificates, honours and top scores, from Project Arrow in second grade to the College Board National Recognition Program. On the PSAT 8/9 he scored 1280 out of 1440 in 8th grade, and on the Grade 11 PSAT he placed in the 99th percentile and above, qualifying for National Merit Scholarship recognition.',
     items: achievements.map((a) => `${a.title} · ${a.value}`),
     image: A('house/stills/gallery.jpg'),
     app: 'awards',
@@ -81,7 +81,7 @@ export const TOUR: TourStop[] = [
     station: 'kitchen',
     room: 'Volunteering & tutoring',
     title: 'Volunteering and tutoring',
-    text: 'The whiteboard shows how he tutors 7th and 8th graders in mathematics and science, step by step; the wall beside it shows where he volunteers.',
+    text: 'The whiteboard shows how he tutors 7th and 8th graders in mathematics and science, step by step; the wall beside it shows where he volunteers: as an operations volunteer at the Sri Shirdi Sai Temple and a student volunteer at the TAMA Medical Camp.',
     items: volunteering.map((v) => `${v.title} · ${v.role}`),
     image: A('photos/chalkboard-math.jpg'),
   },
@@ -101,6 +101,15 @@ export const TOUR: TourStop[] = [
     text: `The sign in the garden holds his goals: ${goals.education.replace(/^A /, 'a ').replace(/\.$/, '')}, then a career in AI, research and finance.`,
     items: goals.career.map((g) => g.replace(/\.$/, '')),
     image: A('house/stills/garden.jpg'),
+  },
+  {
+    station: 'pavilion',
+    room: pavilion.title,
+    title: 'Sport, discipline and teamwork',
+    text: `${pavilion.intro} In front, the pool for his swimming with the Swim Atlanta Senior Team; beyond it, the Muay Thai training area, where he has trained since 2025. The boards on the far wall show Science Olympiad and DECA.`,
+    items: pavilion.zones.map((z) => `${z.title} · ${z.org}${z.when ? `, ${z.when}` : ''}`),
+    image: A('house/stills/pavilion.jpg'),
+    app: 'pavilion',
   },
   {
     station: 'sofa',

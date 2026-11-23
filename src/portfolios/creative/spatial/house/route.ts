@@ -1,5 +1,5 @@
 import { CatmullRomCurve3, Vector3 } from 'three';
-import { STATION_ORDER, STATIONS, type StationName } from './stations';
+import { PAVILION_BACK, SLIDER, STATION_ORDER, STATIONS, type StationName } from './stations';
 
 /**
  * Walking routes between story stations. Every station lists the waypoints from the station before
@@ -23,10 +23,12 @@ export function waypoints(from: StationName, to: StationName): [number, number, 
   const a = LIVING_ROOM.has(from);
   const b = LIVING_ROOM.has(to);
   if (a && b) return [];
-  // The garden opens straight into the living room through the glass slider.
-  const slider = STATIONS.return.via ?? [];
-  if (from === 'garden' && b) return slider;
-  if (a && to === 'garden') return [...slider].reverse();
+  // The garden opens straight into the living room through the glass slider, and the pavilion
+  // is reached from the garden through the gap in the hedge.
+  if (from === 'garden' && b) return SLIDER;
+  if (a && to === 'garden') return [...SLIDER].reverse();
+  if (from === 'pavilion' && b) return [...PAVILION_BACK, ...SLIDER];
+  if (a && to === 'pavilion') return [...SLIDER].reverse().concat([...PAVILION_BACK].reverse());
   if (a) return forward('living', to);
   if (b) return forward('living', from).reverse();
   return idx(from) < idx(to) ? forward(from, to) : forward(to, from).reverse();

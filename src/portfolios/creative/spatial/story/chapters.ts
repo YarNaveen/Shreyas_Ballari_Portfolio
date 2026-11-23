@@ -7,7 +7,7 @@ import { ChartLineUp, ChatsCircle, Dna, GameController, Guitar, SquaresFour, Tro
  * and what the narrator says when you open it. Every fact comes from the family's brief (content/portfolio.ts).
  */
 
-export type StationId = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'return';
+export type StationId = 'entry' | 'living' | 'sofa' | 'bedroom' | 'study' | 'lab' | 'gallery' | 'kitchen' | 'music' | 'garden' | 'pavilion' | 'return';
 
 export interface Chapter {
   id: string;
@@ -30,7 +30,7 @@ export const CHAPTERS: Chapter[] = [
     station: 'living',
     icon: SquaresFour,
     tint: '#5b7cfa',
-    say: "Welcome to Shreyas's world. This is his dashboard: his research, his app, his awards and his activities. Drag a card onto the pinboard, open any story, or ask the AI about him.",
+    say: "Welcome to Shreyas Ballari's portfolio. This is his dashboard, with his research, his Finance App, his awards and his activities. Open any card to read more, ask the AI about him, or take the house tour. You can also use your voice or your hands: turn on Voice control and say, for example, open awards, or explain Oncure.",
     voice: ['dashboard', 'home', 'menu', 'start', 'living room', 'feed'],
   },
   {
@@ -60,7 +60,7 @@ export const CHAPTERS: Chapter[] = [
     station: 'gallery',
     icon: Trophy,
     tint: '#d4a43a',
-    say: "These are his awards. He has been in Project Arrow in his school district since second grade, was named to the Principal's Honors List at Fulton Science Academy in 2025 and 2026, was in the top 99 percent on the PSAT in eighth and tenth grade and the top 98 percent in ninth, the top 98 and 99 percent on MAP, received the College Board National Recognition Program award, won the Young Authors Contest in 2023 and completed Mini Medical School in 2021.",
+    say: "These are his awards. Most recently, his Grade 11 PSAT placed him in the 99th percentile and above, and he qualified for National Merit Scholarship recognition. He has been in Project Arrow in his school district since second grade, was named to the Principal's Honors List at Fulton Science Academy in 2025 and 2026, was in the top 99 percent on the PSAT in eighth and tenth grade and the top 98 percent in ninth, the top 98 and 99 percent on MAP, received the College Board National Recognition Program award, won the Young Authors Contest in 2023 and completed Mini Medical School in 2021.",
     voice: ['awards', 'award', 'achievements', 'achievement', 'trophies', 'trophy', 'gallery', 'honors', 'certificates', 'rewards'],
   },
   {
@@ -90,9 +90,13 @@ export const CHAPTERS: Chapter[] = [
     station: 'music',
     icon: Guitar,
     tint: '#3bb2d6',
-    say: 'Beyond class. Shreyas has played guitar since 2021, at Atlanta Piano Fortissimo, so press play for an original guitar piece generated in your browser. He swims with the Swim Atlanta Senior Team, trains in Muay Thai, competed in Science Olympiad and joined DECA, volunteers at the TAMA Medical Camp and the Sri Shirdi Sai Temple, and tutors younger students in math and science.',
-    voice: ['activities', 'guitar', 'music', 'songs', 'song', 'sports', 'swimming', 'muay thai', 'volunteering', 'community', 'play music'],
+    say: 'Beyond class. Shreyas has played guitar since 2021, at Atlanta Piano Fortissimo, so press play for an original guitar piece generated in your browser. He swims with the Swim Atlanta Senior Team, has trained in Muay Thai since 2025, competed in Science Olympiad in 2024 and 2025, and joined DECA in 2026. You can see all of them in the Sports and Fitness Pavilion. He is an operations volunteer at the Sri Shirdi Sai Temple, a student volunteer at the TAMA Medical Camp, and tutors seventh and eighth graders in math and science.',
+    voice: ['activities', 'other activities', 'his activities', 'guitar', 'music', 'songs', 'song', 'sports', 'swimming', 'muay thai', 'volunteering', 'community', 'play music'],
   },
 ];
+
+/** Spoken when a visitor asks how to get around. */
+export const NAV_GUIDE =
+  'Here is how to get around. Tap or click any card to open it, and use the back button or say go back to return. The apps are on the left: Dashboard, Oncure, the Finance App, Awards, AI Chat, Games and Activities. Press House tour to walk through his home, room by room. With Voice control on, you can say open awards, explain Oncure, next section, or return to dashboard. With Hand control on, point to move, and pinch to click.';
 
 export const chapterIndex = (id: string) => CHAPTERS.findIndex((c) => c.id === id);

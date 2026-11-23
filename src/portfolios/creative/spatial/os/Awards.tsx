@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowsOutSimple, CaretLeft, CaretRight, Medal, Shuffle, SpeakerHigh, Trophy } from '@phosphor-icons/react';
-import { percentiles, profile } from '@/content/portfolio';
+import { nationalMerit, percentiles, profile } from '@/content/portfolio';
 import { speak } from '../story/narrator';
 import { playUi } from '../store';
 import { AWARDS } from './media';
@@ -15,9 +15,10 @@ import { AWARDS } from './media';
 type Award = (typeof AWARDS)[number];
 
 function Certificate({ a }: { a: Award }) {
-  const tests = percentiles.filter((p) => p.test.toLowerCase() === a.id);
+  const merit = a.id === 'nmsc';
+  const tests = percentiles.filter((p) => p.test.toLowerCase() === (merit ? 'psat' : a.id));
   return (
-    <div className="aw-detail">
+    <div className={`aw-detail ${merit ? 'is-merit' : ''}`}>
       <div className="aw-cert">
         <span className="aw-cert-issuer">{a.issuer}</span>
         <b className="aw-cert-title">{a.title}</b>
@@ -29,7 +30,9 @@ function Certificate({ a }: { a: Award }) {
         <span className="aw-cert-seal" aria-hidden="true">
           <Medal weight="fill" />
         </span>
-        <span className="aw-cert-note">A presentation card, not the original certificate</span>
+        <span className="aw-cert-note">
+          {merit && !nationalMerit.certificate ? 'Presentation card · the official certificate will be added when received' : 'A presentation card, not the original certificate'}
+        </span>
       </div>
       <div className="aw-side">
         <span className="aw-trophy" aria-hidden="true">
@@ -45,7 +48,7 @@ function Certificate({ a }: { a: Award }) {
                   <circle cx="22" cy="22" r="18" className="aw-ring-bg" />
                   <circle cx="22" cy="22" r="18" className="aw-ring-fg" />
                 </svg>
-                <b>{p.value}</b>
+                <b>{merit && p.grade.startsWith('11') ? '99+' : p.value}</b>
                 <small>{p.grade}</small>
               </div>
             ))}
@@ -86,6 +89,8 @@ export function AwardsFlow({ expanded, onExpand }: { expanded: string | null; on
       if (d === 'next') go(at + 1);
       if (d === 'prev') go(at - 1);
       if (d === 'shuffle') shuffle();
+      // A specific award by id ("national merit" opens on its card).
+      if (order.includes(d)) go(order.indexOf(d));
     };
     window.addEventListener('os-awards', on);
     return () => window.removeEventListener('os-awards', on);
@@ -141,12 +146,23 @@ export function AwardsFlow({ expanded, onExpand }: { expanded: string | null; on
           return (
             <article
               key={id}
-              className={`aw-card ${off === 0 ? 'is-focus' : ''}`}
+              className={`aw-card ${off === 0 ? 'is-focus' : ''} ${id === 'nmsc' ? 'is-merit' : ''}`}
               style={{ '--off': off, '--abs': abs, '--k': k, zIndex: 20 - abs, opacity: abs > 3 ? 0 : 1 } as CSSProperties}
               aria-hidden={off !== 0}
               onClick={() => (off === 0 ? onExpand(id) : go(k))}
             >
-              <img src={a.image} alt="" draggable={false} />
+              {id === 'nmsc' ? (
+                <span className="aw-merit-art" aria-hidden="true">
+                  <span className="aw-merit-seal">
+                    <Medal weight="fill" />
+                  </span>
+                  <span className="aw-merit-k">{nationalMerit.test}</span>
+                  <span className="aw-merit-v">99th</span>
+                  <span className="aw-merit-s">percentile and above</span>
+                </span>
+              ) : (
+                <img src={a.image} alt="" draggable={false} />
+              )}
               <span className="aw-card-shade" />
               {off === 0 && (
                 <button

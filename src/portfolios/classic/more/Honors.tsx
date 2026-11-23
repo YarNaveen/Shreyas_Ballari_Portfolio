@@ -17,7 +17,7 @@ import './honors.css';
 const BASE = import.meta.env.BASE_URL;
 const local = (n: string) => `${BASE}assets/photos/${n}.jpg`;
 
-/** Order on the strip (earliest first, the College Board award last) and the photo for each. */
+/** Order on the strip (earliest first, National Merit recognition last) and the photo for each. */
 const ORDER: { id: string; src: string; tint: string; focus?: string }[] = [
   { id: 'arrow', src: local('archery-target'), tint: '#d9dbe2' },
   { id: 'minimed', src: local('stethoscope'), tint: '#d6d9e0' },
@@ -25,7 +25,8 @@ const ORDER: { id: string; src: string; tint: string; focus?: string }[] = [
   { id: 'psat', src: PHOTOS.notes.src, tint: '#e2e1dc' },
   { id: 'map', src: local('chalkboard-math'), tint: '#2a2d33' },
   { id: 'honors', src: local('classroom'), tint: '#d8d6d2' },
-  { id: 'cbnrp', src: local('trophy'), tint: '#5b78c9', focus: '50% 45%' },
+  { id: 'cbnrp', src: PHOTOS.desk.src, tint: '#5b78c9' },
+  { id: 'nmsc', src: local('trophy'), tint: '#c99a3c', focus: '50% 45%' },
 ];
 
 const PLATES = ORDER.flatMap((o) => {
@@ -358,7 +359,7 @@ export function Honors() {
             <span>{WORDS[N] ?? N} honors,</span>
             <span className="is-soft">since 2nd grade.</span>
           </p>
-          <p className="hn-final-body">Top 99% on the PSAT and MAP, the Principal’s Honors List in 2025 and 2026, and the College Board National Recognition Program.</p>
+          <p className="hn-final-body">Grade 11 PSAT in the 99th percentile and above, qualifying for National Merit Scholarship recognition. Plus the top 99% on the PSAT and MAP, the Principal’s Honors List in 2025 and 2026, and the College Board National Recognition Program.</p>
           <div className="hn-final-cta">
             <button type="button" className="sd-pill is-white" onClick={openAwards}>
               See every award <ArrowUpRight weight="bold" aria-hidden="true" />

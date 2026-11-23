@@ -15,6 +15,7 @@ import './os/games/games.css';
 import './os/tour.css';
 import './os/vision.css';
 import './os/polish.css';
+import './os/features.css';
 
 /**
  * Creative: Shreyas's spatial home. Every time it opens (a refresh too) the headset splash plays,

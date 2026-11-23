@@ -11,6 +11,9 @@ import {
   MeshStandardMaterial,
   Object3D,
   PlaneGeometry,
+  Path as ShapePath,
+  Shape,
+  ShapeGeometry,
   RepeatWrapping,
   type BufferGeometry,
   type Material,
@@ -19,6 +22,7 @@ import {
 } from 'three';
 import { B, Blob, Slab, canvasTexture, rng, useMats } from './kit';
 import { MUSIC_DOOR } from './layout';
+import { POOL } from './poolPlan';
 import { MODEL, Model } from './Model';
 
 /**
@@ -29,11 +33,31 @@ import { MODEL, Model } from './Model';
 
 type V3 = [number, number, number];
 
-function ground(w: number, d: number, tile: number, cx: number, cz: number) {
-  const g = new PlaneGeometry(w, d, 1, 1);
+/**
+ * The lawn, with a rectangular opening for the pavilion's sunken pool (x0..x1, z0..z1 in world
+ * metres), so the water and the tiled basin show through. The mesh is laid flat at z = cz.
+ */
+function lawnWithPool(w: number, d: number, tile: number, cz: number, hole: { x0: number; x1: number; z0: number; z1: number }) {
+  const outer = new Shape();
+  outer.moveTo(-w / 2, -d / 2);
+  outer.lineTo(w / 2, -d / 2);
+  outer.lineTo(w / 2, d / 2);
+  outer.lineTo(-w / 2, d / 2);
+  outer.closePath();
+  // Plane space (x, y) maps to world (x, cz - y) once rotated flat.
+  const y0 = cz - hole.z1;
+  const y1 = cz - hole.z0;
+  const h = new ShapePath();
+  h.moveTo(hole.x0, y0);
+  h.lineTo(hole.x0, y1);
+  h.lineTo(hole.x1, y1);
+  h.lineTo(hole.x1, y0);
+  h.closePath();
+  outer.holes.push(h);
+  const g = new ShapeGeometry(outer);
   const p = g.attributes.position!;
   const uv = g.attributes.uv!;
-  for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) + cx) / tile, (p.getY(i) - cz) / tile);
+  for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / tile, (p.getY(i) - cz) / tile);
   return g;
 }
 
@@ -325,7 +349,7 @@ function pavers(): { p: V3; r: number }[] {
 
 export function Garden({ low }: { low?: boolean }) {
   const m = useMats();
-  const lawn = useMemo(() => ground(90, 80, 2.6, 0, -2), []);
+  const lawn = useMemo(() => lawnWithPool(90, 80, 2.6, -2, POOL), []);
   const path = useMemo(pavers, []);
   const grass = useMemo<[number, number, number][]>(
     () => [
@@ -430,8 +454,13 @@ export function Garden({ low }: { low?: boolean }) {
         </group>
       ))}
       {/* Hedges at the edges of the garden */}
-      <Slab p={[17, 0.9, -2]} s={[1, 1.8, 30]} m={m.hedge} tile={1.2} />
+      {/* East hedge, with a gap (z -4.7 to -1.8) on the path to the Sports & Fitness Pavilion. */}
+      <Slab p={[17, 0.9, -10.85]} s={[1, 1.8, 12.3]} m={m.hedge} tile={1.2} />
+      <Slab p={[17, 0.9, 5.6]} s={[1, 1.8, 14.8]} m={m.hedge} tile={1.2} />
       <Slab p={[1.5, 0.9, -17]} s={[32, 1.8, 1]} m={m.hedge} tile={1.2} />
+      {/* The pavilion's own garden beyond it. */}
+      <Slab p={[26, 0.9, -17]} s={[17, 1.8, 1]} m={m.hedge} tile={1.2} />
+      <Slab p={[34.5, 0.9, -2]} s={[1, 1.8, 30]} m={m.hedge} tile={1.2} />
       <Slab p={[-16, 0.9, -2]} s={[1, 1.8, 30]} m={m.hedge} tile={1.2} />
     </group>
   );

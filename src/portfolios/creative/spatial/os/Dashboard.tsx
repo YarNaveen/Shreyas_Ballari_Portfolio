@@ -1,7 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import { EXPERIENCE_GROUPS } from '@/content/experience';
+import { XP_ICON } from './Experience';
+import { openExperience } from '../ui/commands';
 import { Reach } from '@/features/details/Reach';
-import { ArrowRight, ArrowsOutCardinal, ChartLineUp, EnvelopeSimple, Briefcase, ChatsCircle, Dna, Flask, GameController, Guitar, HandFist, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, SwimmingPool, Trophy, X } from '@phosphor-icons/react';
-import { achievements, activities, profile } from '@/content/portfolio';
+import { ArrowRight, ArrowsOutCardinal, ChartLineUp, EnvelopeSimple, ChatsCircle, Dna, GameController, Guitar, Moon, Play, PushPin, Sparkle, Sun, SunHorizon, Trophy, X } from '@phosphor-icons/react';
+import { achievements, profile } from '@/content/portfolio';
 import { spatial, useSpatial } from '../store';
 import { useDrag } from './dnd';
 import { envNow, fmtDate, fmtTime, sunTimes } from './localTime';
@@ -16,7 +19,8 @@ import { AWARDS, PORTRAIT_STUDIO, STORIES, storyById } from './media';
 
 const st = (i: number, extra?: CSSProperties) => ({ '--i': i, ...extra }) as CSSProperties;
 
-export const openApp = (app: string) => (app === 'profile' ? spatial.openWindow('profile') : spatial.goChapter(app));
+/** Apps open on the stage; the profile, pavilion and internship open as windows. */
+export const openApp = (app: string) => (['profile', 'pavilion', 'internship', 'experience'].includes(app) ? spatial.openWindow(app) : spatial.goChapter(app));
 
 export function askAI(q: string) {
   spatial.set({ pendingAsk: q });
@@ -301,33 +305,42 @@ function GamesW() {
   );
 }
 
-const ACT_ICON: [RegExp, typeof Guitar][] = [
-  [/swim/i, SwimmingPool],
-  [/muay/i, HandFist],
-  [/guitar/i, Guitar],
-  [/olympiad/i, Flask],
-  [/deca/i, Briefcase],
-];
 
-/** All his activities, with the guitar player one tap away. */
+/** Short names that fit a dashboard tile (the full line is the tooltip and in the window). */
+const SHORT: Record<string, string> = { tama: 'TAMA Camp', temple: 'Sai Temple', tutoring: 'Peer tutoring', swim: 'Swim Atlanta', muaythai: 'Muay Thai', guitar: 'Guitar', olympiad: 'Science Olympiad', deca: 'DECA' };
+
+/** Activities and Experience: every activity is a button that opens its video and story. */
 function MusicW() {
+  let k = 0;
   return (
     <>
-      <Head icon={<Guitar weight="fill" />} title="Activities" sub="Sport, music and competition" />
-      <ul className="w-acts is-all">
-        {activities.map((a, i) => {
-          const I = ACT_ICON.find(([r]) => r.test(a.title))?.[1] ?? Guitar;
-          return (
-            <li key={a.title} style={st(i)}>
-              <I weight="fill" aria-hidden="true" />
-              <span>
-                <b>{a.title}</b>
-                <small>{a.role}</small>
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+      <Head icon={<Guitar weight="fill" />} title="Activities & Experience" sub="3 volunteering · 5 activities · tap one" />
+      <div className="w-xp">
+        {EXPERIENCE_GROUPS.map((g) => (
+          <div key={g.id} className={`w-xp-group is-${g.id}`}>
+            <span className="w-xp-h">{g.title}</span>
+            <div className="w-xp-row">
+              {g.items.map((it) => {
+                const I = XP_ICON[it.id] ?? Guitar;
+                return (
+                  <button
+                    key={it.id}
+                    type="button"
+                    className="w-xp-btn"
+                    style={{ ...st(k++), '--tint': it.tint } as CSSProperties}
+                    data-voice={it.title}
+                    title={it.line}
+                    onClick={() => openExperience(it.id)}
+                  >
+                    <I weight="fill" aria-hidden="true" />
+                    <span>{SHORT[it.id] ?? it.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }

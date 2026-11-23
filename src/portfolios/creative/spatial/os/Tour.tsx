@@ -5,6 +5,7 @@ import { CHAPTERS } from '../story/chapters';
 import { speak, stopSpeaking } from '../story/narrator';
 import { TOUR } from '../story/tour';
 import { playUi, spatial, useSpatial } from '../store';
+import { openPavilion } from '../ui/commands';
 
 /**
  * The house tour overlay. Left: the rooms (tap one to walk there). Right: a glass card that tells
@@ -53,6 +54,7 @@ export function RoomPoints({ station, open, onOpen }: { station: string | null; 
 export function goSpot(h: Hotspot) {
   if (h.ask) spatial.set({ bubble: true });
   else if (h.video) spatial.set({ video: true });
+  else if (h.app?.id.startsWith('pavilion')) openPavilion(h.app.id.split(':')[1] ?? null);
   else if (h.app) spatial.endTour(h.app.id);
 }
 
@@ -100,6 +102,13 @@ export function Tour() {
     setInfo(!isPhone());
   }, [at]);
   useEffect(() => () => hotspotEls.clear(), []);
+  // "Walk there in 3D" (from an app): go to that stop as soon as the other rooms are ready.
+  const want = useSpatial((s) => s.tourWant);
+  useEffect(() => {
+    if (want == null || !roomsReady) return;
+    spatial.set({ tourWant: null });
+    spatial.tourTo(want, TOUR.length);
+  }, [want, roomsReady]);
 
   // Read each room aloud as you arrive (only when the AI voice is on).
   useEffect(() => {
@@ -200,7 +209,7 @@ export function Tour() {
           </button>
           {stop.image && (
             <figure className="tour-img">
-              <img src={stop.image} alt="" style={{ objectPosition: stop.focus ?? '50% 50%' }} />
+              <img src={stop.image} alt="" style={{ objectPosition: stop.focus ?? '50% 50%' }} onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')} />
               <figcaption>
                 {String(at + 1).padStart(2, '0')} / {String(TOUR.length).padStart(2, '0')}
               </figcaption>
@@ -241,6 +250,10 @@ export function Tour() {
             {last ? (
               <button type="button" className="tour-go is-primary" data-voice="open dashboard" onClick={() => spatial.endTour('home')}>
                 <SquaresFour weight="fill" aria-hidden="true" /> Open his dashboard
+              </button>
+            ) : stop.app === 'pavilion' ? (
+              <button type="button" className="tour-go is-primary" data-voice="enter the pavilion" onClick={() => openPavilion()}>
+                Enter the pavilion <ArrowRight weight="bold" aria-hidden="true" />
               </button>
             ) : (
               app && (

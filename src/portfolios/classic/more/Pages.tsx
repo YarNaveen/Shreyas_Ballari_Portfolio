@@ -44,16 +44,17 @@ import {
   Warning,
   X,
 } from '@phosphor-icons/react';
-import { achievements, areasOfInterest, goals, journey, oncure, percentiles, resume, skillsCourses, stockApp, volunteering } from '@/content/portfolio';
+import { achievements, areasOfInterest, goals, internship, journey, nationalMerit, oncure, percentiles, resume, skillsCourses, stockApp, volunteering } from '@/content/portfolio';
 import { Badges, Bars, CertWall, Columns, Donut, Flow, Orbit, Rings, Timeline, Years } from './Viz';
 import { useSeen } from './ui';
+import { ExperienceGrid } from '@/features/experience/ExperienceGrid';
 
 /**
  * The inner pages behind the "My work" cards, in the same style as the sections around them:
  * black with blue light, thin large type, bento cards that rise into focus. One font (Geist).
  */
 
-export type PageId = 'oncure' | 'trading' | 'skills' | 'awards' | 'life' | 'tutoring' | 'goals';
+export type PageId = 'oncure' | 'trading' | 'internship' | 'skills' | 'awards' | 'life' | 'tutoring' | 'goals';
 
 const BASE = import.meta.env.BASE_URL;
 const at = (i: number) => ({ '--i': i }) as CSSProperties;
@@ -414,6 +415,7 @@ export function TradingPage() {
 }
 
 const ISSUER: Record<string, string> = {
+  nmsc: 'Grade 11 PSAT',
   cbnrp: 'College Board',
   honors: 'Fulton Science Academy',
   psat: 'College Board · PSAT',
@@ -425,16 +427,28 @@ const ISSUER: Record<string, string> = {
 const CERT_TONES = ['#b8901c', '#1f4dff', '#7c4dff', '#0f9f8f', '#d9452f', '#e0761a', '#0e8ec9'];
 
 function AwardsPage() {
-  const byTest = (test: string) => ['8th grade', '9th grade', '10th grade'].map((g) => percentiles.find((p) => p.test === test && p.grade === g)?.value ?? null);
+  const byTest = (test: string) => ['8th grade', '9th grade', '10th grade', '11th grade'].map((g) => percentiles.find((p) => p.test === test && p.grade === g)?.value ?? null);
   return (
     <>
+      <div className="pg-merit">
+        <span className="pg-merit-seal" aria-hidden="true">
+          <Medal weight="fill" />
+        </span>
+        <div>
+          <p className="pg-merit-k">{nationalMerit.test}</p>
+          <h4>{nationalMerit.title}</h4>
+          <p className="pg-merit-v">{nationalMerit.result}</p>
+          <p>{nationalMerit.status}.</p>
+          <small>{nationalMerit.certificate ? 'Certificate below.' : 'The official certificate will be added when it arrives.'}</small>
+        </div>
+      </div>
       <Rings items={percentiles.map((p) => ({ v: p.value, label: p.test, sub: p.grade }))} />
       <Block label="Certificates" lead="Every award," rest="as a certificate." lede="Designed presentations of each award, not scans of the originals.">
         <CertWall items={achievements.map((a, i) => ({ id: a.id, issuer: ISSUER[a.id] ?? '', kind: a.kind, title: a.title, value: a.value, when: a.when, tone: CERT_TONES[i % CERT_TONES.length]! }))} />
       </Block>
       <Block label="Scores" lead="Consistently in" rest="the top percentiles." lede="Percentile rank by grade: higher than that share of students nationwide. PSAT 8/9 in 8th grade: 1280 out of 1440.">
         <Columns
-          groups={['8th grade', '9th grade', '10th grade']}
+          groups={['8th grade', '9th grade', '10th grade', '11th grade']}
           series={[
             { name: 'PSAT', color: '#4f7bff', points: byTest('PSAT') },
             { name: 'MAP', color: '#b49cff', points: byTest('MAP') },
@@ -464,8 +478,11 @@ function LifePage() {
           ]}
         />
       </Block>
+      <Block label="Activities and Experience" lead="Watch and read" rest="about each one." lede="Volunteering first, then his other activities.">
+        <ExperienceGrid tone="dark" />
+      </Block>
       <Block label="Volunteering" lead="Giving" rest="back.">
-        <Badges items={volunteering.map((v, i) => ({ title: v.title, line: v.role, icon: [FirstAid, HandHeart, ChalkboardTeacher][i] ?? HandHeart }))} />
+        <Badges items={volunteering.map((v) => ({ title: v.title, line: v.title === 'Peer tutoring' ? v.role : `${v.role} at ${v.title}`, icon: /medical|camp/i.test(v.title) ? FirstAid : /tutor/i.test(v.title) ? ChalkboardTeacher : HandHeart }))} />
       </Block>
       <Block label="Interests" lead="What he" rest="is drawn to.">
         <Rise className="pg-chips">
@@ -583,12 +600,60 @@ export function GoalPath() {
   );
 }
 
+/** Pending details show as a clearly marked label until the family confirms them. */
+const tbd = (v: string | null, what: string) => v ?? `${what} · to be added`;
+
+function InternshipPage() {
+  const x = internship;
+  return (
+    <>
+      <Badges
+        items={[
+          { icon: Briefcase, title: tbd(x.company, 'Company name'), line: 'Company' },
+          { icon: Lightbulb, title: x.productName ? `${x.productName} · ${x.product}` : x.product, line: 'Product, now on the Apple App Store' },
+          { icon: ClockCountdown, title: tbd(x.period, 'Summer · dates'), line: 'Period' },
+          { icon: Student, title: tbd(x.role, 'Role'), line: 'Role' },
+        ]}
+      />
+      <div className="pg-prose">
+        <p>{x.summary}</p>
+      </div>
+      <Block label="His contributions" lead="What he" rest="worked on.">
+        {x.contributions.length ? (
+          <Numbered items={x.contributions.map((c) => ({ title: c.split(/[,.]/)[0] ?? c, line: c }))} />
+        ) : (
+          <p className="pg-pending">His own contributions will be listed here once confirmed.</p>
+        )}
+      </Block>
+      <Block label="Links" lead="App Store" rest="and certificate.">
+        <div className="pg-links">
+          {x.appStoreUrl ? (
+            <a className="sd-pill is-white" href={x.appStoreUrl} target="_blank" rel="noreferrer">
+              View on the App Store
+            </a>
+          ) : (
+            <span className="pg-pending">App Store link · to be added</span>
+          )}
+          {x.certificate ? (
+            <a className="sd-pill is-white" href={x.certificate} target="_blank" rel="noreferrer">
+              Internship certificate
+            </a>
+          ) : (
+            <span className="pg-pending">Internship certificate · to be added when received</span>
+          )}
+        </div>
+      </Block>
+    </>
+  );
+}
+
 const PAGES: Record<PageId, { label: string; lead: string; rest: string; lede: string; img: string; body: () => ReactNode }> = {
   oncure: { label: 'Research concept', lead: 'Oncure.', rest: 'AI‑guided nanobots against cancer.', lede: oncure.summary, img: 'microscope', body: OncurePage },
   trading: { label: 'Stock Trading Application · personal project', lead: 'Stock trading', rest: 'made simple.', lede: 'AI advice right beside the chart: how much to buy, when to buy it and an estimate of when to sell.', img: 'stock-charts', body: TradingPage },
+  internship: { label: 'Summer internship', lead: 'Internship', rest: '& industry experience.', lede: 'A summer internship with a company developing an AI-enabled play mat, now available on the Apple App Store.', img: 'writing', body: InternshipPage },
   skills: { label: 'Technical skills', lead: 'Technical skills', rest: 'and courses taken.', lede: 'JavaScript, Python and Java, with AP courses in computer science, biology, chemistry and physics.', img: 'classroom', body: SkillsPage },
   awards: { label: 'Achievements', lead: 'Awards', rest: 'and honors.', lede: 'Every award, honor and certificate, and how his test scores compare nationwide.', img: 'trophy', body: AwardsPage },
-  life: { label: 'Beyond the classroom', lead: 'Activities', rest: 'and volunteering.', lede: 'Swimming, Muay Thai, guitar, Science Olympiad, DECA and giving back.', img: 'guitar', body: LifePage },
+  life: { label: 'Beyond the classroom', lead: 'Activities', rest: 'and experience.', lede: 'Swimming, Muay Thai, guitar, Science Olympiad, DECA and giving back.', img: 'guitar', body: LifePage },
   tutoring: { label: 'Peer tutoring', lead: 'Helping others', rest: 'learn.', lede: 'Math and Science for 7th and 8th graders, at lunch and after school.', img: 'chalkboard-math', body: TutoringPage },
   goals: { label: 'Goals', lead: 'Where he', rest: 'is heading.', lede: 'First university, then three things he wants to build.', img: 'stethoscope', body: GoalsPage },
 };

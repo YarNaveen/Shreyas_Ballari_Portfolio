@@ -2,6 +2,7 @@ import { Component, lazy, Suspense, useCallback, useContext, useEffect, useRef, 
 import '@fontsource-variable/geist';
 import { SmoothScrollContext } from '@/app/providers/SmoothScroll';
 import { languages, profile, subjects } from '@/content/portfolio';
+import { PHOTOS } from '@/content/photos';
 import { Dock, NAV_ITEMS } from './Dock';
 import { StageHero } from '../hero/StageHero';
 import { show, useFx, type Fx, type Reg } from './fx';
@@ -94,11 +95,11 @@ function HeroLayer({ reg }: { reg: Reg }) {
 
 const EDU: { tag: string; title: string; lines: string[]; tone: 'violet' | 'night' | 'lime'; image?: string }[] = [
   { tag: 'High school', title: profile.school, lines: [`${profile.grade} · ${profile.schoolTown}`, 'All Honors and AP coursework'], tone: 'violet', image: `${BASE}assets/photos/classroom.jpg` },
-  { tag: 'AP & Honors', title: 'Courses', lines: ['AP Computer Science A', 'AP CS Principles', 'AP Precalculus', 'AP Biology · AP Chemistry', 'AP Physics C'], tone: 'night' },
-  { tag: 'Code', title: 'Languages', lines: languages, tone: 'lime' },
-  { tag: 'Interests', title: 'Subjects he loves', lines: subjects, tone: 'violet' },
-  { tag: 'Middle school', title: 'Francis Granger Middle School', lines: ['Project Arrow advanced program'], tone: 'night' },
-  { tag: 'Elementary', title: 'Nancy Young Elementary School', lines: ['Where the curiosity started'], tone: 'lime' },
+  { tag: 'AP & Honors', title: 'Courses', lines: ['AP Computer Science A', 'AP CS Principles', 'AP Precalculus', 'AP Biology · AP Chemistry', 'AP Physics C'], tone: 'night', image: `${BASE}assets/photos/chalkboard-math.jpg` },
+  { tag: 'Code', title: 'Languages', lines: languages, tone: 'lime', image: PHOTOS.code.src },
+  { tag: 'Interests', title: 'Subjects he loves', lines: subjects, tone: 'violet', image: `${BASE}assets/photos/stock-charts.jpg` },
+  { tag: 'Middle school', title: 'Francis Granger Middle School', lines: ['Project Arrow advanced program'], tone: 'night', image: PHOTOS.desk.src },
+  { tag: 'Elementary', title: 'Nancy Young Elementary School', lines: ['Where the curiosity started'], tone: 'lime', image: PHOTOS.openBook.src },
 ];
 
 function Ring({ reg }: { reg: Reg }) {
