@@ -1943,8 +1943,9 @@
 
 /* --- The menu bar on phones: a compact pill; the menu opens as a full sheet below it ------- */
 .dk {
+  /* Fixed to the top of the screen; nothing moves it while scrolling (iOS toolbar changes included). */
   top: calc(env(safe-area-inset-top, 0px) + 12px);
-  will-change: transform;
+  transform: none;
 }
 .dk-sheet-name {
   display: none;

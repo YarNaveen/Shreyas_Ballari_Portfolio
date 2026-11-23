@@ -47,21 +47,6 @@ export function Dock({ go, active }: { go: (id: string) => void; active: string 
   }, []);
   const closeT = useRef(0);
   const root = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const vv = window.visualViewport;
-    const el = root.current;
-    if (!vv || !el) return;
-    const pin = () => {
-      el.style.transform = `translate3d(0, ${Math.max(0, vv.offsetTop).toFixed(1)}px, 0)`;
-    };
-    pin();
-    vv.addEventListener('scroll', pin);
-    vv.addEventListener('resize', pin);
-    return () => {
-      vv.removeEventListener('scroll', pin);
-      vv.removeEventListener('resize', pin);
-    };
-  }, []);
 
   /** Phones and small tablets: the bar never widens; the menu button opens the full sheet. */
   const small = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
